@@ -98,6 +98,23 @@ I tested each skill by asking Claude the same question with and without the skil
 
 ---
 
+## Use with MathWorks MATLAB MCP Server
+
+These toolbox-specific skills complement the official [MATLAB MCP Core Server](https://github.com/matlab/matlab-mcp-core-server) from MathWorks.
+
+| Resource | What It Provides |
+|----------|------------------|
+| **MATLAB MCP Core Server** | Code execution, syntax checking, toolbox detection, coding guidelines |
+| **These Skills** | Toolbox-specific knowledge for accurate code suggestions |
+
+For the best experience, use both together:
+- The MCP server lets Claude run and validate MATLAB code directly
+- These skills ensure Claude suggests correct, up-to-date syntax for specific toolboxes
+
+See the [MathWorks AI resources](https://github.com/matlab) for additional tools and integrations.
+
+---
+
 ## Available Skills
 
 | Skill | Coverage |
