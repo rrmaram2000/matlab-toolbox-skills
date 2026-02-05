@@ -1,7 +1,7 @@
 # MATLAB Toolbox Skills for Claude
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <a href="LICENSE"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0"></a>
   <img src="https://img.shields.io/badge/MATLAB-R2025b-orange.svg" alt="MATLAB R2025b">
 </p>
 
@@ -200,4 +200,6 @@ All feedback is appreciated.
 
 ## License
 
-[MIT](LICENSE)
+<a href="https://creativecommons.org/licenses/by/4.0/"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0"></a>
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
