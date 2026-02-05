@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Zip files (generated for skill installation)
+*.zip
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# MATLAB generated files
+*.asv
+*.m~
+*.autosave
+
+# Temporary files
+*.tmp
+*.temp
