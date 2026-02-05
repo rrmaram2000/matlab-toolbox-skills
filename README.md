@@ -56,6 +56,52 @@ I tested each skill by asking Claude the same question with and without the skil
 
 ---
 
+## Installation
+
+### Claude Desktop
+
+1. Download or clone this repository
+2. Create a zip file for the skill you want:
+   ```
+   zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
+   ```
+3. Open Claude Desktop → Settings → Skills → Add Skill
+4. Upload the zip file
+5. Toggle the skill on when needed
+
+Start a new conversation after enabling a skill for it to take effect.
+
+### Claude.ai (Web)
+
+Go to Settings → Skills and upload the zip file.
+
+### Claude Code (CLI)
+
+```
+claude mcp add-skill /path/to/matlab-medical-imaging-toolbox
+```
+
+---
+
+## Use with MathWorks MATLAB MCP Server
+
+These toolbox-specific skills complement the official [MATLAB MCP Core Server](https://github.com/matlab/matlab-mcp-core-server) from MathWorks.
+
+| Resource | What It Provides |
+|----------|------------------|
+| **MATLAB MCP Core Server** | Code execution, syntax checking, toolbox detection, coding guidelines |
+| **These Skills** | Toolbox-specific knowledge for accurate code suggestions |
+
+For the best experience, use both together:
+- The MCP server lets Claude run and validate MATLAB code directly
+- These skills ensure Claude suggests correct, up-to-date syntax for specific toolboxes
+
+See the [MathWorks AI resources](https://github.com/matlab) for additional tools and integrations.
+
+---
+
+## Additional Examples
+
 ### Cell Segmentation (Image Processing)
 
 *"How do I segment overlapping cells in a microscopy image?"*
@@ -98,23 +144,6 @@ I tested each skill by asking Claude the same question with and without the skil
 
 ---
 
-## Use with MathWorks MATLAB MCP Server
-
-These toolbox-specific skills complement the official [MATLAB MCP Core Server](https://github.com/matlab/matlab-mcp-core-server) from MathWorks.
-
-| Resource | What It Provides |
-|----------|------------------|
-| **MATLAB MCP Core Server** | Code execution, syntax checking, toolbox detection, coding guidelines |
-| **These Skills** | Toolbox-specific knowledge for accurate code suggestions |
-
-For the best experience, use both together:
-- The MCP server lets Claude run and validate MATLAB code directly
-- These skills ensure Claude suggests correct, up-to-date syntax for specific toolboxes
-
-See the [MathWorks AI resources](https://github.com/matlab) for additional tools and integrations.
-
----
-
 ## Available Skills
 
 | Skill | Coverage |
@@ -124,33 +153,6 @@ See the [MathWorks AI resources](https://github.com/matlab) for additional tools
 | **matlab-deep-learning** | U-Net, semantic segmentation, custom training, transfer learning |
 | **matlab-stats-ml** | Classification, regression, survival analysis, Bayesian methods, clustering |
 | **matlab-wavelet-toolbox** | 2D transforms, denoising, lifting schemes, shearlets |
-
----
-
-## Installation
-
-### Claude Desktop
-
-1. Download or clone this repository
-2. Create a zip file for the skill you want:
-   ```
-   zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
-   ```
-3. Open Claude Desktop → Settings → Skills → Add Skill
-4. Upload the zip file
-5. Toggle the skill on when needed
-
-Start a new conversation after enabling a skill for it to take effect.
-
-### Claude.ai (Web)
-
-Go to Settings → Skills and upload the zip file.
-
-### Claude Code (CLI)
-
-```
-claude mcp add-skill /path/to/matlab-medical-imaging-toolbox
-```
 
 ---
 
