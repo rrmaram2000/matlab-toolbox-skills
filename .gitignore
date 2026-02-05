@@ -21,3 +21,6 @@
 # Temporary files
 *.tmp
 *.temp
+
+# Test results (local only)
+test-results/
