@@ -36,7 +36,7 @@ I tested each skill by asking Claude the same question with and without the skil
 <tr><td>Code complexity</td><td>100+ lines across two languages</td><td><strong>~40 lines pure MATLAB</strong></td></tr>
 <tr><td>Key function</td><td>Doesn't know it exists</td><td><code>medicalSegmentAnythingModel</code></td></tr>
 <tr><td>Workflow</td><td>Temp files, subprocess calls</td><td><code>extractEmbeddings</code> → <code>segmentObjectsFromEmbeddings</code></td></tr>
-<tr><td>3D handling</td><td>"Loop over slices" (vague)</td><td><strong>Propagates results across slices with spatial continuity</strong></td></tr>
+<tr><td>3D handling</td><td>"Loop over slices" (vague)</td><td><strong>Seed-and-propagate workflow for 3D</strong></td></tr>
 </table>
 
 <br>
