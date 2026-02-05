@@ -1,82 +1,119 @@
-# MATLAB Toolbox Skills for Claude
+<p align="center">
+  <strong>MATLAB Toolbox Skills for Claude</strong><br>
+  <em>Accurate, up-to-date MATLAB knowledge for Claude</em>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![MATLAB R2025b](https://img.shields.io/badge/MATLAB-R2025b-orange.svg)](https://www.mathworks.com/products/matlab.html)
-
-As a biomedical engineering PhD student, I use MATLAB daily for medical image analysis. I created these skills because I was tired of Claude suggesting Python workarounds for things MATLAB can do natively, or recommending functions that were deprecated several versions ago.
-
-These skills give Claude accurate, up-to-date knowledge about specific MATLAB toolboxes, resulting in code suggestions that actually work with current releases.
-
-> **What are Claude Skills?** Knowledge packages that extend Claude's capabilities in specific domains. See the [official documentation](https://docs.anthropic.com/en/docs/claude-ai/skills).
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/MATLAB-R2025b-orange.svg" alt="MATLAB R2025b">
+</p>
 
 ---
 
-## Evaluation
+As a biomedical engineering PhD student, I use MATLAB daily for medical image analysis. I created these skills because Claude often suggests Python workarounds for things MATLAB can do natively, or recommends functions that were deprecated several versions ago.
+
+These skills give Claude accurate, toolbox-specific knowledge so it suggests code that actually works.
+
+> **New to Claude Skills?** Skills are knowledge packages that extend Claude's capabilities. [Learn more →](https://docs.anthropic.com/en/docs/claude-ai/skills)
+
+<br>
+
+## See the Difference
 
 I tested each skill by asking Claude the same question with and without the skill loaded.
 
 <br>
 
-### MedSAM Tumor Segmentation
+<table>
+<tr>
+<td colspan="3">
 
-> *How do I use MedSAM to segment a tumor from a CT volume in MATLAB?*
+**How do I use MedSAM to segment a tumor from a CT volume in MATLAB?**
 
-| Aspect | Without Skill | With Skill |
-|:-------|:--------------|:-----------|
-| Approach | Python bridge required | **Native MATLAB** |
-| Code complexity | 100+ lines across two languages | **~40 lines pure MATLAB** |
-| Key function | Doesn't know it exists | `medicalSegmentAnythingModel` |
-| Workflow | Temp files, subprocess calls | `extractEmbeddings` → `segmentObjectsFromEmbeddings` |
-| 3D handling | "Loop over slices" (vague) | **Full propagation strategy** |
-| Spatial referencing | Lost | **Preserved with medicalVolume** |
+</td>
+</tr>
+<tr>
+<th width="25%">Aspect</th>
+<th width="37%">Without Skill</th>
+<th width="38%">With Skill</th>
+</tr>
+<tr><td>Approach</td><td>Python bridge required</td><td><strong>Native MATLAB</strong></td></tr>
+<tr><td>Code complexity</td><td>100+ lines across two languages</td><td><strong>~40 lines pure MATLAB</strong></td></tr>
+<tr><td>Key function</td><td>Doesn't know it exists</td><td><code>medicalSegmentAnythingModel</code></td></tr>
+<tr><td>Workflow</td><td>Temp files, subprocess calls</td><td><code>extractEmbeddings</code> → <code>segmentObjectsFromEmbeddings</code></td></tr>
+<tr><td>3D handling</td><td>"Loop over slices" (vague)</td><td><strong>Full propagation strategy</strong></td></tr>
+</table>
 
 <br>
 
-### 3D Volume Visualization
+<table>
+<tr>
+<td colspan="3">
 
-> *How do I visualize a 3D medical volume with a segmentation overlay?*
+**How do I visualize a 3D medical volume with a segmentation overlay?**
 
-| Aspect | Without Skill | With Skill |
-|:-------|:--------------|:-----------|
-| Approach | Workarounds (isosurface, loops) | **`OverlayData` parameter** |
-| Code | 30+ lines | **3 lines** |
-| Key syntax | Doesn't know it | `volshow(V, OverlayData=L.Voxels)` |
-| labelvolshow | Not mentioned | **Notes it was removed in R2025b** |
-| Colormap control | Not shown | `OverlayColormap`, `OverlayAlphamap` |
+</td>
+</tr>
+<tr>
+<th width="25%">Aspect</th>
+<th width="37%">Without Skill</th>
+<th width="38%">With Skill</th>
+</tr>
+<tr><td>Approach</td><td>Workarounds (isosurface, loops)</td><td><strong><code>OverlayData</code> parameter</strong></td></tr>
+<tr><td>Code</td><td>30+ lines</td><td><strong>3 lines</strong></td></tr>
+<tr><td>Key syntax</td><td>Doesn't know it</td><td><code>volshow(V, OverlayData=L.Voxels)</code></td></tr>
+<tr><td>labelvolshow</td><td>Not mentioned</td><td><strong>Notes it was removed in R2025b</strong></td></tr>
+</table>
+
+<br>
 
 ---
 
 ## Installation
 
-**Claude Desktop**
+#### Claude Desktop / Claude.ai
+
 1. Download or clone this repository
-2. Zip the skill folder: `zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox`
-3. Go to Settings → Skills → Add Skill → Upload the zip
-4. Toggle on and start a new conversation
+2. Zip the skill folder you want:
+   ```
+   zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
+   ```
+3. Go to **Settings → Skills → Add Skill** and upload the zip
+4. Toggle the skill on and start a new conversation
 
-**Claude.ai** — Settings → Skills → Upload zip
+#### Claude Code
 
-**Claude Code** — `claude mcp add-skill /path/to/matlab-medical-imaging-toolbox`
+Copy the skill folder to your skills directory:
+
+```bash
+# For all your projects (personal)
+cp -r matlab-medical-imaging-toolbox ~/.claude/skills/
+
+# Or for a specific project only
+cp -r matlab-medical-imaging-toolbox .claude/skills/
+```
+
+See the [Claude Code skills documentation](https://code.claude.com/docs/en/skills) for more details.
 
 ---
 
 ## Use with MathWorks MATLAB MCP Server
 
-These skills complement the official [MATLAB MCP Core Server](https://github.com/matlab/matlab-mcp-core-server) from MathWorks.
+These skills work great alongside the official [MATLAB MCP Core Server](https://github.com/matlab/matlab-mcp-core-server) from MathWorks:
 
-| | What It Provides |
+|   | What It Provides |
 |:--|:-----------------|
 | **MCP Server** | Code execution, syntax checking, toolbox detection |
 | **These Skills** | Toolbox-specific knowledge for accurate suggestions |
 
-Use both together for the best experience. See [MathWorks AI resources](https://github.com/matlab) for more.
+See [MathWorks AI resources](https://github.com/matlab) for more tools.
 
 ---
 
 ## Available Skills
 
-| Skill | Coverage |
-|:------|:---------|
+| Skill | What It Covers |
+|:------|:---------------|
 | `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization |
 | `matlab-image-processing-toolbox` | Filtering, segmentation, morphology, watershed, regionprops |
 | `matlab-deep-learning` | U-Net, semantic segmentation, custom training, transfer learning |
@@ -85,52 +122,67 @@ Use both together for the best experience. See [MathWorks AI resources](https://
 
 ---
 
-<details>
-<summary><strong>Additional Examples</strong></summary>
+## More Examples
+
+<table>
+<tr>
+<td colspan="3">
+
+**How do I segment overlapping cells in a microscopy image?**
+
+</td>
+</tr>
+<tr>
+<th width="25%">Aspect</th>
+<th width="37%">Without Skill</th>
+<th width="38%">With Skill</th>
+</tr>
+<tr><td>Approach</td><td>Basic watershed</td><td><strong>Production-ready watershed</strong></td></tr>
+<tr><td>Preprocessing</td><td>Simple threshold</td><td><code>imtophat</code> for background correction</td></tr>
+<tr><td>Edge handling</td><td>Not addressed</td><td><code>imclearborder</code> for edge cases</td></tr>
+<tr><td>Parameters</td><td>Generic values</td><td>Specific values with explanations</td></tr>
+</table>
 
 <br>
 
-### Cell Segmentation (Image Processing)
+<table>
+<tr>
+<td colspan="3">
 
-> *How do I segment overlapping cells in a microscopy image?*
+**How do I create a U-Net for image segmentation in MATLAB?**
 
-| Aspect | Without Skill | With Skill |
-|:-------|:--------------|:-----------|
-| Approach | Basic watershed | **Production-ready watershed** |
-| Preprocessing | Simple threshold | `imtophat` for background correction |
-| Edge handling | Not addressed | `imclearborder` for edge cases |
-| Parameters | Generic values | Specific values with explanations |
-| References | None | Academic citations included |
-
-<br>
-
-### U-Net Architecture (Deep Learning)
-
-> *How do I create a U-Net for image segmentation in MATLAB?*
-
-| Aspect | Without Skill | With Skill |
-|:-------|:--------------|:-----------|
-| Functions used | `unetLayers`, `trainNetwork` (deprecated) | **Both legacy and modern functions** |
-| Modern syntax | Not mentioned | `unet`, `trainnet` (R2024b+) |
-| Custom architecture | Not shown | Manual construction code included |
-| Class imbalance | Not addressed | Guidance provided |
+</td>
+</tr>
+<tr>
+<th width="25%">Aspect</th>
+<th width="37%">Without Skill</th>
+<th width="38%">With Skill</th>
+</tr>
+<tr><td>Functions used</td><td><code>unetLayers</code>, <code>trainNetwork</code> (deprecated)</td><td><strong>Both legacy and modern functions</strong></td></tr>
+<tr><td>Modern syntax</td><td>Not mentioned</td><td><code>unet</code>, <code>trainnet</code> (R2024b+)</td></tr>
+<tr><td>Custom architecture</td><td>Not shown</td><td>Manual construction code included</td></tr>
+</table>
 
 <br>
 
-### Shearlet Transforms (Wavelet Toolbox)
+<table>
+<tr>
+<td colspan="3">
 
-> *How do I use shearlets for directional texture analysis?*
+**How do I use shearlets for directional texture analysis?**
 
-| Aspect | Without Skill | With Skill |
-|:-------|:--------------|:-----------|
-| Approach | Third-party toolbox (ShearLab 3D) | **Native MATLAB Wavelet Toolbox** |
-| Setup required | Download from shearlab.org | **None — built-in** |
-| System creation | `SLgetShearletSystem2D` | `shearletSystem` |
-| Forward transform | `SLsheardec2D` | `sheart2` |
-| Inverse transform | `SLshearrec2D` | `isheart2` |
-| External dependencies | Yes | **No** |
-
-</details>
+</td>
+</tr>
+<tr>
+<th width="25%">Aspect</th>
+<th width="37%">Without Skill</th>
+<th width="38%">With Skill</th>
+</tr>
+<tr><td>Approach</td><td>Third-party toolbox (ShearLab 3D)</td><td><strong>Native MATLAB Wavelet Toolbox</strong></td></tr>
+<tr><td>Setup required</td><td>Download from shearlab.org</td><td><strong>None — built-in</strong></td></tr>
+<tr><td>Forward transform</td><td><code>SLsheardec2D</code></td><td><code>sheart2</code></td></tr>
+<tr><td>External dependencies</td><td>Yes</td><td><strong>No</strong></td></tr>
+</table>
 
 ---
 
@@ -140,4 +192,4 @@ Contributions welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-[MIT License](LICENSE)
+[MIT](LICENSE)
