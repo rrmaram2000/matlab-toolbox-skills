@@ -1,16 +1,31 @@
 # MATLAB Toolbox Skills for Claude
 
-These skills address a practical problem: Claude is helpful for coding, but when it comes to MATLAB—especially newer APIs—it often suggests deprecated functions, incorrect syntax, or recommends third-party toolboxes when MATLAB already has built-in support.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MATLAB R2025b](https://img.shields.io/badge/MATLAB-R2025b-orange.svg)](https://www.mathworks.com/products/matlab.html)
 
-These skills provide Claude with accurate, up-to-date knowledge about specific MATLAB toolboxes, resulting in code suggestions that actually work with current MATLAB releases.
+---
 
-**Verified against MATLAB R2025b.**
+## Why I Built This
+
+As a biomedical engineering PhD student, I use MATLAB daily for medical image analysis. I created these skills because I was tired of Claude suggesting Python workarounds for things MATLAB can do natively, or recommending functions that were deprecated several versions ago.
+
+Claude is helpful for coding, but when it comes to MATLAB—especially recent toolbox features—it often suggests deprecated functions, incorrect syntax, or recommends third-party downloads when MATLAB already has built-in support.
+
+These skills give Claude accurate, up-to-date knowledge about specific MATLAB toolboxes, resulting in code suggestions that actually work with current releases.
+
+---
+
+## What Are Claude Skills?
+
+Skills are knowledge packages that extend Claude's capabilities in specific domains. When you enable a skill, Claude gains access to curated, accurate information about that topic.
+
+For more information, see the [official Claude Skills documentation](https://docs.anthropic.com/en/docs/claude-ai/skills).
 
 ---
 
 ## Evaluation
 
-I tested each skill by asking Claude the same question with and without the skill loaded. Below are the results.
+I tested each skill by asking Claude the same question with and without the skill loaded.
 
 ### MedSAM Tumor Segmentation
 
@@ -19,24 +34,11 @@ I tested each skill by asking Claude the same question with and without the skil
 | Aspect | Without Skill | With Skill |
 |--------|---------------|------------|
 | Approach | Python bridge required | **Native MATLAB** |
-| Code complexity | 100+ lines (Python + MATLAB) | **~40 lines pure MATLAB** |
+| Code complexity | 100+ lines across two languages | **~40 lines pure MATLAB** |
 | Key function | Doesn't know it exists | `medicalSegmentAnythingModel` |
 | Workflow | Temp files, subprocess calls | `extractEmbeddings` → `segmentObjectsFromEmbeddings` |
 | 3D handling | "Loop over slices" (vague) | **Full propagation strategy** |
 | Spatial referencing | Lost | **Preserved with medicalVolume** |
-
-**With the skill:**
-
-```matlab
-model = medicalSegmentAnythingModel;
-V = medicalVolume('ct_scan.nii');
-
-slice = extractSlice(V, 45, 'transverse');
-embeddings = extractEmbeddings(model, mat2gray(double(slice)));
-mask = segmentObjectsFromEmbeddings(model, embeddings, 'BoundingBox', [120, 90, 80, 70]);
-
-volshow(V, OverlayData=mask);
-```
 
 ---
 
@@ -49,17 +51,8 @@ volshow(V, OverlayData=mask);
 | Approach | Workarounds (isosurface, loops) | **`OverlayData` parameter** |
 | Code | 30+ lines | **3 lines** |
 | Key syntax | Doesn't know it | `volshow(V, OverlayData=L.Voxels)` |
-| labelvolshow | Not mentioned | **Notes REMOVED in R2025b** |
+| labelvolshow | Not mentioned | **Notes it was removed in R2025b** |
 | Colormap control | Not shown | `OverlayColormap`, `OverlayAlphamap` |
-
-**With the skill:**
-
-```matlab
-V = medicalVolume('ct_scan.nii');
-L = medicalVolume('segmentation.nii');
-
-volshow(V, OverlayData=L.Voxels);
-```
 
 ---
 
@@ -83,20 +76,10 @@ volshow(V, OverlayData=L.Voxels);
 
 | Aspect | Without Skill | With Skill |
 |--------|---------------|------------|
-| API used | `unetLayers`, `trainNetwork` (deprecated) | **Both legacy and modern APIs** |
-| Modern functions | Not mentioned | `unet`, `trainnet` (R2024b+) |
+| Functions used | `unetLayers`, `trainNetwork` (deprecated) | **Both legacy and modern functions** |
+| Modern syntax | Not mentioned | `unet`, `trainnet` (R2024b+) |
 | Custom architecture | Not shown | Manual construction code included |
 | Class imbalance | Not addressed | Guidance provided |
-
-**With the skill:**
-
-```matlab
-% Legacy (pre-R2024b):
-lgraph = unetLayers(imageSize, numClasses, 'EncoderDepth', 4);
-
-% Modern (R2024b+):
-net = unet(imageSize, numClasses, 'EncoderDepth', 4);
-```
 
 ---
 
@@ -112,14 +95,6 @@ net = unet(imageSize, numClasses, 'EncoderDepth', 4);
 | Forward transform | `SLsheardec2D` | `sheart2` |
 | Inverse transform | `SLshearrec2D` | `isheart2` |
 | External dependencies | Yes | **No** |
-
-**With the skill:**
-
-```matlab
-sh = shearletSystem('ImageSize', size(img), 'NumScales', 4);
-coeffs = sheart2(sh, img);
-imgRec = isheart2(sh, coeffs);
-```
 
 ---
 
@@ -140,26 +115,24 @@ imgRec = isheart2(sh, coeffs);
 ### Claude Desktop
 
 1. Download or clone this repository
-2. Create a zip file for the skill you want (e.g., `zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox`)
+2. Create a zip file for the skill you want:
+   ```
+   zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
+   ```
 3. Open Claude Desktop → Settings → Skills → Add Skill
 4. Upload the zip file
 5. Toggle the skill on when needed
 
-**Note:** Start a new conversation after enabling a skill for it to take effect.
+Start a new conversation after enabling a skill for it to take effect.
 
 ### Claude.ai (Web)
 
-Follow the same process: go to Settings → Skills and upload the zip file.
+Go to Settings → Skills and upload the zip file.
 
 ### Claude Code (CLI)
 
-```bash
-claude mcp add-skill /path/to/matlab-medical-imaging-toolbox
 ```
-
-To verify installed skills:
-```bash
-claude /skills
+claude mcp add-skill /path/to/matlab-medical-imaging-toolbox
 ```
 
 ---
@@ -168,41 +141,24 @@ claude /skills
 
 Install only the skills relevant to your work:
 
-- **Medical imaging** (CT, MRI, DICOM) → `matlab-medical-imaging-toolbox`
-- **Image processing** → `matlab-image-processing-toolbox`
-- **Deep learning** → `matlab-deep-learning`
-- **Statistics and machine learning** → `matlab-stats-ml`
-- **Wavelet analysis** → `matlab-wavelet-toolbox`
+| Use Case | Skill |
+|----------|-------|
+| Medical imaging (CT, MRI, DICOM) | `matlab-medical-imaging-toolbox` |
+| Image processing | `matlab-image-processing-toolbox` |
+| Deep learning | `matlab-deep-learning` |
+| Statistics and machine learning | `matlab-stats-ml` |
+| Wavelet analysis | `matlab-wavelet-toolbox` |
 
-Each skill is independent; install only what you need.
-
----
-
-## Verification
-
-All skills were verified against a live MATLAB R2025b installation:
-- Function existence confirmed
-- Signatures validated
-- Code examples tested
-
-253 functions verified across all skills.
-
-Issues identified and corrected during verification:
-- `logrank` does not exist (use `coxphfit` for survival comparison)
-- `nrrdwrite` does not exist (NRRD is read-only in MATLAB)
-- `labelvolshow` was removed in R2025b
-- `dldwt` returns 2 outputs, not 4
+Each skill is independent.
 
 ---
 
-## Background
+## Contributing
 
-As a biomedical engineering PhD student, I use MATLAB daily for medical image analysis. I created these skills because I was tired of Claude suggesting Python workarounds for things MATLAB can do natively, or recommending functions that were deprecated two versions ago.
-
-These skills are shared in the hope that they may be useful to other researchers facing similar challenges.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
 ## License
 
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+This project is released under the [MIT License](LICENSE).
