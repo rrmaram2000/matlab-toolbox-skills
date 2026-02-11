@@ -1,6 +1,6 @@
 ---
 name: matlab-wavelet-toolbox
-description: MATLAB Wavelet Toolbox for 2D transforms (wavedec2, waverec2, dwt2, idwt2, swt2, lwt2), denoising (wdenoise2), directional analysis (dualtree2, shearletSystem), custom wavelet design (liftingScheme, liftingStep, addlift), and deep learning integration (dldwt, dlidwt, cwtLayer). Use for multiresolution image analysis, wavelet-based denoising of MRI/CT/ultrasound, texture feature extraction, and learnable wavelet filters.
+description: MATLAB Wavelet Toolbox. Functions: wavedec2, waverec2, dwt2, idwt2, swt2, lwt2, ilwt2, wdenoise2, dualtree2, idualtree2, shearletSystem, liftingScheme, liftingStep, addlift, wfilters, wmaxlev, dldwt, dlidwt, cwtLayer, appcoef2, detcoef2. Tasks: decompose an image into frequency bands, denoise a medical image using wavelets, remove noise from MRI or CT or ultrasound, extract texture features at multiple scales, design a custom wavelet, learn wavelets from data, detect edges and orientations, analyze directional structures like vessels or fibers, fuse multi-modal images, compress an image with wavelets, build wavelet layers for deep learning, choose the right wavelet for my image type, verify perfect reconstruction. Domains: MRI denoising, CT noise reduction, ultrasound speckle removal, Rician noise, Poisson noise, multiresolution analysis, image fusion, texture classification, vessel detection, fiber analysis, wavelet-based feature extraction, medical image preprocessing.
 ---
 
 # MATLAB Wavelet Toolbox Skill
