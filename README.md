@@ -9,7 +9,7 @@ As a biomedical engineering PhD student, I use MATLAB daily for medical image an
 
 These skills give Claude accurate, toolbox-specific knowledge so it suggests code that actually works.
 
-> **New to Claude Skills?** Skills are knowledge packages that extend Claude's capabilities. [Learn more →](https://docs.anthropic.com/en/docs/claude-ai/skills)
+> **New to Claude Skills?** Skills are knowledge packages that extend Claude's capabilities. [Learn more →](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 
 <br>
 
@@ -72,12 +72,12 @@ I tested each skill by asking Claude the same question with and without the skil
    ```
    zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
    ```
-3. Go to **Settings → Capabilities → Add Skill** and upload the zip
+3. Go to **Settings → Capabilities → Skills → Customize** and upload the zip
 4. Toggle the skill on and start a new conversation
 
 #### Claude.ai (Web)
 
-Go to **Settings → Capabilities → Add Skill** and upload the zip file.
+Go to **Settings → Capabilities → Skills → Customize** and upload the zip file.
 
 #### Claude Code
 
