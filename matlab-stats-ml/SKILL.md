@@ -1,6 +1,6 @@
 ---
 name: matlab-stats-ml
-description: "MATLAB Statistics and Machine Learning Toolbox. Functions - fitcsvm, fitctree, fitcensemble, fitcknn, fitcnb, fitcnet, fitlm, fitglm, fitrgp, fitrensemble, lasso, kmeans, linkage, fitgmdist, dbscan, pca, tsne, factoran, ttest, ttest2, anova1, anovan, ranksum, chi2gof, fitdist, makedist, mle, ecdf, coxphfit, cvpartition, crossval, kfoldLoss, perfcurve, confusionchart, bayesopt, shapley, normalize. Tasks - run t-test or ANOVA, fit distributions, classify patients, train SVM or random forest, predict with regression, cluster data, reduce dimensions with PCA or t-SNE, cross-validate, compute ROC and AUC, select features, optimize hyperparameters, analyze survival data, plot Kaplan-Meier curves, handle missing data, interpret with SHAP or LIME. Domains - biomarker discovery, clinical trials, patient outcome prediction, diagnostic classification, gene expression, proteomics, epidemiology, survival analysis, treatment comparison."
+description: "MATLAB Statistics and Machine Learning Toolbox. Functions - fitcsvm, fitctree, fitcensemble, fitcknn, fitcnb, fitcnet, fitlm, fitglm, fitrgp, fitrensemble, lasso, kmeans, linkage, fitgmdist, dbscan, pca, tsne, factoran, ttest, ttest2, anova1, anovan, ranksum, chi2gof, fitdist, makedist, mle, ecdf, coxphfit, cvpartition, crossval, kfoldLoss, perfcurve, confusionchart, bayesopt, shapley, normalize, fillmissing. Tasks - run t-test or ANOVA, fit distributions, classify patients, train SVM or random forest, predict with regression, cluster data, reduce dimensions with PCA or t-SNE, cross-validate, compute ROC and AUC, select features, optimize hyperparameters, analyze survival data, plot Kaplan-Meier curves, handle missing data, interpret with SHAP or LIME. Domains - biomarker discovery, clinical trials, patient outcome prediction, diagnostic classification, gene expression, proteomics, epidemiology, survival analysis, treatment comparison, financial modeling, quality control, A/B testing, environmental monitoring, general statistical analysis, predictive maintenance, sensor data classification."
 ---
 
 # MATLAB Statistics and Machine Learning Toolbox Skill
@@ -105,10 +105,6 @@ See `knowledge/INDEX.md` for the complete card index. Key cards:
 - **`cards/survival-analysis.md`** — Kaplan-Meier, Cox regression, coxphfit patterns
 - **`cards/biomedical.md`** — Diagnostic classifiers, biomarker discovery, class imbalance
 - **`cards/bayesian.md`** — bayesopt, MCMC sampling, Bayesian model comparison
-
-## Reference Files
-
-- **`references/stats_ml_userguide.md`** — Complete Statistics and Machine Learning Toolbox User's Guide (R2025b, 12,806 pages)
 
 ## See Also (Cross-Toolbox Skills)
 

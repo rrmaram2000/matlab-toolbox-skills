@@ -9,7 +9,7 @@ Quick reference to all Medical Imaging Toolbox knowledge cards.
 | [`radiomics-features.md`](cards/radiomics-features.md) | **CRITICAL** | Object-oriented radiomics API: create `radiomics(data, roi)` first, then call methods on object |
 | [`coordinate-systems.md`](cards/coordinate-systems.md) | **CRITICAL** | Patient vs Intrinsic coordinates, orientation conventions (RAS/LPS) |
 | [`segmentation-medsam.md`](cards/segmentation-medsam.md) | **CRITICAL** | MedSAM workflows, `segmentObjectsFromEmbeddings` requires `imageSize` |
-| [`segmentation-cellpose.md`](cards/segmentation-cellpose.md) | **CRITICAL** | Cellpose for microscopy: pretrained models, custom training |
+| [`segmentation-cellpose.md`](cards/segmentation-cellpose.md) | **CRITICAL** | Cell/nuclei segmentation: watershed, MedSAM, Python Cellpose integration |
 | [`labeling-workflow.md`](cards/labeling-workflow.md) | **CRITICAL** | Medical Image Labeler app, MONAI Label integration |
 | [`pacs-integration.md`](cards/pacs-integration.md) | **CRITICAL** | PACS server connection, DICOM query/retrieve/store |
 
@@ -56,7 +56,7 @@ Ready-to-use `.m` files in `scripts/` -- copy, rename, and adapt:
 | **MRI** | `file-io-nifti-nrrd.md`, `medical-volume.md`, `registration-rigid.md`, `segmentation-medsam.md` |
 | **PET/SPECT** | `file-io-dicom.md`, `registration-deformable.md`, `visualization-3d.md` (multimodal overlay) |
 | **Ultrasound** | `medical-volume.md` (medicalImage for 2D series), `labeling-workflow.md` |
-| **Microscopy** | `segmentation-cellpose.md`, `cross-toolbox-ipt.md` |
+| **Microscopy** | `segmentation-cellpose.md` (cell segmentation), `cross-toolbox-ipt.md` |
 
 ### By Task
 

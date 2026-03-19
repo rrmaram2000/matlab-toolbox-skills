@@ -76,7 +76,7 @@ for lev = 1:decompLevel
         % Soft thresholding
         thresholded{sb} = sign(coeffs) .* max(abs(coeffs) - thr, 0);
     end
-    Cmod = detcoef2('compact', Cmod, S, lev, thresholded{1}, thresholded{2}, thresholded{3});
+    Cmod = setDetailCoeffs(Cmod, S, lev, thresholded{1}, thresholded{2}, thresholded{3});
 end
 logDenoisedCustom = waverec2(Cmod, S, waveletName);
 denoised_custom = exp(logDenoisedCustom);
@@ -118,3 +118,18 @@ imwrite(denoised_wdenoise, fullfile(outputDir, 'us_denoised_wdenoise.png'));
 imwrite(denoised_custom, fullfile(outputDir, 'us_denoised_custom.png'));
 saveas(gcf, fullfile(outputDir, 'us_speckle_comparison.png'));
 fprintf('Results saved to: %s\n', outputDir);
+
+%% Local Functions
+function C = setDetailCoeffs(C, S, lev, cH, cV, cD)
+    % Write detail coefficients back into wavedec2 coefficient vector C
+    N = size(S,1) - 2;
+    first = prod(S(1,:));
+    for k = N:-1:(lev+1)
+        first = first + 3 * prod(S(N+2-k,:));
+    end
+    first = first + 1;
+    len = prod(S(N+2-lev,:));
+    C(first : first+len-1) = cH(:);
+    C(first+len : first+2*len-1) = cV(:);
+    C(first+2*len : first+3*len-1) = cD(:);
+end

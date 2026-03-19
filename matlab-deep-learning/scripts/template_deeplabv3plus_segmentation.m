@@ -49,10 +49,9 @@ dsVal   = combine(subset(imds, idx(splitIdx+1:end)), ...
 fprintf('Training: %d | Validation: %d\n', splitIdx, numImages - splitIdx);
 
 %% Step 4: Create DeepLabv3+ network with ResNet-50 backbone
-lgraph = deeplabv3plusLayers(inputSize, numClasses, "resnet50");
-
-% Convert layer graph to dlnetwork (R2025b)
-net = dlnetwork(lgraph);
+% deeplabv3plus returns dlnetwork directly (R2024a+)
+% Note: deeplabv3plusLayers is deprecated and scheduled for removal
+net = deeplabv3plus(inputSize, numClasses, "resnet50");
 
 %% Step 5: Configure training options
 options = trainingOptions("adam", ...

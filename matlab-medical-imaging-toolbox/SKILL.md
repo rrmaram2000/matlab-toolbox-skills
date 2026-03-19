@@ -1,6 +1,6 @@
 ---
 name: matlab-medical-imaging-toolbox
-description: "MATLAB Medical Imaging Toolbox. Functions - medicalVolume, dicomread, dicominfo, dicomCollection, niftiread, niftiinfo, nrrdread, medicalref3d, intrinsicToWorld, worldToIntrinsic, volshow, sliceViewer, imregmoment, imregdeform, imregtform, radiomics, intensityFeatures, shapeFeatures, textureFeatures, medicalSegmentAnythingModel, segmentCells2D, dicomConnection, dicomquery, dicomget. Tasks - load medical scans, read DICOM series, open NIfTI or NRRD files, convert patient and voxel coordinates, visualize 3D volumes, overlay segmentation, align MRI or CT scans, register pre and post treatment images, extract radiomics features, segment with MedSAM or Cellpose, connect to PACS server, label ground truth, resample to isotropic spacing. Domains - DICOM, NIfTI, NRRD, MRI, CT, PET, PET/CT fusion, ultrasound, X-ray, brain imaging, liver segmentation, cardiac imaging, lung nodules, tumor analysis, clinical workflows, PACS integration."
+description: "MATLAB Medical Imaging Toolbox. Functions - medicalVolume, dicomread, dicominfo, dicomCollection, niftiread, niftiinfo, nrrdread, medicalref3d, intrinsicToWorld, worldToIntrinsic, volshow, sliceViewer, imregmoment, imregdeform, imregtform, radiomics, intensityFeatures, shapeFeatures, textureFeatures, medicalSegmentAnythingModel, extractEmbeddings, segmentObjectsFromEmbeddings, dicomConnection, dicomquery, dicomget. Tasks - load medical scans, read DICOM series, open NIfTI or NRRD files, convert patient and voxel coordinates, visualize 3D volumes, overlay segmentation, align MRI or CT scans, register pre and post treatment images, extract radiomics features, segment with MedSAM, segment cells in microscopy, connect to PACS server, label ground truth, resample to isotropic spacing. Domains - DICOM, NIfTI, NRRD, MRI, CT, PET, PET/CT fusion, ultrasound, X-ray, brain imaging, liver segmentation, cardiac imaging, lung nodules, tumor analysis, clinical workflows, PACS integration, microscopy, cell counting."
 ---
 
 # MATLAB Medical Imaging Toolbox
@@ -35,7 +35,7 @@ Expert skill for 3D medical image analysis using MATLAB's Medical Imaging Toolbo
 | Deformable registration | `registration-deformable.md` | `imregdeform`, `imreggroupwise` |
 | Extract radiomics | `radiomics-features.md` | `radiomics` object, then `intensityFeatures(R)` |
 | Segment with MedSAM | `segmentation-medsam.md` | `medicalSegmentAnythingModel` |
-| Cell detection | `segmentation-cellpose.md` | `segmentCells2D`, `trainCellpose` |
+| Cell segmentation | `segmentation-cellpose.md` | Watershed, MedSAM, or Python Cellpose |
 | Label ground truth | `labeling-workflow.md` | `groundTruthMedical`, Medical Image Labeler |
 | PACS server access | `pacs-integration.md` | `dicomConnection`, `dicomquery`, `dicomget` |
 | Apply filtering | `cross-toolbox-ipt.md` | **-> See IPT skill** |
@@ -55,7 +55,7 @@ Ready-to-use template scripts in `scripts/` -- copy, rename, and adapt for your 
 | `template_deformable_registration.m` | Non-rigid deformable registration |
 | `template_radiomics_extraction.m` | Radiomics feature extraction pipeline |
 | `template_medsam_segmentation.m` | MedSAM interactive segmentation |
-| `template_cellpose_segmentation.m` | Cellpose cell/nuclei detection |
+| `template_cellpose_segmentation.m` | Cell/nuclei instance segmentation |
 | `template_labeling_workflow.m` | Ground truth labeling setup |
 | `template_pacs_query_retrieve.m` | PACS server query and retrieval |
 | `template_multimodal_fusion.m` | PET/CT or multimodal overlay |
@@ -341,11 +341,8 @@ bbox = [100, 100, 200, 150];  % [x, y, width, height]
 | `medicalSegmentAnythingModel` | Load MedSAM | `model = medicalSegmentAnythingModel` |
 | `extractEmbeddings` | Compute image embeddings | `emb = extractEmbeddings(model, img)` |
 | `segmentObjectsFromEmbeddings` | Segment with prompts | `mask = segmentObjectsFromEmbeddings(...)` |
-| `segmentCells2D`* | Cellpose 2D segmentation | `L = segmentCells2D(img, 'cyto')` |
-| `segmentCells3D`* | Cellpose 3D segmentation | `L = segmentCells3D(V, 'nuclei')` |
-| `trainCellpose`* | Train custom Cellpose | `model = trainCellpose(ds, opts)` |
 
-> **\*** Cellpose functions require the "Deep Learning Toolbox Model for Cellpose" support package. Install via Add-On Explorer.
+> **Cell segmentation:** MATLAB R2025b does not include built-in Cellpose functions. Use watershed-based instance segmentation (IPT), MedSAM interactive segmentation, or Python Cellpose via `pyrunfile`. See `segmentation-cellpose.md` knowledge card for all approaches.
 
 ### PACS Integration
 | Function | Purpose | Example |
@@ -375,7 +372,7 @@ Detailed documentation organized by topic:
 **Analysis:**
 - `knowledge/cards/radiomics-features.md` - IBSI-compliant radiomics (object-oriented API: `radiomics` -> methods)
 - `knowledge/cards/segmentation-medsam.md` - Medical Segment Anything Model
-- `knowledge/cards/segmentation-cellpose.md` - Cellpose for microscopy
+- `knowledge/cards/segmentation-cellpose.md` - Cell/nuclei segmentation strategies
 
 **Workflows:**
 - `knowledge/cards/labeling-workflow.md` - Medical Image Labeler app

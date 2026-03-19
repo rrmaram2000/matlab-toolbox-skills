@@ -99,8 +99,7 @@ for d = 1:nDist
         testData = xPos;
     end
 
-    pdRef = makedist(distNames{d}, pdFits{d}.ParameterNames{:});
-    % Rebuild from fitted params
+    % Rebuild distribution from fitted parameters for KS test
     paramCell = [pdFits{d}.ParameterNames; num2cell(pdFits{d}.ParameterValues)];
     pdRef = makedist(distNames{d}, paramCell{:});
 

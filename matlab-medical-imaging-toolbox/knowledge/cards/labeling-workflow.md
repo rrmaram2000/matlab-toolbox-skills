@@ -193,8 +193,8 @@ imds = imageDatastore(gTruth);
 % Combine for training
 trainDS = combine(imds, pxds);
 
-% Use with trainNetwork or semanticseg
-net = trainNetwork(trainDS, layers, options);
+% Use with trainnet (R2024a+) or semanticseg
+net = trainnet(trainDS, layers, "crossentropy", options);
 ```
 
 ### For 3D Networks
@@ -209,7 +209,7 @@ trainDS = randomPatchExtractionDatastore(volDS, labelDS, [64 64 64], ...
     'PatchesPerImage', 16);
 
 % Train 3D network
-net = trainNetwork(trainDS, layers3D, options);
+net = trainnet(trainDS, layers3D, "crossentropy", options);
 ```
 
 ## Label Quality Control

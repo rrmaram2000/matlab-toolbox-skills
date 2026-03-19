@@ -56,7 +56,7 @@ for lev = 1:decompLevel
         mask = e1 >= e2;
         fused{s} = sb1{s} .* mask + sb2{s} .* (~mask);
     end
-    Cf2 = detcoef2('compact', Cf2, S1, lev, fused{1}, fused{2}, fused{3});
+    Cf2 = setDetailCoeffs(Cf2, S1, lev, fused{1}, fused{2}, fused{3});
 end
 fused_energy = waverec2(Cf2, S1, waveletName);
 
@@ -108,4 +108,18 @@ end
 function sf = spatialFrequency(img)
     rf = diff(img,1,2); cf = diff(img,1,1);
     sf = sqrt(mean(rf(:).^2) + mean(cf(:).^2));
+end
+
+function C = setDetailCoeffs(C, S, lev, cH, cV, cD)
+    % Write detail coefficients back into wavedec2 coefficient vector C
+    N = size(S,1) - 2;
+    first = prod(S(1,:));
+    for k = N:-1:(lev+1)
+        first = first + 3 * prod(S(N+2-k,:));
+    end
+    first = first + 1;
+    len = prod(S(N+2-lev,:));
+    C(first : first+len-1) = cH(:);
+    C(first+len : first+2*len-1) = cV(:);
+    C(first+2*len : first+3*len-1) = cD(:);
 end

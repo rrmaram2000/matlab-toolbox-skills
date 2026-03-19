@@ -71,7 +71,7 @@ for lev = 1:decompLevel
     cV = sign(cV) .* max(abs(cV) - thr, 0);
     cD = sign(cD) .* max(abs(cD) - thr, 0);
     % Write back thresholded coefficients
-    Cadapt = detcoef2('compact', Cadapt, S, lev, cH, cV, cD);
+    Cadapt = setDetailCoeffs(Cadapt, S, lev, cH, cV, cD);
 end
 denoisedAdapt = waverec2(Cadapt, S, waveletName);
 
@@ -115,3 +115,18 @@ imwrite(denoisedSURE, fullfile(outputDir, 'ct_denoised_sure.png'));
 imwrite(denoisedAdapt, fullfile(outputDir, 'ct_denoised_adaptive.png'));
 saveas(gcf, fullfile(outputDir, 'ct_denoising_comparison.png'));
 fprintf('Results saved to: %s\n', outputDir);
+
+%% Local Functions
+function C = setDetailCoeffs(C, S, lev, cH, cV, cD)
+    % Write detail coefficients back into wavedec2 coefficient vector C
+    N = size(S,1) - 2;
+    first = prod(S(1,:));
+    for k = N:-1:(lev+1)
+        first = first + 3 * prod(S(N+2-k,:));
+    end
+    first = first + 1;
+    len = prod(S(N+2-lev,:));
+    C(first : first+len-1) = cH(:);
+    C(first+len : first+2*len-1) = cV(:);
+    C(first+2*len : first+3*len-1) = cD(:);
+end

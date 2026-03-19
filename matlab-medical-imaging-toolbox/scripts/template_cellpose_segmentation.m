@@ -1,16 +1,18 @@
-%% Template: Cellpose Cell/Nuclei Segmentation
-% Segment cells and nuclei in 2D microscopy images using segmentCells2D.
-% Extract cell properties and compute population statistics.
-% MATLAB R2025b | Medical Imaging Toolbox
+%% Template: Cell/Nuclei Segmentation for Microscopy
+% Segment cells and nuclei in 2D microscopy images using watershed-based
+% instance segmentation. Extract cell properties and compute statistics.
+% MATLAB R2025b | Image Processing Toolbox | Medical Imaging Toolbox
 %
 % Usage:
 %   1. Fill in all TODO sections with your data
 %   2. Run section-by-section or as complete script
 %
 % Requirements:
-%   - Medical Imaging Toolbox
 %   - Image Processing Toolbox
-%   - Deep Learning Toolbox
+%   - Medical Imaging Toolbox (optional, for medicalVolume I/O)
+%
+% Note: For deep learning cell segmentation, see template_medsam_segmentation.m
+% or train a U-Net using the matlab-deep-learning skill.
 
 %% TODO: Configure your data paths and parameters
 imageFile = '';   % TODO: Path to microscopy image (fluorescence, H&E, etc.)
@@ -27,19 +29,38 @@ imgGray = im2single(imgGray);
 fprintf('Image loaded: [%d x %d], class: %s\n', size(img,1), size(img,2), class(img));
 
 %% Step 2: Preprocess image for cell detection
-% TODO: Adjust preprocessing based on your image type
+% TODO: Adjust preprocessing based on your image modality
 imgEnhanced = adapthisteq(imgGray, 'NumTiles', [8 8], 'ClipLimit', 0.02);
 
-%% Step 3: Segment cells using segmentCells2D
-% TODO: Choose model type: 'cyto' for cytoplasm, 'nuclei' for nuclear
-labels = segmentCells2D(imgEnhanced, 'ModelType', 'nuclei');
-% TODO: If you know cell diameter, use: segmentCells2D(img, 'ModelType', 'nuclei', 'CellDiameter', 30)
+% Optional: background subtraction for uneven illumination
+% TODO: Adjust disk size based on cell size
+bgEst = imopen(imgEnhanced, strel('disk', 50));
+imgCorr = imgEnhanced - bgEst;
+imgCorr = mat2gray(imgCorr);
+
+%% Step 3: Segment cells using adaptive thresholding + watershed
+% Binarize with adaptive threshold
+T = adaptthresh(imgCorr, 0.5, 'NeighborhoodSize', 2*floor(size(imgCorr,1)/16)+1);
+bw = imbinarize(imgCorr, T);
+
+% Morphological cleanup
+bw = imfill(bw, 'holes');
+minArea = 50;   % TODO: Minimum cell area in pixels
+bw = bwareaopen(bw, minArea);
+
+% Separate touching cells with watershed
+D = -bwdist(~bw);
+D = imhmin(D, 2);  % TODO: Adjust merge threshold (higher = fewer splits)
+L = watershed(D);
+bw(L == 0) = false;
+
+% Create instance label map
+labels = bwlabel(bw);
 numCells = max(labels(:));
 fprintf('Detected %d cells/nuclei\n', numCells);
 
 %% Step 4: Post-process segmentation
 labels = imclearborder(labels);
-minArea = 50;   % TODO: Minimum cell area in pixels
 maxArea = 5000; % TODO: Maximum cell area in pixels
 
 props = regionprops(labels, 'Area');
@@ -62,7 +83,7 @@ fprintf('\n=== Cell Summary: %d cells, mean area=%.1f px^2, mean diam=%.1f px ==
     height(cellProps), mean(cellProps.Area), mean(cellProps.EquivDiameter));
 
 %% Step 6: Visualize segmentation results
-figure('Name', 'Cellpose Segmentation Results');
+figure('Name', 'Cell Segmentation Results');
 
 subplot(2,2,1);
 imshow(img); title('Original Image');
@@ -94,4 +115,4 @@ save(fullfile(outputDir, 'population_stats.mat'), 'cellProps');
 exportgraphics(gcf, fullfile(outputDir, 'segmentation_results.png'), 'Resolution', 300);
 
 fprintf('Results saved to: %s\n', outputDir);
-disp('=== Cellpose Segmentation Complete ===');
+disp('=== Cell Segmentation Complete ===');
