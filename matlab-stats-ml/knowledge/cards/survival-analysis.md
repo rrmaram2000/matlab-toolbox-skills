@@ -1,30 +1,10 @@
 # Survival Analysis
 
-Survival analysis deals with time-to-event data where some observations may be censored (event not yet observed). Common applications include patient survival, time to device failure, and customer churn.
+Survival analysis for time-to-event data with censoring. This card is domain-specific — the model should rely on these patterns for all survival analysis tasks.
 
-## Key Concepts
-
-### Survival Function
-The survival function S(t) gives the probability of surviving beyond time t:
-```
-S(t) = P(T > t) = 1 - F(t)
-```
-where F(t) is the cumulative distribution function.
-
-### Hazard Function
-The hazard (instantaneous risk) at time t:
-```
-h(t) = lim[Δt→0] P(t ≤ T < t+Δt | T ≥ t) / Δt
-```
-
-### Censoring Types
-- **Right censoring**: Subject leaves study before event (most common)
-- **Left censoring**: Event occurred before observation started
-- **Interval censoring**: Event occurred between two observations
+> **Critical:** The `logrank` function does NOT exist in MATLAB. Use `coxphfit` for group comparisons.
 
 ## Kaplan-Meier Estimator
-
-Non-parametric estimation of survival function. Best for visualization and exploratory analysis.
 
 ### Basic Kaplan-Meier Curve
 
@@ -87,31 +67,6 @@ if ~isempty(idx75)
 end
 ```
 
-### At-Risk Table
-
-```matlab
-function atRiskTable = computeAtRiskTable(time, censored, timepoints)
-    % Compute number at risk at specified time points
-    n = length(time);
-    atRiskTable = zeros(length(timepoints), 3);  % [timepoint, atRisk, events]
-
-    for i = 1:length(timepoints)
-        t = timepoints(i);
-        atRisk = sum(time >= t);
-        events = sum(time <= t & censored == 0);
-        atRiskTable(i, :) = [t, atRisk, events];
-    end
-
-    % Display as table
-    T = array2table(atRiskTable, 'VariableNames', {'Time', 'AtRisk', 'Events'});
-    disp(T);
-end
-
-% Usage
-timepoints = [0, 6, 12, 18, 24];
-computeAtRiskTable(time, censored, timepoints);
-```
-
 ## Comparing Groups
 
 > ⚠️ **Important:** The `logrank` function does NOT exist in MATLAB. Use `coxphfit` for group comparisons.
@@ -168,45 +123,6 @@ stage = [1, 1, 2, 2, 3, 3, 3, 1, 1, 2, 2, 3, 3, 3]';  % Stratification variable
 fprintf('\nMultivariate Cox model:\n');
 fprintf('  Treatment HR: %.3f (p=%.4f)\n', exp(b(1)), stats.p(1));
 fprintf('  Stage HR: %.3f (p=%.4f)\n', exp(b(2)), stats.p(2));
-```
-
-### Plot Grouped Survival Curves
-
-```matlab
-function plotGroupedKM(time1, cens1, label1, time2, cens2, label2)
-    % Plot survival curves for two groups
-    [f1, x1] = ecdf(time1, 'Censoring', cens1, 'Function', 'survivor');
-    [f2, x2] = ecdf(time2, 'Censoring', cens2, 'Function', 'survivor');
-
-    figure;
-    stairs(x1, f1, 'b-', 'LineWidth', 2);
-    hold on;
-    stairs(x2, f2, 'r-', 'LineWidth', 2);
-
-    % Add censoring marks
-    addCensorMarks(time1, cens1, x1, f1, 'b');
-    addCensorMarks(time2, cens2, x2, f2, 'r');
-
-    xlabel('Time');
-    ylabel('Survival Probability');
-    legend(label1, label2, 'Location', 'best');
-    title('Kaplan-Meier Survival Comparison');
-    ylim([0 1]);
-    grid on;
-end
-
-function addCensorMarks(time, cens, x, f, color)
-    censIdx = find(cens);
-    for i = 1:length(censIdx)
-        idx = find(x == time(censIdx(i)), 1);
-        if ~isempty(idx)
-            plot(x(idx), f(idx), [color '+'], 'MarkerSize', 8, 'LineWidth', 2);
-        end
-    end
-end
-
-% Usage
-plotGroupedKM(time1, cens1, 'Treatment', time2, cens2, 'Control');
 ```
 
 ## Cox Proportional Hazards Model
@@ -270,57 +186,9 @@ end
 % HR = 1.5 means males have 50% higher hazard than females
 ```
 
-### Check Proportional Hazards Assumption
+### Checking Proportional Hazards Assumption
 
-```matlab
-function checkPHAssumption(X, time, censored, varNames)
-    % Check proportional hazards assumption using Schoenfeld residuals
-    % Note: MATLAB doesn't have built-in Schoenfeld residuals
-    % Use log-log survival plot method
-
-    figure;
-    nVars = size(X, 2);
-
-    for i = 1:min(nVars, 4)  % Plot first 4 variables
-        subplot(2, 2, i);
-
-        % Dichotomize continuous variable at median
-        if length(unique(X(:,i))) > 2
-            threshold = median(X(:,i));
-            groups = X(:,i) >= threshold;
-        else
-            groups = X(:,i);
-        end
-
-        % Compute survival for each group
-        idx0 = groups == 0;
-        idx1 = groups == 1;
-
-        [f0, x0] = ecdf(time(idx0), 'Censoring', censored(idx0), 'Function', 'survivor');
-        [f1, x1] = ecdf(time(idx1), 'Censoring', censored(idx1), 'Function', 'survivor');
-
-        % Log-log plot: log(-log(S(t))) vs log(t)
-        % Parallel lines indicate PH assumption holds
-        valid0 = f0 > 0 & f0 < 1;
-        valid1 = f1 > 0 & f1 < 1;
-
-        plot(log(x0(valid0)), log(-log(f0(valid0))), 'b.-');
-        hold on;
-        plot(log(x1(valid1)), log(-log(f1(valid1))), 'r.-');
-
-        xlabel('log(time)');
-        ylabel('log(-log(S(t)))');
-        title(varNames{i});
-        legend('Low', 'High', 'Location', 'best');
-
-        % Parallel lines = PH assumption satisfied
-    end
-    sgtitle('Proportional Hazards Check (Parallel = OK)');
-end
-
-% Usage
-checkPHAssumption(X, time, censored, varNames);
-```
+Use log-log survival plots: plot `log(-log(S(t)))` vs `log(t)` for each covariate group. Parallel lines indicate the PH assumption holds. Dichotomize continuous variables at the median for this check.
 
 ### Baseline Survival and Cumulative Hazard
 

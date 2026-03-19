@@ -140,77 +140,25 @@ function [Mdl, results] = buildDiagnosticClassifier(data, targetVar, predictorVa
 end
 ```
 
-### Binary Classification Metrics
+### Clinical-Specific Metrics (Beyond Basic Accuracy)
+
+For diagnostic classifiers, always compute these clinical metrics in addition to accuracy, sensitivity, and specificity:
 
 ```matlab
-function metrics = binaryClassificationMetrics(YTrue, YPred, scores, posClass)
-    % Comprehensive binary classification metrics
-    %
-    % YTrue: true labels
-    % YPred: predicted labels
-    % scores: probability scores for positive class
-    % posClass: positive class label
+C = confusionmat(YTrue, YPred);
+TP = C(2,2); TN = C(1,1); FP = C(1,2); FN = C(2,1);
+sensitivity = TP / (TP + FN);
+specificity = TN / (TN + FP);
 
-    % Confusion matrix
-    C = confusionmat(YTrue, YPred);
+% Likelihood ratios (clinically actionable — rule-in/rule-out)
+LR_pos = sensitivity / (1 - specificity);  % LR+ > 10 strongly rules in
+LR_neg = (1 - sensitivity) / specificity;  % LR- < 0.1 strongly rules out
 
-    if iscategorical(YTrue)
-        posIdx = find(categories(YTrue) == posClass);
-    else
-        posIdx = 2;  % Assume second class is positive
-    end
+% Matthews Correlation Coefficient (best single metric for imbalanced data)
+MCC = (TP*TN - FP*FN) / sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN));
 
-    if posIdx == 1
-        TP = C(1,1); TN = C(2,2); FP = C(2,1); FN = C(1,2);
-    else
-        TP = C(2,2); TN = C(1,1); FP = C(1,2); FN = C(2,1);
-    end
-
-    % Basic metrics
-    metrics.accuracy = (TP + TN) / (TP + TN + FP + FN);
-    metrics.sensitivity = TP / (TP + FN);  % Recall, TPR
-    metrics.specificity = TN / (TN + FP);  % TNR
-    metrics.precision = TP / (TP + FP);    % PPV
-    metrics.npv = TN / (TN + FN);
-
-    % F1 Score
-    metrics.f1 = 2 * (metrics.precision * metrics.sensitivity) / ...
-        (metrics.precision + metrics.sensitivity);
-
-    % Matthews Correlation Coefficient
-    num = TP*TN - FP*FN;
-    den = sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN));
-    metrics.mcc = num / max(den, eps);
-
-    % Balanced accuracy
-    metrics.balancedAccuracy = (metrics.sensitivity + metrics.specificity) / 2;
-
-    % ROC and AUC
-    if nargin >= 3 && ~isempty(scores)
-        [metrics.fpr, metrics.tpr, metrics.thresholds, metrics.auc] = ...
-            perfcurve(YTrue, scores, posClass);
-    end
-
-    % Likelihood ratios
-    metrics.positiveLR = metrics.sensitivity / (1 - metrics.specificity);
-    metrics.negativeLR = (1 - metrics.sensitivity) / metrics.specificity;
-
-    % Display
-    fprintf('\n=== Classification Metrics ===\n');
-    fprintf('Accuracy:           %.3f\n', metrics.accuracy);
-    fprintf('Balanced Accuracy:  %.3f\n', metrics.balancedAccuracy);
-    fprintf('Sensitivity:        %.3f\n', metrics.sensitivity);
-    fprintf('Specificity:        %.3f\n', metrics.specificity);
-    fprintf('Precision (PPV):    %.3f\n', metrics.precision);
-    fprintf('NPV:                %.3f\n', metrics.npv);
-    fprintf('F1 Score:           %.3f\n', metrics.f1);
-    fprintf('MCC:                %.3f\n', metrics.mcc);
-    if isfield(metrics, 'auc')
-        fprintf('AUC:                %.3f\n', metrics.auc);
-    end
-    fprintf('LR+:                %.2f\n', metrics.positiveLR);
-    fprintf('LR-:                %.3f\n', metrics.negativeLR);
-end
+% Balanced accuracy (accounts for class imbalance)
+balancedAcc = (sensitivity + specificity) / 2;
 ```
 
 ## Biomarker Discovery
