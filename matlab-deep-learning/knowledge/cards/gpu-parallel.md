@@ -1,7 +1,5 @@
 # GPU & Parallel Computing
 
-> ⚠️ **R2024b+ API Changes:** `trainNetwork` → `trainnet`, `unetLayers` → `unet`. See SKILL.md for modern syntax.
-
 GPU acceleration is essential for deep learning. MATLAB provides seamless GPU support through gpuArray and parallel computing features.
 
 ## GPU Basics
@@ -354,7 +352,7 @@ results = classify(net, imgs, 'MiniBatchSize', 32);
 profile on -gpu;
 
 % Run training
-net = trainNetwork(trainDs, lgraph, options);
+net = trainnet(trainDs, dlnetwork(lgraph), "crossentropy", options);
 
 % View results
 profile viewer;
@@ -442,9 +440,9 @@ options = trainingOptions('adam', 'MiniBatchSize', 8);
 inputSize = [224 224 3];  % Instead of [512 512 3]
 
 % 3. Reduce network depth/filters
-lgraph = unetLayers([256 256 1], 2, ...
-    'EncoderDepth', 3, ...          % Shallower
-    'NumFirstEncoderFilters', 32);  % Fewer filters
+net = unet([256 256 1], 2, ...
+    EncoderDepth=3, ...             % Shallower
+    NumFirstEncoderFilters=32);     % Fewer filters (default is 64)
 
 % 4. Clear unused variables
 clear X_train Y_train;

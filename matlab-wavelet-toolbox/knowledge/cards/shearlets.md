@@ -1,131 +1,30 @@
-# Shearlet Transform
+# Shearlet Transform - Application Guidance
 
-## When to Use Shearlets
+## When Shearlets Beat Wavelets
 
-Shearlets are **optimal for curvilinear features**:
-- Blood vessels
-- Nerve fibers
+Shearlets are **optimal for curvilinear features** -- structures with smooth curvature:
+- Blood vessels (angiography, retinal imaging)
+- Nerve fibers (tractography)
 - Tissue boundaries
 - Any smooth curves in images
 
-They provide better sparse representation of edges with curvature than wavelets or dual-tree.
+**Approximation theory**: Shearlet representation of curved edges achieves O(n^-2 (log n)^3) approximation error, vs O(n^-1) for standard wavelets. This is the theoretical reason to prefer shearlets for vessel/fiber analysis.
 
-## Basic Usage
+## Decision: Shearlets vs Dual-Tree vs DWT
 
-```matlab
-% Create shearlet system
-sh = shearletSystem('ImageSize', size(img));
+| Feature Type | Best Transform | Why |
+|--------------|----------------|-----|
+| General purpose | `wavedec2` | Compact, fast |
+| Oriented textures / straight edges | `dualtree2` | 6 fixed orientations |
+| Curvilinear edges / vessels | `shearletSystem` | Anisotropic scaling, many directions |
+| Compression | `wavedec2` | No redundancy |
 
-% Forward transform: sheart2 (not shearletTransform)
-coeffs = sheart2(sh, img);
-% coeffs is organized by scale and direction
+**Trade-off**: Shearlets are slower and more complex than dual-tree. Use only when curvature handling matters.
 
-% Inverse transform: isheart2 (not inverseShearletTransform)
-imgRec = isheart2(sh, coeffs);
-```
+## Medical Application Patterns
 
-## Configuration Options
+**Vessel enhancement** (angiography): Amplify fine-scale shearlet coefficients (scales 1-2) by 1.5-2x, then reconstruct. This selectively enhances curvilinear structures.
 
-```matlab
-% Full configuration
-sh = shearletSystem(...
-    'ImageSize', [256, 256], ...
-    'NumScales', 4, ...               % Number of scales
-    'DirectionalFilter', 'meyer', ... % 'meyer' or 'vow'
-    'TransformType', 'real');         % 'real' or 'complex'
+**Shearlet denoising**: Threshold each scale/direction independently using MAD noise estimation. Shearlets provide sparser representation of curved edges, so thresholding removes more noise while preserving vessels.
 
-% Quick defaults
-sh = shearletSystem('ImageSize', size(img));
-```
-
-## Accessing Coefficients
-
-```matlab
-sh = shearletSystem('ImageSize', size(img));
-coeffs = sheart2(sh, img);
-
-% Number of scales
-numScales = sh.NumScales;
-
-% Each scale has multiple shearing directions
-for scale = 1:numScales
-    numDirs = size(coeffs{scale}, 3);
-    fprintf('Scale %d: %d directions\n', scale, numDirs);
-end
-
-% Lowpass (coarsest approximation)
-lowpass = coeffs{end};
-```
-
-## Edge Detection
-
-```matlab
-sh = shearletSystem('ImageSize', size(img));
-coeffs = sheart2(sh, img);
-
-% Edge strength: sum of absolute coefficients
-edgeStrength = zeros(size(img));
-for scale = 1:sh.NumScales
-    for dir = 1:size(coeffs{scale}, 3)
-        edgeStrength = edgeStrength + abs(coeffs{scale}(:,:,dir));
-    end
-end
-
-% Normalize
-edgeStrength = edgeStrength / max(edgeStrength(:));
-```
-
-## Denoising with Shearlets
-
-```matlab
-sh = shearletSystem('ImageSize', size(noisyImg));
-coeffs = sheart2(sh, noisyImg);
-
-% Threshold all shearlet coefficients
-for scale = 1:sh.NumScales
-    for dir = 1:size(coeffs{scale}, 3)
-        c = coeffs{scale}(:,:,dir);
-        sigma = median(abs(c(:))) / 0.6745;
-        thr = sigma * 3;  % Adjust as needed
-        coeffs{scale}(:,:,dir) = wthresh(c, 's', thr);
-    end
-end
-
-denoised = isheart2(sh, coeffs);
-```
-
-## Comparison: Shearlets vs Dual-Tree vs DWT
-
-| Property | DWT | Dual-Tree | Shearlets |
-|----------|-----|-----------|-----------|
-| Directions | 3 | 6/scale | Many/scale |
-| Curvature handling | Poor | Medium | Optimal |
-| Sparsity for edges | Good | Better | Best |
-| Speed | Fastest | Medium | Slower |
-| Complexity | Simple | Medium | Higher |
-
-## When to Choose Each
-
-| Feature Type | Best Transform |
-|--------------|----------------|
-| General purpose | `wavedec2` |
-| Oriented textures | `dualtree2` |
-| Curvilinear edges | `shearletSystem` |
-| Blood vessels | `shearletSystem` |
-| Regular edges | `dualtree2` |
-| Compression | `wavedec2` |
-
-## Medical Imaging Applications
-
-```matlab
-% Vessel enhancement in angiography
-sh = shearletSystem('ImageSize', size(angio));
-coeffs = sheart2(sh, angio);
-
-% Enhance fine-scale directional coefficients
-for scale = 1:2  % Fine scales only
-    coeffs{scale} = coeffs{scale} * 1.8;
-end
-
-enhanced = isheart2(sh, coeffs);
-```
+**Configuration tip**: For medical images, use `'TransformType', 'real'` (default) and 3-4 scales. The `'meyer'` directional filter (default) works well for most cases.

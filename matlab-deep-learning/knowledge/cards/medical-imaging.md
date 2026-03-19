@@ -1,8 +1,6 @@
-# Medical Imaging Deep Learning
+# Medical Imaging Deep Learning (CRITICAL Card)
 
-> ⚠️ **R2024b+ API Changes:** `unetLayers` → `unet`, `trainNetwork` → `trainnet`. See SKILL.md for modern syntax.
-
-Medical imaging workflows require specific considerations for data handling, preprocessing, and model design.
+Medical imaging workflows require specific considerations for data handling, preprocessing, and model design. All examples use the modern R2025b API.
 
 ## Modality-Specific Preprocessing
 
@@ -157,20 +155,21 @@ end
 
 ```matlab
 % 3D U-Net for volumetric segmentation
-imageSize = [128 128 64 1];  % H×W×D×C
+imageSize = [128 128 64 1];  % H*W*D*C
 numClasses = 3;
 
-lgraph = unet3dLayers(imageSize, numClasses, ...
-    'EncoderDepth', 3, ...              % Reduce for memory
-    'NumFirstEncoderFilters', 32, ...   % Reduce for memory
-    'ConvolutionPadding', 'same');
+% Modern API (R2024b+) -- returns dlnetwork directly
+net = unet3d(imageSize, numClasses, ...
+    EncoderDepth=3, ...               % Reduce for memory
+    NumFirstEncoderFilters=32);       % CRITICAL: Default is 64, reduce to 32 for 3D
 
 % Memory-efficient training
-options = trainingOptions('adam', ...
+opts = trainingOptions('adam', ...
     'MaxEpochs', 100, ...
-    'MiniBatchSize', 2, ...             % Small batch for 3D
+    'MiniBatchSize', 2, ...           % Small batch for 3D
     'InitialLearnRate', 1e-4, ...
     'ExecutionEnvironment', 'gpu');
+net = trainnet(ds, net, "crossentropy", opts);
 ```
 
 ### Patch-Based 3D Training
@@ -226,9 +225,7 @@ end
 
 % Network for 2.5D input
 imageSize = [256 256 5];  % 5 adjacent slices
-lgraph = unetLayers(imageSize, 2, ...
-    'EncoderDepth', 4, ...
-    'NumFirstEncoderFilters', 32);
+net = unet(imageSize, 2, EncoderDepth=4);
 ```
 
 ## Medical-Specific Augmentation

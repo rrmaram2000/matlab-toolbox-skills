@@ -2,43 +2,47 @@
 
 Quick reference to all Medical Imaging Toolbox knowledge cards.
 
-## File I/O (2 cards)
+## Critical Cards (unique knowledge the model needs)
+
+| Card | Priority | Description |
+|------|----------|-------------|
+| [`radiomics-features.md`](cards/radiomics-features.md) | **CRITICAL** | Object-oriented radiomics API: create `radiomics(data, roi)` first, then call methods on object |
+| [`coordinate-systems.md`](cards/coordinate-systems.md) | **CRITICAL** | Patient vs Intrinsic coordinates, orientation conventions (RAS/LPS) |
+| [`segmentation-medsam.md`](cards/segmentation-medsam.md) | **CRITICAL** | MedSAM workflows, `segmentObjectsFromEmbeddings` requires `imageSize` |
+| [`segmentation-cellpose.md`](cards/segmentation-cellpose.md) | **CRITICAL** | Cellpose for microscopy: pretrained models, custom training |
+| [`labeling-workflow.md`](cards/labeling-workflow.md) | **CRITICAL** | Medical Image Labeler app, MONAI Label integration |
+| [`pacs-integration.md`](cards/pacs-integration.md) | **CRITICAL** | PACS server connection, DICOM query/retrieve/store |
+
+## Reference Cards (edge cases and gotchas)
 
 | Card | Description | Key Functions |
 |------|-------------|---------------|
-| [`file-io-dicom.md`](cards/file-io-dicom.md) | DICOM file reading, series handling, metadata navigation, DICOM writing | `medicalVolume`, `dicomread`, `dicominfo`, `dicomCollection`, `dicomwrite` |
-| [`file-io-nifti-nrrd.md`](cards/file-io-nifti-nrrd.md) | NIfTI and NRRD formats for research workflows, format conversion | `niftiread`, `niftiwrite`, `niftiinfo`, `nrrdread`, `nrrdinfo` |
+| [`file-io-dicom.md`](cards/file-io-dicom.md) | DICOM edge cases: private tags, metadata navigation, windowing | `dicomCollection`, `dicomanon`, `dicomwrite` |
+| [`file-io-nifti-nrrd.md`](cards/file-io-nifti-nrrd.md) | NIfTI/NRRD edge cases: 4D data, NRRD write-only limitation, format conversion | `niftiread`, `nrrdread` |
+| [`medical-volume.md`](cards/medical-volume.md) | Specialized `medicalVolume` patterns: read-only properties, `medicalImage` for 2D series | `medicalVolume`, `extractSlice`, `resample` |
+| [`visualization-3d.md`](cards/visualization-3d.md) | Advanced rendering: transfer functions, CT bone rendering, STL export | `volshow`, `sliceViewer` |
+| [`registration-rigid.md`](cards/registration-rigid.md) | Registration gotchas: multimodal tuning, quality metrics, edge artifacts | `imregmoment`, `imregtform`, `fitgeotform3d` |
+| [`registration-deformable.md`](cards/registration-deformable.md) | Deformable gotchas: Jacobian folding, GridSpacing tuning, displacement fields | `imregdeform`, `imreggroupwise` |
+| [`cross-toolbox-ipt.md`](cards/cross-toolbox-ipt.md) | Brief MIT+IPT integration patterns, anisotropy handling | Links to **matlab-image-processing-toolbox** skill |
 
-## Core Concepts (3 cards)
+## Template Scripts
 
-| Card | Description | Key Functions |
-|------|-------------|---------------|
-| [`medical-volume.md`](cards/medical-volume.md) | The `medicalVolume` class - central object for 3D medical images with spatial referencing | `medicalVolume`, `medicalImage`, `extractSlice`, `replaceSlice`, `resample` |
-| [`coordinate-systems.md`](cards/coordinate-systems.md) | **CRITICAL** - Patient vs Intrinsic coordinates, orientation conventions (RAS/LPS), coordinate transformations | `medicalref3d`, `intrinsicToWorld`, `worldToIntrinsic`, `worldToSubscript` |
-| [`visualization-3d.md`](cards/visualization-3d.md) | 3D volume rendering, slice browsing, multimodal overlay, rendering options | `volshow`, `sliceViewer`, `labelvolshow`, `montage`, rendering properties |
+Ready-to-use `.m` files in `scripts/` -- copy, rename, and adapt:
 
-## Registration (2 cards)
-
-| Card | Description | Key Functions |
-|------|-------------|---------------|
-| [`registration-rigid.md`](cards/registration-rigid.md) | Rigid and affine registration, moment-based methods, ICP for surfaces, landmark-based | `imregmoment`, `imregicp`, `fitgeotform3d`, `imregtform`, `imwarp` |
-| [`registration-deformable.md`](cards/registration-deformable.md) | Non-rigid deformable registration, displacement fields, groupwise registration, lung motion estimation | `imregdeform`, `imreggroupwise`, displacement field visualization |
-
-## Analysis (3 cards)
-
-| Card | Description | Key Functions |
-|------|-------------|---------------|
-| [`radiomics-features.md`](cards/radiomics-features.md) | IBSI-compliant radiomics: intensity, shape, and texture features for clinical research | `intensityFeatures`, `shapeFeatures`, `textureFeatures`, feature normalization |
-| [`segmentation-medsam.md`](cards/segmentation-medsam.md) | Medical Segment Anything Model (MedSAM) for interactive AI segmentation with point/box prompts | `medicalSegmentAnythingModel`, `extractEmbeddings`, `segmentObjectsFromEmbeddings` |
-| [`segmentation-cellpose.md`](cards/segmentation-cellpose.md) | Cellpose for microscopy: cell/nuclei detection, pretrained models, custom training, whole slide images | `segmentCells2D`, `segmentCells3D`, `trainCellpose`, `refineCellpose` |
-
-## Workflows (3 cards)
-
-| Card | Description | Key Functions |
-|------|-------------|---------------|
-| [`labeling-workflow.md`](cards/labeling-workflow.md) | Medical Image Labeler app, ground truth creation, MONAI Label integration, multi-labeler collaboration | `groundTruthMedical`, Medical Image Labeler app, label definitions |
-| [`pacs-integration.md`](cards/pacs-integration.md) | PACS server connection, DICOM query/retrieve/store operations, clinical workflow patterns | `dicomConnection`, `dicomquery`, `dicomget`, `dicomstore` |
-| [`cross-toolbox-ipt.md`](cards/cross-toolbox-ipt.md) | When to use IPT vs MIT, applying IPT functions to medical volumes, combined workflow patterns | Links to **matlab-image-processing-toolbox** skill |
+| Script | Related Card |
+|--------|-------------|
+| `template_dicom_series_loader.m` | `file-io-dicom.md` |
+| `template_nifti_volume_processing.m` | `file-io-nifti-nrrd.md` |
+| `template_coordinate_transform.m` | `coordinate-systems.md` |
+| `template_volume_visualization.m` | `visualization-3d.md` |
+| `template_rigid_registration.m` | `registration-rigid.md` |
+| `template_deformable_registration.m` | `registration-deformable.md` |
+| `template_radiomics_extraction.m` | `radiomics-features.md` |
+| `template_medsam_segmentation.m` | `segmentation-medsam.md` |
+| `template_cellpose_segmentation.m` | `segmentation-cellpose.md` |
+| `template_labeling_workflow.m` | `labeling-workflow.md` |
+| `template_pacs_query_retrieve.m` | `pacs-integration.md` |
+| `template_multimodal_fusion.m` | `visualization-3d.md` |
 
 ---
 

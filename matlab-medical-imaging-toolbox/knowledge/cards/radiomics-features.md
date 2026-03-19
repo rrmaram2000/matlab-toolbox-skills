@@ -2,13 +2,15 @@
 
 Radiomics extracts quantitative features from medical images for machine learning, treatment planning, and outcome prediction. MATLAB's radiomics functions are IBSI-compliant (Image Biomarker Standardisation Initiative).
 
+> **CRITICAL: Object-Oriented API Required.** You MUST create a `radiomics` object first, then call feature methods on that object. Do NOT call `intensityFeatures(data, mask)`, `shapeFeatures(mask, spacing)`, or `textureFeatures(data, mask)` as standalone functions -- they will error or produce wrong results. Always follow the pattern: `R = radiomics(data, roi);` then `intensityFeatures(R);`.
+
 ## Feature Categories
 
-| Category | Function | Description | Count |
-|----------|----------|-------------|-------|
-| **Intensity** | `intensityFeatures` | Histogram-based statistics | 18 features |
-| **Shape** | `shapeFeatures` | 3D morphology descriptors | 22 features |
-| **Texture** | `textureFeatures` | GLCM, GLRLM, GLSZM, NGTDM, GLDM | 92 features |
+| Category | Method | Description | Count |
+|----------|--------|-------------|-------|
+| **Intensity** | `intensityFeatures(R)` | Histogram-based statistics | 18 features |
+| **Shape** | `shapeFeatures(R)` | 3D morphology descriptors | 22 features |
+| **Texture** | `textureFeatures(R)` | GLCM, GLRLM, GLSZM, NGTDM, GLDM | 92 features |
 
 ## Basic Workflow
 
@@ -24,15 +26,26 @@ assert(isequal(size(V.Voxels), size(mask.Voxels)), ...
 % Binary mask
 binaryMask = mask.Voxels > 0;
 
-% Extract features
-intensity = intensityFeatures(V.Voxels, binaryMask);
-shape = shapeFeatures(binaryMask, V.VoxelSpacing);
-texture = textureFeatures(V.Voxels, binaryMask);
+% STEP 1: Create radiomics object FIRST (REQUIRED)
+R = radiomics(V.Voxels, binaryMask);
+
+% STEP 2: Call feature methods ON the radiomics object
+intensity = intensityFeatures(R);
+shape = shapeFeatures(R);
+texture = textureFeatures(R);
 
 % Combine into single table
 features = [intensity, shape, texture];
 disp(features);
 ```
+
+> **WRONG -- do NOT do this:**
+> ```matlab
+> % These standalone calls are INCORRECT:
+> intensity = intensityFeatures(V.Voxels, binaryMask);   % WRONG
+> shape = shapeFeatures(binaryMask, V.VoxelSpacing);      % WRONG
+> texture = textureFeatures(V.Voxels, binaryMask);        % WRONG
+> ```
 
 ## intensityFeatures - Histogram-Based
 
@@ -42,8 +55,11 @@ First-order statistics of voxel intensities within ROI:
 V = medicalVolume('scan.nii');
 mask = logical(medicalVolume('mask.nii').Voxels);
 
-% Extract intensity features
-intensity = intensityFeatures(V.Voxels, mask);
+% Create radiomics object first
+R = radiomics(V.Voxels, mask);
+
+% Extract intensity features from the object
+intensity = intensityFeatures(R);
 
 % Key features (18 total):
 disp(intensity.Mean);           % Mean intensity
@@ -58,30 +74,21 @@ disp(intensity.Range);          % Max - Min
 disp(intensity.RootMeanSquare); % RMS intensity
 ```
 
-### Options
-
-```matlab
-% Specify bin count for discretization
-intensity = intensityFeatures(V.Voxels, mask, 'NumBins', 64);
-
-% Or use bin width
-intensity = intensityFeatures(V.Voxels, mask, 'BinWidth', 25);
-```
-
 ## shapeFeatures - 3D Morphology
 
 Geometric descriptors of the ROI:
 
 ```matlab
 mask = logical(medicalVolume('mask.nii').Voxels);
-spacing = [1, 1, 2];  % Voxel spacing in mm
 
-% Extract shape features
-shape = shapeFeatures(mask, spacing);
+% Create radiomics object -- shape uses the ROI from the object
+R = radiomics(zeros(size(mask)), mask);  % data can be zeros for shape-only
+
+shape = shapeFeatures(R);
 
 % Key features (22 total):
-disp(shape.Volume);             % Volume in mm³
-disp(shape.SurfaceArea);        % Surface area in mm²
+disp(shape.Volume);             % Volume in mm^3
+disp(shape.SurfaceArea);        % Surface area in mm^2
 disp(shape.Sphericity);         % How spherical (0-1)
 disp(shape.Compactness);        % Shape compactness
 disp(shape.MajorAxisLength);    % Longest principal axis
@@ -94,10 +101,10 @@ disp(shape.Flatness);           % How flat
 
 | Feature | Formula/Meaning | Range |
 |---------|-----------------|-------|
-| Volume | Voxel count × voxel volume | mm³ |
-| SurfaceArea | Triangulated surface mesh | mm² |
-| Sphericity | (36π V²)^(1/3) / A | 0-1 (1=sphere) |
-| Compactness | V / (π^(1/2) A^(3/2)) | 0-1 |
+| Volume | Voxel count x voxel volume | mm^3 |
+| SurfaceArea | Triangulated surface mesh | mm^2 |
+| Sphericity | (36*pi*V^2)^(1/3) / A | 0-1 (1=sphere) |
+| Compactness | V / (pi^(1/2) * A^(3/2)) | 0-1 |
 | Elongation | MinorAxis / MajorAxis | 0-1 |
 
 ## textureFeatures - Spatial Patterns
@@ -108,8 +115,11 @@ Higher-order statistics capturing spatial relationships:
 V = medicalVolume('scan.nii');
 mask = logical(medicalVolume('mask.nii').Voxels);
 
-% Extract all texture features (92 total)
-texture = textureFeatures(V.Voxels, mask);
+% Create radiomics object first
+R = radiomics(V.Voxels, mask);
+
+% Extract all texture features (92 total) from the object
+texture = textureFeatures(R);
 
 % GLCM (Gray Level Co-occurrence Matrix) features
 disp(texture.GLCM_Contrast);
@@ -136,35 +146,20 @@ disp(texture.GLDM_SmallDependenceEmphasis);
 disp(texture.GLDM_LargeDependenceEmphasis);
 ```
 
-### Texture Options
-
-```matlab
-% Specify discretization
-texture = textureFeatures(V.Voxels, mask, ...
-    'NumBins', 32, ...           % Number of gray levels
-    'UseSymmetricGLCM', true);   % Symmetric GLCM (IBSI)
-
-% Or use bin width
-texture = textureFeatures(V.Voxels, mask, 'BinWidth', 25);
-```
-
 ## IBSI Compliance
 
 IBSI (Image Biomarker Standardisation Initiative) ensures reproducibility:
 
 ```matlab
-% MATLAB radiomics functions follow IBSI naming and computation
-% Feature names match IBSI standard
+% Create radiomics object with IBSI-recommended settings
+R = radiomics(V.Voxels, mask);
 
-% Example: IBSI intensity feature names
-intensity = intensityFeatures(V.Voxels, mask);
+% Feature names match IBSI standard
+intensity = intensityFeatures(R);
 % intensity.Mean matches IBSI "Mean"
 % intensity.RobustMeanAbsoluteDeviation matches IBSI "Robust Mean Absolute Deviation"
 
-% For full IBSI compliance, use recommended settings
-texture = textureFeatures(V.Voxels, mask, ...
-    'NumBins', 32, ...
-    'UseSymmetricGLCM', true);
+texture = textureFeatures(R);
 ```
 
 ## Preprocessing for Radiomics
@@ -187,8 +182,12 @@ mask_iso = resample(mask, [1, 1, 1]);
 % Re-binarize mask after resampling
 mask_iso.Voxels = mask_iso.Voxels > 0.5;
 
-% Extract features
-features = extractRadiomicsFeatures(V_iso.Voxels, mask_iso.Voxels, V_iso.VoxelSpacing);
+% Create radiomics object, then extract features
+R = radiomics(V_iso.Voxels, mask_iso.Voxels > 0);
+intensity = intensityFeatures(R);
+shape = shapeFeatures(R);
+texture = textureFeatures(R);
+features = [intensity, shape, texture];
 ```
 
 ### Intensity Normalization
@@ -229,10 +228,13 @@ function featureTable = extractRadiomicsFeatures(imageFile, maskFile)
         warning('ROI has only %d voxels - features may be unreliable', numVoxels);
     end
 
-    % Extract features
-    intensity = intensityFeatures(V.Voxels, mask, 'NumBins', 32);
-    shape = shapeFeatures(mask, targetSpacing);
-    texture = textureFeatures(V.Voxels, mask, 'NumBins', 32);
+    % STEP 1: Create radiomics object (REQUIRED)
+    R = radiomics(V.Voxels, mask);
+
+    % STEP 2: Extract features as methods of the radiomics object
+    intensity = intensityFeatures(R);
+    shape = shapeFeatures(R);
+    texture = textureFeatures(R);
 
     % Combine
     featureTable = [intensity, shape, texture];
@@ -263,17 +265,20 @@ function allFeatures = extractMultiROI(imageFile, maskFile)
 
     for i = 1:length(labels)
         label = labels(i);
-        mask = M.Voxels == label;
+        roi = M.Voxels == label;
 
         % Skip small regions
-        if sum(mask(:)) < 50
+        if sum(roi(:)) < 50
             continue;
         end
 
-        % Extract features for this label
-        intensity = intensityFeatures(V.Voxels, mask);
-        shape = shapeFeatures(mask, V.VoxelSpacing);
-        texture = textureFeatures(V.Voxels, mask);
+        % Create radiomics object for this ROI
+        R = radiomics(V.Voxels, roi);
+
+        % Extract features as methods of the object
+        intensity = intensityFeatures(R);
+        shape = shapeFeatures(R);
+        texture = textureFeatures(R);
 
         features = [intensity, shape, texture];
         features.LabelID = label;
@@ -378,6 +383,22 @@ accuracy = mean(y_pred == testData.Diagnosis);
 fprintf('Classification accuracy: %.1f%%\n', accuracy * 100);
 ```
 
+## API Summary
+
+The radiomics API is **object-oriented**. Every workflow follows this two-step pattern:
+
+```matlab
+% Step 1: Create the radiomics object
+R = radiomics(data, roi);
+
+% Step 2: Call methods on the object
+intensity = intensityFeatures(R);   % R is the object, NOT raw data
+shape     = shapeFeatures(R);       % R is the object, NOT a mask
+texture   = textureFeatures(R);     % R is the object, NOT raw data
+```
+
+Never pass raw data arrays directly to `intensityFeatures`, `shapeFeatures`, or `textureFeatures`. They are methods that operate on a `radiomics` object.
+
 ## Common Issues
 
 ### Issue: NaN or Inf in features
@@ -405,12 +426,12 @@ Ensure consistent preprocessing:
 ```matlab
 % Use fixed parameters
 config.targetSpacing = [1, 1, 1];
-config.numBins = 32;
-config.useSymmetricGLCM = true;
 
-features = textureFeatures(V.Voxels, mask, ...
-    'NumBins', config.numBins, ...
-    'UseSymmetricGLCM', config.useSymmetricGLCM);
+% Create radiomics object, then extract
+R = radiomics(V.Voxels, mask);
+intensity = intensityFeatures(R);
+shape = shapeFeatures(R);
+texture = textureFeatures(R);
 ```
 
 ---

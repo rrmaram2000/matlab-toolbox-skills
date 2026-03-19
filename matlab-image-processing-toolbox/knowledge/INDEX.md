@@ -1,93 +1,65 @@
 # MATLAB Image Processing Toolbox - Knowledge Index
 
-Quick reference to all knowledge cards organized by category.
+Quick reference to knowledge cards and template scripts. Cards are trimmed to focus on medical-specific patterns and gotchas — the model already knows standard IPT functions well.
 
 ## Card Catalog
 
-### Core Processing
+### Medical Imaging (Primary)
 
-| Card | Lines | Description | Key Functions |
-|------|-------|-------------|---------------|
-| `cards/filtering-denoising.md` | ~280 | Noise reduction techniques | `imgaussfilt`, `medfilt2`, `wiener2` |
-| `cards/segmentation-thresholding.md` | ~320 | Global, adaptive, multi-level thresholding | `graythresh`, `imbinarize`, `multithresh` |
-| `cards/morphology-binary.md` | ~340 | Binary morphological operations | `strel`, `imopen`, `imclose`, `bwareaopen` |
-| `cards/feature-regions.md` | ~350 | Region measurement and analysis | `regionprops`, `bwconncomp`, `bwlabel` |
-| `cards/data-types.md` | ~280 | Image data types and conversions | `im2double`, `im2uint8`, `mat2gray` |
+| Card | Focus | Key Value |
+|------|-------|-----------|
+| `cards/medical-mri.md` | MRI preprocessing, tissue segmentation, volumetry | Full domain-specific pipelines |
+| `cards/medical-microscopy.md` | Cell counting, fluorescence, H&E histology | Complete analysis workflows |
 
-### Medical Imaging
+### Medical-Specific Patterns (Trimmed)
 
-| Card | Lines | Description | Key Functions |
-|------|-------|-------------|---------------|
-| `cards/medical-mri.md` | ~380 | MRI preprocessing and tissue segmentation | `dicomread`, bias correction, `multithresh` |
-| `cards/medical-microscopy.md` | ~420 | Cell counting, fluorescence, histology | watershed, `regionprops`, H&E deconvolution |
+| Card | Focus | Key Value |
+|------|-------|-----------|
+| `cards/filtering-denoising.md` | Modality-specific denoising | Rician/speckle/Poisson noise handling |
+| `cards/segmentation-thresholding.md` | Tissue thresholding | Multi-level for brain, CT bone HU thresholds |
+| `cards/morphology-binary.md` | Medical cleanup recipes | Cell/vessel/bone/brain mask recipes |
+| `cards/feature-regions.md` | Advanced regionprops | Tumor measurement, cell population analysis |
 
-### Advanced
+### Integration (Trimmed)
 
-| Card | Lines | Description | Key Functions |
-|------|-------|-------------|---------------|
-| `cards/deep-learning-segmentation.md` | ~320 | Semantic segmentation with deep learning | `semanticseg`, `unetLayers`, `trainNetwork` |
+| Card | Focus | Key Value |
+|------|-------|-----------|
+| `cards/deep-learning-segmentation.md` | DL + IPT integration | Post-processing DL output, patch-based inference |
+| `cards/data-types.md` | Type conversion gotchas | DICOM/NIfTI format handling |
 
-## Task-to-Card Mapping
+## Template Scripts
 
-| If you need to... | Read this card |
-|-------------------|----------------|
-| Remove noise from an image | `filtering-denoising.md` |
-| Convert grayscale to binary | `segmentation-thresholding.md` |
-| Clean up a binary mask | `morphology-binary.md` |
-| Count/measure objects | `feature-regions.md` |
-| Handle uint8/double conversion | `data-types.md` |
-| Process brain MRI | `medical-mri.md` |
-| Count cells in microscopy | `medical-microscopy.md` |
-| Use U-Net for segmentation | `deep-learning-segmentation.md` |
+Ready-to-use medical imaging pipelines in `scripts/`:
 
-## Quick Links by Function
+| Script | Medical Domain |
+|--------|---------------|
+| `template_mri_preprocessing.m` | MRI bias correction, denoising, brain extraction |
+| `template_ct_windowing.m` | CT Hounsfield unit windowing |
+| `template_cell_counting.m` | Automated cell detection and counting |
+| `template_fluorescence_quantification.m` | Multi-channel fluorescence analysis |
+| `template_histology_stain_normalization.m` | H&E color deconvolution |
+| `template_adaptive_thresholding.m` | Adaptive thresholding with sensitivity tuning |
+| `template_watershed_segmentation.m` | Marker-controlled watershed |
+| `template_morphological_cleanup.m` | Binary mask cleanup pipeline |
+| `template_large_image_blockproc.m` | Block processing for large images |
+| `template_edge_detection_pipeline.m` | Multi-method edge detection |
 
-### Filtering Functions
-- `imgaussfilt` → `filtering-denoising.md`
-- `medfilt2` → `filtering-denoising.md`
-- `wiener2` → `filtering-denoising.md`
-- `imbilatfilt` → `filtering-denoising.md`
+## Task-to-Resource Mapping
 
-### Segmentation Functions
-- `graythresh` → `segmentation-thresholding.md`
-- `imbinarize` → `segmentation-thresholding.md`
-- `multithresh` → `segmentation-thresholding.md`
-- `watershed` → `medical-microscopy.md`
-- `activecontour` → (see SKILL.md quick reference)
-
-### Morphology Functions
-- `strel` → `morphology-binary.md`
-- `imerode`, `imdilate` → `morphology-binary.md`
-- `imopen`, `imclose` → `morphology-binary.md`
-- `bwareaopen` → `morphology-binary.md`
-- `imfill` → `morphology-binary.md`
-
-### Feature Functions
-- `regionprops` → `feature-regions.md`
-- `bwconncomp` → `feature-regions.md`
-- `bwlabel` → `feature-regions.md`
-- `bwboundaries` → `feature-regions.md`
-
-### Deep Learning Functions
-- `semanticseg` → `deep-learning-segmentation.md`
-- `unetLayers` → `deep-learning-segmentation.md`
-- `trainNetwork` → `deep-learning-segmentation.md`
-
-### Type Conversion Functions
-- `im2double` → `data-types.md`
-- `im2uint8` → `data-types.md`
-- `mat2gray` → `data-types.md`
-
-## Documentation Source
-
-All cards are grounded in official MathWorks documentation:
-- **User Guide** (1,952 pages): Tutorials, concepts, workflows
-- **Function Reference** (4,006 pages): Complete API documentation
-
-Extracted content preserved in:
-- `output/matlab-image-processing-toolbox_extracted.json` (User Guide)
-- `output/matlab-ipt-reference_extracted.json` (Function Reference)
+| If you need to... | Read this card | Use this template |
+|-------------------|----------------|-------------------|
+| Process brain MRI | `medical-mri.md` | `template_mri_preprocessing.m` |
+| Count cells | `medical-microscopy.md` | `template_cell_counting.m` |
+| Window CT scans | `medical-mri.md` | `template_ct_windowing.m` |
+| Quantify fluorescence | `medical-microscopy.md` | `template_fluorescence_quantification.m` |
+| Normalize H&E stains | `medical-microscopy.md` | `template_histology_stain_normalization.m` |
+| Separate touching objects | `medical-microscopy.md` | `template_watershed_segmentation.m` |
+| Clean up a binary mask | `morphology-binary.md` | `template_morphological_cleanup.m` |
+| Process large images | — | `template_large_image_blockproc.m` |
+| Fix data type errors | `data-types.md` | — |
+| Denoise medical images | `filtering-denoising.md` | — |
+| Post-process DL output | `deep-learning-segmentation.md` | — |
+| Measure tumor/regions | `feature-regions.md` | — |
 
 ---
-*MATLAB Image Processing Toolbox Skill v1.0*
-*Created with manual curation from official MathWorks documentation*
+*MATLAB Image Processing Toolbox Skill v2.0 — Restructured based on Phase 1 eval findings*

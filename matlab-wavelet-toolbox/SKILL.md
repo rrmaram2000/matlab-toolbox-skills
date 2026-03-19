@@ -9,28 +9,26 @@ Expert skill for 2D wavelet analysis in MATLAB. Focus areas: custom wavelet desi
 
 ## Read Before Coding
 
-**Always open the relevant knowledge card before writing code:**
+**Open the relevant knowledge card before writing code:**
 
 | Task | Knowledge File |
 |------|----------------|
-| **Mathematical foundations** | `knowledge/mathematical-foundations.md` |
-| **Custom wavelet design** | `knowledge/cards/custom-wavelets.md` |
-| **Learning wavelets from data** | `knowledge/cards/custom-wavelets.md` |
+| **Mathematical foundations** (MRA, Daubechies, PR conditions) | `knowledge/mathematical-foundations.md` |
+| **Custom wavelet design** / learning wavelets from data | `knowledge/cards/custom-wavelets.md` |
 | MRI/CT/ultrasound processing | `knowledge/cards/medical-imaging.md` |
-| Deep learning + wavelets | `knowledge/cards/deep-learning.md` |
-| Basic 2D decomposition | `knowledge/cards/2d-transforms.md` |
-| Denoise images | `knowledge/cards/denoising.md` |
-| Directional edge detection | `knowledge/cards/dual-tree.md` |
-| Curvilinear features (vessels) | `knowledge/cards/shearlets.md` |
-| Filter coefficients | `knowledge/cards/filters.md` |
+| Choosing which wavelet for your image type | `knowledge/cards/filters.md` |
+| When to use which 2D transform | `knowledge/cards/2d-transforms.md` |
+| Denoising method selection & recipes | `knowledge/cards/denoising.md` |
+| Directional edge detection guidance | `knowledge/cards/dual-tree.md` |
+| Curvilinear features (vessels/fibers) | `knowledge/cards/shearlets.md` |
+| Deep learning + wavelet integration patterns | `knowledge/cards/deep-learning.md` |
 
 ## Critical Rules
 
 1. **Check level limit**: `wmaxlev(size(img), wname)` before decomposition
-2. **Match transform pairs**: dwt2↔idwt2, wavedec2↔waverec2, lwt2↔ilwt2
-3. **Verify wavelet**: `waveinfo('db')` or `wavemngr('read')`
-4. **Boundary mode**: Use `'symmetric'` for medical images
-5. **For custom wavelets**: Verify perfect reconstruction, vanishing moments
+2. **Match transform pairs**: dwt2/idwt2, wavedec2/waverec2, lwt2/ilwt2
+3. **Boundary mode**: Use `'symmetric'` for medical images
+4. **For custom wavelets**: Verify perfect reconstruction, vanishing moments
 
 ## Transform Selection
 
@@ -104,28 +102,31 @@ x = dlarray(img, 'SSCB');
 xRec = dlidwt(A, D, Wavelet='db4');  % Inverse transform
 ```
 
-## Function Quick Reference
+## Template Scripts
 
-| Function | Purpose |
-|----------|---------|
-| `wavedec2`/`waverec2` | Multi-level 2D DWT |
-| `lwt2`/`ilwt2` | Lifting-based DWT (custom wavelets) |
-| `dualtree2`/`idualtree2` | Dual-tree complex (6 orientations) |
-| `shearletSystem` | Curvilinear feature detection |
-| `wdenoise2` | Image denoising |
-| `liftingScheme` | Create/modify lifting scheme |
-| `liftingStep` | Define predict/update step |
-| `wfilters` | Get filter coefficients |
-| `dldwt`/`dlidwt` | Differentiable DWT (R2025a+) |
+Ready-to-use `.m` files in `scripts/` -- read and adapt for your task:
 
-## Knowledge Base Summary
+| Template | Use Case |
+|----------|----------|
+| `template_mri_denoising.m` | MRI Rician noise removal pipeline |
+| `template_ct_denoising.m` | CT Poisson noise with Anscombe transform |
+| `template_ultrasound_speckle.m` | Ultrasound speckle reduction (log-domain) |
+| `template_multiresolution_analysis.m` | Standard wavedec2 decomposition and visualization |
+| `template_dual_tree_directional.m` | Directional edge detection with dualtree2 |
+| `template_shearlet_curvilinear.m` | Vessel/fiber detection with shearlets |
+| `template_custom_lifting_wavelet.m` | Custom wavelet design via liftingScheme |
+| `template_deep_learning_wavelet.m` | Wavelet layers for deep learning (dldwt) |
+| `template_image_fusion.m` | Multi-modal image fusion (MRI+CT, PET+CT) |
+| `template_wavelet_feature_extraction.m` | Wavelet energy/entropy features for classification |
 
-~1,740 lines of curated, mathematically rigorous content:
+## Knowledge Base
 
-- **mathematical-foundations.md**: MRA theory, Daubechies construction, perfect reconstruction
-- **custom-wavelets.md**: Lifting scheme, learnable wavelets, constraints
-- **medical-imaging.md**: Noise models (Rician, Poisson, speckle), fusion, features
-- **deep-learning.md**: Network layers, GPU acceleration, learnable filters
-- **Plus**: 2d-transforms, denoising, dual-tree, shearlets, filters
+Unique content not in the model's training data -- prioritize reading:
+
+- **mathematical-foundations.md**: MRA theory, Daubechies construction, spectral factorization, perfect reconstruction, regularity, admissibility
+- **custom-wavelets.md**: Lifting scheme theory, learnable wavelet constraints, verification
+- **medical-imaging.md**: Noise models (Rician, Poisson, speckle), fusion rules, feature extraction
+
+Knowledge cards provide **when-to-use guidance** and **decision frameworks** for choosing transforms, wavelets, and methods.
 
 See `knowledge/INDEX.md` for full navigation.

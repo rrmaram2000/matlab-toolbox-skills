@@ -4,83 +4,55 @@
 
 | Task | Knowledge Card |
 |------|----------------|
-| **Mathematical Theory** | `mathematical-foundations.md` |
-| Basic 2D decomposition | `cards/2d-transforms.md` |
-| Multi-level analysis | `cards/2d-transforms.md` |
-| **Custom wavelet design** | `cards/custom-wavelets.md` |
-| Lifting scheme | `cards/custom-wavelets.md` |
-| **Learning wavelets from data** | `cards/custom-wavelets.md` |
-| Deep learning integration | `cards/deep-learning.md` |
-| Neural network layers | `cards/deep-learning.md` |
-| **Denoise images** | `cards/denoising.md` |
-| **MRI/CT/ultrasound** | `cards/medical-imaging.md` |
-| Noise models | `cards/medical-imaging.md` |
-| Image fusion | `cards/medical-imaging.md` |
-| Feature extraction | `cards/medical-imaging.md` |
-| Edge detection (oriented) | `cards/dual-tree.md` |
-| Curvilinear features | `cards/shearlets.md` |
-| Filter coefficients | `cards/filters.md` |
+| **Mathematical Theory** (MRA, Daubechies, PR) | `mathematical-foundations.md` |
+| **Custom wavelet design** / learning from data | `cards/custom-wavelets.md` |
+| **MRI/CT/ultrasound** / noise models / fusion | `cards/medical-imaging.md` |
+| Choosing which wavelet for your image type | `cards/filters.md` |
+| When to use which 2D transform | `cards/2d-transforms.md` |
+| Denoising method selection & recipes | `cards/denoising.md` |
+| Directional edge detection guidance | `cards/dual-tree.md` |
+| Curvilinear features (vessels/fibers) | `cards/shearlets.md` |
+| Deep learning + wavelet integration patterns | `cards/deep-learning.md` |
 
-## Card Summaries
+## Primary Unique Content (read first)
 
-### mathematical-foundations.md (~200 lines)
-Rigorous theory: MRA axioms, Daubechies construction, spectral factorization, perfect reconstruction conditions, vanishing moments, regularity, Sobolev/Hölder exponents, admissibility condition, 2D extensions.
+### mathematical-foundations.md (~240 lines)
+**Unique theoretical content not in model's training data.** MRA axioms, Daubechies construction via spectral factorization, perfect reconstruction conditions (alias cancellation + no distortion), vanishing moments, regularity (Sobolev/Holder exponents), biorthogonal theory, admissibility condition, 2D extensions (separable vs non-separable), uncertainty principle.
 
-### cards/custom-wavelets.md (~350 lines)
-**Your top priority**: Lifting scheme mathematics, polyphase representation, lifting factorization theorem, predict/update operators, CDF 9/7 construction, **learning wavelets from data**, differentiable lifting, constraint enforcement (PR, vanishing moments, regularity), deep learning integration, learnable wavelet layers.
+### cards/custom-wavelets.md
+Lifting scheme theory (Sweldens 1996), when to design custom wavelets vs use standard ones, learning wavelets from data (optimization framework, constraint enforcement for PR/vanishing moments/regularity), verification checklist.
 
-### cards/medical-imaging.md (~380 lines)
-Modality-specific guidance with proper noise models:
+### cards/medical-imaging.md
+Modality-specific noise models and complete processing pipelines:
 - **MRI**: Rician noise, bias correction
 - **CT**: Poisson + electronic noise, Anscombe transform
 - **Ultrasound**: Multiplicative speckle, log-domain processing
 - **X-ray**: Quantum noise
+- Plus: threshold selection theory (SURE, BayesShrink), multi-modal fusion (MRI+CT, PET+CT), feature extraction, quality metrics
 
-Plus: threshold selection theory (SURE, BayesShrink), multi-modal fusion (MRI+CT, PET+CT), feature extraction for classification, quality metrics, GPU acceleration.
+## Decision Guidance Cards
 
-### cards/deep-learning.md (~150 lines)
-Neural network integration: `cwtLayer`, `modwtLayer`, `dldwt`/`dlidwt` (R2025a+), custom wavelet layers, GPU acceleration, wavelet preprocessing for CNNs, learnable filters.
+Cards trimmed to focus on **when-to-use** guidance (the model already knows the API):
+- **2d-transforms.md**: Which transform for which goal, practical guidance, pitfalls
+- **denoising.md**: Method selection by scenario, medical recipes, gotchas
+- **dual-tree.md**: When dual-tree beats DWT/shearlets, directional subband map, application patterns
+- **shearlets.md**: When shearlets beat wavelets (curvature theory), medical application patterns
+- **filters.md**: Wavelet selection guide for medical imaging by clinical task
+- **deep-learning.md**: Integration patterns (preprocessing, dldwt, cwtLayer), best practices
 
-### cards/2d-transforms.md (~100 lines)
-Standard 2D DWT workflow: `dwt2`, `wavedec2`, `swt2`, `lwt2`, coefficient extraction, boundary handling, common pitfalls.
+## Template Scripts (scripts/)
 
-### cards/denoising.md (~120 lines)
-Wavelet denoising: `wdenoise2`, threshold selection methods (Universal, SURE, Bayes), soft/hard thresholding, level-dependent thresholds, quality metrics.
+Ready-to-use `.m` files -- read and adapt:
 
-### cards/dual-tree.md (~120 lines)
-6-orientation directional analysis: `dualtree2`, near shift-invariance, accessing directional subbands, edge detection by orientation, selective enhancement.
-
-### cards/shearlets.md (~100 lines)
-Curvilinear features: `shearletSystem`, optimal for vessels/fibers, anisotropic scaling, comparison with wavelets.
-
-### cards/filters.md (~100 lines)
-Filter coefficients: `wfilters`, `orthfilt`, `biorfilt`, perfect reconstruction verification, filter properties, visualization.
-
-## Total Knowledge Base
-
-| Component | Lines | Focus |
-|-----------|-------|-------|
-| SKILL.md | ~120 | Quick reference, entry point |
-| mathematical-foundations.md | ~200 | Rigorous theory |
-| custom-wavelets.md | ~350 | Learnable wavelets (priority) |
-| medical-imaging.md | ~380 | Clinical applications |
-| deep-learning.md | ~150 | DL integration |
-| 2d-transforms.md | ~100 | Core transforms |
-| denoising.md | ~120 | Noise removal |
-| dual-tree.md | ~120 | Directional analysis |
-| shearlets.md | ~100 | Curvilinear features |
-| filters.md | ~100 | Filter bank theory |
-| **Total** | **~1,740** | Curated, rigorous content |
-
-## Function Quick Reference
-
-| Category | Key Functions |
-|----------|---------------|
-| **2D DWT** | `dwt2`, `idwt2`, `wavedec2`, `waverec2` |
-| **Shift-invariant** | `swt2`, `iswt2` (Note: MODWT is 1D only: `modwt`, `imodwt`) |
-| **Lifting** | `lwt2`, `ilwt2`, `liftingScheme`, `addlift`, `liftingStep` |
-| **Directional** | `dualtree2`, `idualtree2`, `shearletSystem` |
-| **Denoising** | `wdenoise2`, `wthresh`, `thselect` |
-| **Filters** | `wfilters`, `orthfilt`, `biorfilt`, `liftfilt` |
-| **Deep Learning** | `cwtLayer`, `modwtLayer`, `dldwt`, `dlidwt` |
-| **Utilities** | `wmaxlev`, `waveinfo`, `wavefun`, `wavemngr` |
+| Template | Use Case |
+|----------|----------|
+| `template_mri_denoising.m` | MRI Rician noise removal |
+| `template_ct_denoising.m` | CT Poisson noise with Anscombe |
+| `template_ultrasound_speckle.m` | Ultrasound speckle (log-domain) |
+| `template_multiresolution_analysis.m` | Standard wavedec2 decomposition |
+| `template_dual_tree_directional.m` | Directional edge detection |
+| `template_shearlet_curvilinear.m` | Vessel/fiber detection |
+| `template_custom_lifting_wavelet.m` | Custom wavelet via liftingScheme |
+| `template_deep_learning_wavelet.m` | Wavelet layers for DL (dldwt) |
+| `template_image_fusion.m` | Multi-modal fusion (MRI+CT, PET+CT) |
+| `template_wavelet_feature_extraction.m` | Energy/entropy features |

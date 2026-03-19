@@ -1,89 +1,6 @@
 # DICOM File I/O
 
-DICOM (Digital Imaging and Communications in Medicine) is the standard for clinical medical imaging. This card covers reading, writing, and managing DICOM files and series.
-
-## Key Functions
-
-| Function | Purpose |
-|----------|---------|
-| `medicalVolume` | Load DICOM series as 3D volume with spatial info |
-| `medicalImage` | Load DICOM as 2D image series (ultrasound, video) |
-| `dicomread` | Read single DICOM file (raw pixel data) |
-| `dicominfo` | Read DICOM metadata (tags, patient info) |
-| `dicomCollection` | Catalog DICOM folder structure |
-| `dicomwrite` | Write DICOM file |
-| `dicomanon` | Anonymize DICOM files |
-
-## Reading DICOM Series
-
-### Using medicalVolume (Recommended)
-
-The `medicalVolume` object automatically handles series loading and spatial referencing:
-
-```matlab
-% From directory of DICOM files (e.g., CT scan)
-V = medicalVolume('path/to/dicom_folder');
-
-% Properties available:
-disp(V.Voxels);           % 3D array of voxel intensities
-disp(V.VolumeGeometry);   % Spatial reference (medicalref3d)
-disp(V.Modality);         % 'CT', 'MR', 'PT', etc.
-disp(V.VoxelSpacing);     % [x, y, z] spacing in mm
-disp(V.SpatialUnits);     % Usually 'mm'
-disp(V.Orientation);      % 'transverse', 'sagittal', 'coronal'
-disp(V.WindowCenters);    % Display window centers per slice
-disp(V.WindowWidths);     % Display window widths per slice
-```
-
-### Using dicomCollection for Multi-Series
-
-When a folder contains multiple DICOM series:
-
-```matlab
-% Catalog all DICOM files in folder (and subfolders)
-coll = dicomCollection('patient_folder', 'IncludeSubfolders', true);
-
-% Display collection table
-disp(coll);
-% Shows: SeriesDescription, Modality, NumInstances, PatientID, etc.
-
-% Load specific series by row number
-V1 = medicalVolume(coll, 'Rows', 1);  % First series
-V2 = medicalVolume(coll, 'Rows', 3);  % Third series
-
-% Filter by modality
-ctRows = coll.Modality == "CT";
-ctColl = coll(ctRows, :);
-
-% Filter by series description
-t1Rows = contains(coll.SeriesDescription, 'T1');
-t1Coll = coll(t1Rows, :);
-```
-
-### Reading Single DICOM Files
-
-For low-level access to individual files:
-
-```matlab
-% Read pixel data
-img = dicomread('slice001.dcm');
-
-% Read metadata
-info = dicominfo('slice001.dcm');
-
-% Common metadata fields:
-fprintf('Patient Name: %s\n', info.PatientName.FamilyName);
-fprintf('Modality: %s\n', info.Modality);
-fprintf('Image Size: %d x %d\n', info.Rows, info.Columns);
-fprintf('Pixel Spacing: %.3f x %.3f mm\n', info.PixelSpacing);
-fprintf('Slice Thickness: %.3f mm\n', info.SliceThickness);
-fprintf('Series Description: %s\n', info.SeriesDescription);
-
-% Rescale to proper units (e.g., Hounsfield units for CT)
-slope = info.RescaleSlope;
-intercept = info.RescaleIntercept;
-img_hu = double(img) * slope + intercept;
-```
+Edge cases and advanced patterns for DICOM workflows. For basic `medicalVolume('folder')`, `dicomread`, `dicominfo`, and `dicomCollection` usage, see SKILL.md.
 
 ## DICOM Metadata Navigation
 
@@ -235,26 +152,7 @@ lung_view = applyWindow(V.Voxels, -600, 1500);
 sliceViewer(lung_view);
 ```
 
-## Common Patterns
-
-### Load and Display CT Scan
-
-```matlab
-% Load
-V = medicalVolume('CT_folder');
-
-% Check it's CT
-assert(V.Modality == "CT", 'Expected CT scan');
-
-% Apply soft tissue window
-center = 40;
-width = 350;
-windowed = (double(V.Voxels) - center + width/2) / width;
-windowed = max(0, min(1, windowed));
-
-% Display
-sliceViewer(windowed);
-```
+## Edge-Case Patterns
 
 ### Sort DICOM Files by Instance Number
 

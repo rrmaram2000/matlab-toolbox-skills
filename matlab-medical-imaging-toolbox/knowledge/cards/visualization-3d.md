@@ -1,46 +1,19 @@
 # 3D Visualization
 
-This card covers rendering and browsing 3D medical image volumes using Medical Imaging Toolbox visualization functions.
+Advanced rendering patterns for Medical Imaging Toolbox. For basic `volshow(V)` and `sliceViewer(V)` usage, see SKILL.md.
+
+> **Note:** `labelvolshow` was removed in R2025b. Use `volshow(V, OverlayData=labels)` for segmentation overlay.
 
 ## Key Functions
 
 | Function | Purpose | Best For |
 |----------|---------|----------|
-| `volshow` | 3D volume rendering | Quick 3D view, patient coordinates |
+| `volshow` | 3D volume rendering + overlay | Quick 3D view, patient coordinates |
 | `sliceViewer` | Orthogonal slice browser | Slice-by-slice inspection |
-| `labelvolshow` | Labeled volume display | Segmentation overlays |
 | `montage` | 2D slice grid | Overview of all slices |
 | `implay` | Video playback | 2D time series (ultrasound) |
 
-## volshow - 3D Volume Rendering
-
-### Basic Usage
-
-```matlab
-V = medicalVolume('ct_scan.nii');
-
-% Simple display (uses patient coordinates automatically)
-volshow(V);
-
-% Or with voxel array and geometry
-volshow(V.Voxels, V.VolumeGeometry);
-```
-
-### Rendering Options
-
-```matlab
-V = medicalVolume('ct_scan.nii');
-
-% Create viewer with options
-viewer = volshow(V, ...
-    'Colormap', hot(256), ...
-    'Alphamap', linspace(0, 1, 256), ...
-    'BackgroundColor', [0.1 0.1 0.1], ...
-    'CameraPosition', [2, -3, 1], ...
-    'CameraTarget', [0, 0, 0]);
-
-% Interactive: rotate, zoom with mouse
-```
+## Advanced volshow Patterns
 
 ### Rendering Styles
 
@@ -62,18 +35,11 @@ viewer = volshow(V, 'RenderingStyle', 'GradientOpacity');
 ```matlab
 V = medicalVolume('ct_scan.nii');
 
-% Normalize data for colormap
-data = double(V.Voxels);
-data = (data - min(data(:))) / (max(data(:)) - min(data(:)));
-
-% Custom alphamap (transparency)
-% Low values transparent, high values opaque
+% Custom alphamap: low values transparent, high values opaque
 alpha = linspace(0, 0.8, 256);
-
-% Custom colormap
 cmap = parula(256);
 
-volshow(data, V.VolumeGeometry, ...
+volshow(V.Voxels, V.VolumeGeometry, ...
     'Colormap', cmap, ...
     'Alphamap', alpha);
 ```
@@ -100,21 +66,7 @@ volshow(normalized, V.VolumeGeometry, ...
     'Colormap', bone(256));
 ```
 
-## sliceViewer - Orthogonal Slice Browser
-
-### Basic Usage
-
-```matlab
-V = medicalVolume('brain_mri.nii');
-
-% Open slice viewer (interactive)
-sliceViewer(V);
-
-% With voxel array
-sliceViewer(V.Voxels);
-```
-
-### With Custom Display Range
+## sliceViewer - Advanced Usage
 
 ```matlab
 V = medicalVolume('ct_scan.nii');
@@ -122,64 +74,20 @@ V = medicalVolume('ct_scan.nii');
 % Set display range (e.g., soft tissue window)
 sliceViewer(V, 'DisplayRange', [-100, 300]);
 
-% Or use window center/width
-center = 40;
-width = 400;
-sliceViewer(V, 'DisplayRange', [center - width/2, center + width/2]);
-```
-
-### Slice Viewer Features
-
-- Click and drag to browse slices
-- Scroll to change slice
-- Window/level adjustment (right-click drag on some versions)
-- Orthogonal views (axial, coronal, sagittal)
-- Measurements and annotations
-
-```matlab
 % Programmatic control
-V = medicalVolume('scan.nii');
 sv = sliceViewer(V);
-
-% Get current slice numbers
-disp(sv.SliceNumbers);
-
-% Set specific slices
 sv.SliceNumbers = [100, 150, 50];  % [transverse, coronal, sagittal]
 ```
 
-## labelvolshow - Segmentation Overlay
+## Segmentation Overlay (R2025b+)
 
-> ⚠️ **REMOVED in R2025b:** `labelvolshow` has been removed. Use `volshow(V, OverlayData=labels)` instead.
-
-### Modern Replacement (R2025b+)
-
-```matlab
-V_image = medicalVolume('ct_scan.nii');
-V_labels = medicalVolume('segmentation.nii');
-
-% Use volshow with OverlayData (replaces labelvolshow)
-volshow(V_image.Voxels, OverlayData=V_labels.Voxels);
-```
-
-### Legacy Syntax (R2024b and earlier)
-
-```matlab
-V_image = medicalVolume('ct_scan.nii');
-V_labels = medicalVolume('segmentation.nii');
-
-% Display labels on image (REMOVED in R2025b)
-labelvolshow(V_labels.Voxels, V_image.Voxels);
-```
-
-### Custom Label Colors (R2025b+)
+### Custom Label Colors
 
 ```matlab
 V_image = medicalVolume('brain.nii');
 V_labels = medicalVolume('brain_seg.nii');
 
-% Define label colors
-% Labels: 0=background, 1=CSF, 2=gray matter, 3=white matter
+% Define label colors: 0=background, 1=CSF, 2=gray matter, 3=white matter
 labelColors = [
     0, 0, 0;        % 0: background (transparent)
     0.2, 0.6, 1.0;  % 1: CSF (blue)
@@ -187,30 +95,19 @@ labelColors = [
     1.0, 1.0, 0.8   % 3: white matter (cream)
 ];
 
-% Modern syntax using volshow with OverlayData
 volshow(V_image.Voxels, OverlayData=V_labels.Voxels, ...
     OverlayColormap=labelColors, ...
     OverlayAlphamap=[0, 0.3, 0.3, 0.3], ...
     BackgroundColor='black');
 ```
 
-### Multi-Label Visualization (R2025b+)
+### Multi-Label with Auto Colors
 
 ```matlab
 V = medicalVolume('ct_scan.nii');
 L = medicalVolume('multi_organ_seg.nii');
-
-% Unique labels
-labels = unique(L.Voxels(:));
-labels = labels(labels > 0);  % Exclude background
-
-fprintf('Labels found: %s\n', mat2str(labels'));
-
-% Create colormap for labels
-numLabels = max(labels);
+numLabels = max(L.Voxels(:));
 cmap = lines(numLabels);  % Distinct colors
-
-% Modern syntax using volshow with OverlayData
 volshow(V.Voxels, OverlayData=L.Voxels, ...
     OverlayColormap=cmap, OverlayAlphamap=0.5);
 ```
@@ -452,19 +349,6 @@ fprintf('Min: %.1f, Max: %.1f\n', min(V.Voxels(:)), max(V.Voxels(:)));
 % Set explicit range
 sliceViewer(V, 'DisplayRange', [-1000, 3000]);  % Full CT range
 sliceViewer(V, 'DisplayRange', [-100, 200]);    % Soft tissue window
-```
-
-### Issue: labelvolshow crashes on large labels
-
-**Cause:** Too many unique label values.
-
-```matlab
-L = medicalVolume('labels.nii');
-unique_labels = unique(L.Voxels(:));
-fprintf('Unique labels: %d\n', length(unique_labels));
-
-% If too many, downsample or threshold
-L.Voxels(L.Voxels > 100) = 0;  % Keep only first 100 labels
 ```
 
 ---

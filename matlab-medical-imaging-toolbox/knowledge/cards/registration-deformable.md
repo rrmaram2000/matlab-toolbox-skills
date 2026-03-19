@@ -1,85 +1,24 @@
 # Deformable (Non-Rigid) Registration
 
-Deformable registration allows local, non-uniform transformations. Essential for inter-subject registration, temporal changes, and soft tissue deformation.
+Gotchas and advanced patterns for deformable registration. For basic `imregdeform` usage, see SKILL.md.
 
-## When to Use Deformable Registration
+## GridSpacing Tuning (Critical)
 
-| Scenario | Registration Type |
-|----------|------------------|
-| Same patient, same session | Rigid |
-| Same patient, different sessions | Rigid or Affine |
-| Same patient, breathing motion | **Deformable** |
-| Different patients (atlas) | **Deformable** |
-| Tumor growth analysis | **Deformable** |
-| Soft tissue deformation | **Deformable** |
-
-## Key Functions
-
-| Function | Method | Best For |
-|----------|--------|----------|
-| `imregdeform` | Total variation | General deformable registration |
-| `imreggroupwise` | Groupwise | Time series, multi-subject |
-
-## imregdeform - Deformable Registration
-
-### Basic Usage
+`GridSpacing` controls the smoothness-vs-accuracy tradeoff:
 
 ```matlab
-fixed = medicalVolume('reference.nii');
-moving = medicalVolume('moving.nii');
-
-% Compute displacement field
-[D, registered] = imregdeform(moving.Voxels, fixed.Voxels);
-
-% D is a displacement field:
-% size(D) = [size(fixed), 3] for 3D
-% D(:,:,:,1) = X displacements
-% D(:,:,:,2) = Y displacements
-% D(:,:,:,3) = Z displacements
-```
-
-### With Spatial Referencing
-
-```matlab
-fixed = medicalVolume('reference.nii');
-moving = medicalVolume('moving.nii');
-
-% Use geometry objects
-[D, registered] = imregdeform(moving.Voxels, moving.VolumeGeometry, ...
-                              fixed.Voxels, fixed.VolumeGeometry);
-```
-
-### Regularization Options
-
-Control smoothness vs. accuracy tradeoff:
-
-```matlab
-% GridSpacing controls displacement field resolution
-% Smaller = more local deformation allowed
-% Larger = smoother, more regularized
-
+% Soft tissue with large deformation: finer grid
 [D, registered] = imregdeform(moving.Voxels, fixed.Voxels, ...
-    'GridSpacing', [4 4 4], ...      % Displacement grid spacing
-    'NumIterations', 100, ...         % Optimization iterations
-    'SimilarityMetric', 'ssd');       % 'ssd' or 'mattesMutualInformation'
+    'GridSpacing', [2 2 2]);
 
-% For very soft tissue (allow more deformation)
+% Subtle changes: coarser grid (more regularization)
 [D, registered] = imregdeform(moving.Voxels, fixed.Voxels, ...
-    'GridSpacing', [2 2 2]);          % Finer grid
+    'GridSpacing', [8 8 8]);
 
-% For subtle changes (regularize more)
-[D, registered] = imregdeform(moving.Voxels, fixed.Voxels, ...
-    'GridSpacing', [8 8 8]);          % Coarser grid
-```
-
-### Multimodal Deformable Registration
-
-```matlab
-% For different modalities (e.g., MR to CT)
+% Multimodal: use mutual information
 [D, registered] = imregdeform(moving.Voxels, fixed.Voxels, ...
     'SimilarityMetric', 'mattesMutualInformation', ...
-    'GridSpacing', [4 4 4], ...
-    'NumIterations', 150);
+    'GridSpacing', [4 4 4], 'NumIterations', 150);
 ```
 
 ## Displacement Field Analysis

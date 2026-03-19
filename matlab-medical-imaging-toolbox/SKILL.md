@@ -30,16 +30,35 @@ Expert skill for 3D medical image analysis using MATLAB's Medical Imaging Toolbo
 | Load NIfTI/NRRD | `file-io-nifti-nrrd.md` | `niftiread`, `nrrdread`, `niftiinfo` |
 | Create medical volume | `medical-volume.md` | `medicalVolume`, `medicalImage`, `medicalref3d` |
 | Coordinate conversion | `coordinate-systems.md` | `intrinsicToWorld`, `worldToIntrinsic` |
-| 3D visualization | `visualization-3d.md` | `volshow`, `sliceViewer`, `labelvolshow` |
+| 3D visualization | `visualization-3d.md` | `volshow`, `sliceViewer` |
 | Rigid registration | `registration-rigid.md` | `imregmoment`, `imregicp`, `fitgeotform3d` |
 | Deformable registration | `registration-deformable.md` | `imregdeform`, `imreggroupwise` |
-| Extract radiomics | `radiomics-features.md` | `intensityFeatures`, `shapeFeatures`, `textureFeatures` |
+| Extract radiomics | `radiomics-features.md` | `radiomics` object, then `intensityFeatures(R)` |
 | Segment with MedSAM | `segmentation-medsam.md` | `medicalSegmentAnythingModel` |
 | Cell detection | `segmentation-cellpose.md` | `segmentCells2D`, `trainCellpose` |
 | Label ground truth | `labeling-workflow.md` | `groundTruthMedical`, Medical Image Labeler |
 | PACS server access | `pacs-integration.md` | `dicomConnection`, `dicomquery`, `dicomget` |
-| Apply filtering | `cross-toolbox-ipt.md` | **→ See IPT skill** |
-| Threshold/segment | `cross-toolbox-ipt.md` | **→ See IPT skill** |
+| Apply filtering | `cross-toolbox-ipt.md` | **-> See IPT skill** |
+| Threshold/segment | `cross-toolbox-ipt.md` | **-> See IPT skill** |
+
+## Template Scripts
+
+Ready-to-use template scripts in `scripts/` -- copy, rename, and adapt for your task:
+
+| Script | Task |
+|--------|------|
+| `template_dicom_series_loader.m` | Load DICOM series with dicomCollection |
+| `template_nifti_volume_processing.m` | Load, process, and save NIfTI volumes |
+| `template_coordinate_transform.m` | Coordinate system conversions |
+| `template_volume_visualization.m` | 3D rendering and slice browsing |
+| `template_rigid_registration.m` | Rigid/affine registration workflow |
+| `template_deformable_registration.m` | Non-rigid deformable registration |
+| `template_radiomics_extraction.m` | Radiomics feature extraction pipeline |
+| `template_medsam_segmentation.m` | MedSAM interactive segmentation |
+| `template_cellpose_segmentation.m` | Cellpose cell/nuclei detection |
+| `template_labeling_workflow.m` | Ground truth labeling setup |
+| `template_pacs_query_retrieve.m` | PACS server query and retrieval |
+| `template_multimodal_fusion.m` | PET/CT or multimodal overlay |
 
 ## Critical Rules
 
@@ -221,6 +240,8 @@ registered = imwarp(moving.Voxels, tform, 'OutputView', ...
 
 ### Extract Radiomics Features
 
+> **Object-Oriented API:** Always create a `radiomics(data, roi)` object first, then call `intensityFeatures(R)`, `shapeFeatures(R)`, `textureFeatures(R)` on the object. Do NOT pass data/mask directly to feature functions.
+
 ```matlab
 V = medicalVolume('tumor_scan.nii');
 mask = medicalVolume('tumor_mask.nii');
@@ -229,13 +250,13 @@ mask = medicalVolume('tumor_mask.nii');
 V_iso = resample(V, [1 1 1]);  % 1mm isotropic
 mask_iso = resample(mask, [1 1 1]);
 
-% Create radiomics object first (required pattern)
+% STEP 1: Create radiomics object (REQUIRED)
 R = radiomics(V_iso.Voxels, mask_iso.Voxels > 0);
 
-% Extract IBSI-compliant features as methods of radiomics object
-intensity = intensityFeatures(R);
-shape = shapeFeatures(R);
-texture = textureFeatures(R);
+% STEP 2: Extract features as methods of the object
+intensity = intensityFeatures(R);   % NOT intensityFeatures(data, mask)
+shape = shapeFeatures(R);           % NOT shapeFeatures(mask, spacing)
+texture = textureFeatures(R);       % NOT textureFeatures(data, mask)
 
 % Combine into table
 features = [intensity, shape, texture];
@@ -288,11 +309,12 @@ bbox = [100, 100, 200, 150];  % [x, y, width, height]
 ### Visualization
 | Function | Purpose | Example |
 |----------|---------|---------|
-| `volshow` | 3D volume rendering | `volshow(V)` or `volshow(V, OverlayData=L)` |
+| `volshow` | 3D volume rendering + overlay | `volshow(V)` or `volshow(V, OverlayData=L)` |
 | `sliceViewer` | Orthogonal slice browser | `sliceViewer(V)` |
-| ~~`labelvolshow`~~ | **REMOVED in R2025b** | Use `volshow(V, OverlayData=labels)` instead |
 | `montage` | 2D slice montage | `montage(V.Voxels)` |
 | `implay` | Video playback (2D series) | `implay(I)` |
+
+> **Note:** `labelvolshow` was removed in R2025b. Use `volshow(V, OverlayData=labels)` for segmentation overlay.
 
 ### Registration
 | Function | Purpose | Example |
@@ -303,13 +325,15 @@ bbox = [100, 100, 200, 150];  % [x, y, width, height]
 | `imreggroupwise` | Groupwise registration | `tforms = imreggroupwise(volumes)` |
 | `fitgeotform3d` | Landmark-based transform | `tform = fitgeotform3d(pts1, pts2, 'affine')` |
 
-### Radiomics
-| Function | Purpose | Example |
-|----------|---------|---------|
-| `radiomics` | Create radiomics object | `R = radiomics(data, roi)` |
-| `intensityFeatures` | Histogram-based features | `F = intensityFeatures(R)` |
-| `shapeFeatures` | 3D shape descriptors | `F = shapeFeatures(R)` |
-| `textureFeatures` | GLCM, GLRLM, etc. | `F = textureFeatures(R)` |
+### Radiomics (Object-Oriented API)
+| Step | Function | Example |
+|------|----------|---------|
+| **1. Create object** | `radiomics` | `R = radiomics(data, roi)` |
+| **2a. Intensity** | `intensityFeatures(R)` | `F = intensityFeatures(R)` |
+| **2b. Shape** | `shapeFeatures(R)` | `F = shapeFeatures(R)` |
+| **2c. Texture** | `textureFeatures(R)` | `F = textureFeatures(R)` |
+
+> Always call feature functions on the `radiomics` object `R`, never on raw data.
 
 ### AI Segmentation
 | Function | Purpose | Example |
@@ -349,7 +373,7 @@ Detailed documentation organized by topic:
 - `knowledge/cards/registration-deformable.md` - Deformable and groupwise registration
 
 **Analysis:**
-- `knowledge/cards/radiomics-features.md` - IBSI-compliant radiomics extraction
+- `knowledge/cards/radiomics-features.md` - IBSI-compliant radiomics (object-oriented API: `radiomics` -> methods)
 - `knowledge/cards/segmentation-medsam.md` - Medical Segment Anything Model
 - `knowledge/cards/segmentation-cellpose.md` - Cellpose for microscopy
 
