@@ -2,7 +2,7 @@
 
 The model already knows `fitcnet` and `fitrnet` syntax, architecture configuration, activation functions, regularization, cross-validation, and hyperparameter optimization. This card covers only the integration patterns between Stats & ML Toolbox neural networks and the Deep Learning Toolbox.
 
-> **For CNNs, RNNs, segmentation, and custom architectures:** Use the **matlab-deep-learning** skill.
+> **For CNNs, RNNs, segmentation, and custom architectures:** Use the Deep Learning Toolbox (`trainnet`, `unet`, `dlnetwork`).
 
 ## When to Use fitcnet/fitrnet vs Deep Learning Toolbox
 
@@ -62,4 +62,4 @@ YPred = predict(Mdl_compact, Xnew);
 
 ---
 
-*For CNNs, segmentation, and advanced architectures, see the matlab-deep-learning skill.*
+*For CNNs, segmentation, and advanced architectures, see the Deep Learning Toolbox documentation.*

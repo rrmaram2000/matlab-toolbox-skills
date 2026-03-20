@@ -436,4 +436,4 @@ cells_in_focus = cells & in_focus_mask;
 ```
 
 ---
-*Source: MathWorks IPT Documentation (R2024b), Image Processing examples, Cell counting tutorials*
+*Verified against MATLAB R2025b*

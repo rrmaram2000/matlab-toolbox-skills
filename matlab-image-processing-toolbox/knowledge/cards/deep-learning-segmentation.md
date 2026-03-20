@@ -91,4 +91,4 @@ metrics.meanDice = mean(metrics.dice);
 ```
 
 ---
-*Source: MathWorks Deep Learning Toolbox + IPT Documentation (R2025a)*
+*Verified against MATLAB R2025b*

@@ -436,5 +436,5 @@ texture = textureFeatures(R);
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 6 (IBSI Standard and Radiomics)*
+*Verified against MATLAB R2025b*
 *See also: `segmentation-medsam.md` for creating segmentation masks*

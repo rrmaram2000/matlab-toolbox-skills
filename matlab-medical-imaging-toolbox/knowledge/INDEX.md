@@ -23,7 +23,7 @@ Quick reference to all Medical Imaging Toolbox knowledge cards.
 | [`visualization-3d.md`](cards/visualization-3d.md) | Advanced rendering: transfer functions, CT bone rendering, STL export | `volshow`, `sliceViewer` |
 | [`registration-rigid.md`](cards/registration-rigid.md) | Registration gotchas: multimodal tuning, quality metrics, edge artifacts | `imregmoment`, `imregtform`, `fitgeotform3d` |
 | [`registration-deformable.md`](cards/registration-deformable.md) | Deformable gotchas: Jacobian folding, GridSpacing tuning, displacement fields | `imregdeform`, `imreggroupwise` |
-| [`cross-toolbox-ipt.md`](cards/cross-toolbox-ipt.md) | Brief MIT+IPT integration patterns, anisotropy handling | Links to **matlab-image-processing-toolbox** skill |
+| [`cross-toolbox-ipt.md`](cards/cross-toolbox-ipt.md) | Brief MIT+IPT integration patterns, anisotropy handling | Image Processing Toolbox (`imgaussfilt`, `imbinarize`, `regionprops`) |
 
 ## Template Scripts
 
@@ -71,7 +71,7 @@ Ready-to-use `.m` files in `scripts/` -- copy, rename, and adapt:
 | Cell counting | `segmentation-cellpose.md` |
 | Create training data | `labeling-workflow.md` |
 | Connect to hospital PACS | `pacs-integration.md` |
-| Apply filters/morphology | `cross-toolbox-ipt.md` → **matlab-image-processing-toolbox** |
+| Apply filters/morphology | `cross-toolbox-ipt.md` -- use Image Processing Toolbox (`imgaussfilt`, `imbinarize`, `strel`) |
 
 ### By Experience Level
 
@@ -93,15 +93,15 @@ Ready-to-use `.m` files in `scripts/` -- copy, rename, and adapt:
 
 ---
 
-## Cross-References to Other Skills
+## Cross-Toolbox Functions
 
-| Need | Skill | Key Cards |
-|------|-------|-----------|
-| Filtering, denoising | **matlab-image-processing-toolbox** | `filtering-denoising.md` |
-| Segmentation, thresholding | **matlab-image-processing-toolbox** | `segmentation-thresholding.md`, `morphology-binary.md` |
-| Region measurements | **matlab-image-processing-toolbox** | `feature-regions.md` |
-| Deep learning segmentation | **matlab-image-processing-toolbox** | `deep-learning-segmentation.md` |
-| Wavelet denoising | **matlab-wavelet-toolbox** | Wavelet-based denoising cards |
+| Need | Toolbox & Functions |
+|------|---------------------|
+| Filtering, denoising | Image Processing Toolbox (`imgaussfilt`, `medfilt2`, `wiener2`) |
+| Segmentation, thresholding | Image Processing Toolbox (`imbinarize`, `graythresh`, `watershed`) |
+| Region measurements | Image Processing Toolbox (`regionprops`, `regionprops3`, `bwconncomp`) |
+| Deep learning segmentation | Deep Learning Toolbox (`unet`, `trainnet`, `semanticseg`) |
+| Wavelet denoising | Wavelet Toolbox (`wdenoise2`) |
 
 ---
 

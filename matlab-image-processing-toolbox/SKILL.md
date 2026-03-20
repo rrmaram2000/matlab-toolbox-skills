@@ -126,7 +126,7 @@ Ready-to-use medical imaging pipelines in `scripts/`:
 
 ## Cross-Toolbox Integration
 
-For wavelet-based image processing (multiresolution denoising, fusion), see: **matlab-wavelet-toolbox** skill.
+For wavelet-based image processing (multiresolution denoising, fusion), use Wavelet Toolbox functions (`wavedec2`, `wdenoise2`) for multiresolution denoising and image fusion.
 
 ```matlab
 % Example: Wavelet + IPT fusion for MRI denoising
@@ -136,4 +136,4 @@ enhanced = adapthisteq(cleaned);                        % IPT contrast
 ```
 
 ---
-*Source: MathWorks Image Processing Toolbox Documentation (R2025a)*
+*Verified against MATLAB R2025b*

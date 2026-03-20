@@ -66,4 +66,4 @@ end
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - Deployment (R2025b)*
+*Verified against MATLAB R2025b*

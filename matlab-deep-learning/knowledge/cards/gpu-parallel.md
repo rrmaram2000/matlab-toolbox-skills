@@ -501,4 +501,4 @@ fprintf('GPU Utilization: %.1f%%\n', gpu.KernelExecutionTime / ... );
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - GPU & Parallel Computing (R2025b)*
+*Verified against MATLAB R2025b*

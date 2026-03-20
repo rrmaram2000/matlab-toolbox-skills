@@ -131,5 +131,5 @@ registered = imwarp(moving.Voxels, tform, ...
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 4*
+*Verified against MATLAB R2025b*
 *See also: `registration-deformable.md` for non-rigid registration*

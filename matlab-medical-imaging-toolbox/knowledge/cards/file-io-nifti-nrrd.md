@@ -135,5 +135,5 @@ fprintf('File size: %.2f GB\n', bytes / 1e9);
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 2*
+*Verified against MATLAB R2025b*
 *See also: `file-io-dicom.md` for clinical DICOM workflows*

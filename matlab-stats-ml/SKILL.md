@@ -106,9 +106,9 @@ See `knowledge/INDEX.md` for the complete card index. Key cards:
 - **`cards/biomedical.md`** — Diagnostic classifiers, biomarker discovery, class imbalance
 - **`cards/bayesian.md`** — bayesopt, MCMC sampling, Bayesian model comparison
 
-## See Also (Cross-Toolbox Skills)
+## See Also (Related MATLAB Toolboxes)
 
-- **matlab-deep-learning** — For CNNs, U-Net, YOLO, and GPU-accelerated training
-- **matlab-medical-imaging-toolbox** — For medical data I/O and radiomics
-- **matlab-image-processing-toolbox** — For image-based feature extraction
-- **matlab-wavelet-toolbox** — For multiresolution feature extraction
+- **Deep Learning Toolbox** — For CNNs, U-Net, YOLO (`trainnet`, `unet`, `dlnetwork`)
+- **Medical Imaging Toolbox** — For medical data I/O and radiomics (`medicalVolume`, `radiomics`)
+- **Image Processing Toolbox** — For image-based feature extraction (`regionprops`, `imgaussfilt`)
+- **Wavelet Toolbox** — For multiresolution feature extraction (`wavedec2`, `wdenoise2`)

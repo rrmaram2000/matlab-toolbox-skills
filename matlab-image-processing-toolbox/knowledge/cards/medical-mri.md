@@ -364,4 +364,4 @@ end
 ```
 
 ---
-*Source: MathWorks IPT Documentation (R2024b), Medical Image Processing examples*
+*Verified against MATLAB R2025b*

@@ -339,5 +339,5 @@ end
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 1 "Medical Image Coordinate Systems"*
+*Verified against MATLAB R2025b*
 *This is the CRITICAL card - read before any medical imaging work*

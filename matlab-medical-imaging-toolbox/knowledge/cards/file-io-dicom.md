@@ -247,5 +247,5 @@ fprintf('V2 Normal: [%.3f, %.3f, %.3f]\n', V2.NormalVector);
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 2*
+*Verified against MATLAB R2025b*
 *See also: `pacs-integration.md` for PACS server access*

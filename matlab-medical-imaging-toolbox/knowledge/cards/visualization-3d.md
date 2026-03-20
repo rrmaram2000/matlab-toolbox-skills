@@ -353,5 +353,5 @@ sliceViewer(V, 'DisplayRange', [-100, 200]);    % Soft tissue window
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 3*
+*Verified against MATLAB R2025b*
 *See also: `labeling-workflow.md` for Medical Image Labeler app*

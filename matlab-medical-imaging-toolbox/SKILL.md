@@ -7,7 +7,7 @@ description: "MATLAB Medical Imaging Toolbox. Functions - medicalVolume, dicomre
 
 Expert skill for 3D medical image analysis using MATLAB's Medical Imaging Toolbox (MIT R2025b+).
 
-**Cross-Toolbox Note:** For filtering, segmentation, and morphology operations, see **matlab-image-processing-toolbox** skill. MIT handles I/O, spatial referencing, registration, and medical-specific workflows.
+**Cross-Toolbox Note:** For filtering, segmentation, and morphology, use Image Processing Toolbox functions (`imgaussfilt`, `imbinarize`, `strel`, `watershed`, `regionprops`). MIT handles I/O, spatial referencing, registration, and medical-specific workflows.
 
 ## When to Use This Skill
 
@@ -165,7 +165,7 @@ MIT handles I/O and spatial referencing; IPT handles pixel-level processing:
 % Load with MIT (preserves spatial info)
 V = medicalVolume('scan.nii');
 
-% Process with IPT (see matlab-image-processing-toolbox skill)
+% Process with Image Processing Toolbox functions
 voxels = im2double(V.Voxels);
 voxels = imgaussfilt3(voxels, 1.5);           % Gaussian smoothing
 voxels = adapthisteq(voxels, 'NumTiles', [4 4 4]);  % CLAHE
@@ -381,7 +381,7 @@ Detailed documentation organized by topic:
 
 ## Cross-Toolbox Integration
 
-**For filtering, segmentation, and morphology → matlab-image-processing-toolbox**
+**For filtering, segmentation, and morphology, use Image Processing Toolbox functions (`imgaussfilt`, `imbinarize`, `strel`, `watershed`, `regionprops`)**
 
 | MIT Task | IPT Function | IPT Knowledge Card |
 |----------|--------------|-------------------|
@@ -393,7 +393,7 @@ Detailed documentation organized by topic:
 | Detect edges | `edge`, `imgradient` | `feature-edges.md` |
 | Data type conversion | `im2double`, `im2uint8` | `data-types.md` |
 
-**For wavelet-based denoising → matlab-wavelet-toolbox**
+**For wavelet-based denoising, use Wavelet Toolbox functions (`wdenoise2`)**
 
 ```matlab
 % Combined workflow: MIT + IPT + Wavelet
@@ -411,5 +411,4 @@ write(V, 'enhanced_mri.nii');                  % MIT: Write with spatial info
 ```
 
 ---
-*Source: MathWorks Medical Imaging Toolbox Documentation (R2025b)*
-*User Guide: 468 pages | Function Reference: 362 pages*
+*Verified against MATLAB R2025b*

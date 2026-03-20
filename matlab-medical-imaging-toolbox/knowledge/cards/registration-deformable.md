@@ -279,5 +279,5 @@ mask = fixed.Voxels > threshold;  % Focus region
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 4*
+*Verified against MATLAB R2025b*
 *See also: `registration-rigid.md` for rigid/affine registration*

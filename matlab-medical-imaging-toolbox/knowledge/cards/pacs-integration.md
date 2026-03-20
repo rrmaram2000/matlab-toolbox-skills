@@ -501,5 +501,5 @@ end
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 2*
+*Verified against MATLAB R2025b*
 *See also: `file-io-dicom.md` for DICOM file handling*

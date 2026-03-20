@@ -147,4 +147,4 @@ cachedDs = fileDatastore(cacheDir, 'ReadFcn', @load, 'FileExtensions', '.mat');
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - Data Pipelines (R2025b)*
+*Verified against MATLAB R2025b*

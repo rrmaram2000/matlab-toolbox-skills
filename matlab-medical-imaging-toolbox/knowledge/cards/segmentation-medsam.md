@@ -429,5 +429,5 @@ mask = imresize(mask_small, 1/scale, 'nearest') > 0.5;
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 6 (MedSAM sections)*
+*Verified against MATLAB R2025b*
 *See also: `labeling-workflow.md` for Medical Image Labeler integration*

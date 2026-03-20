@@ -223,5 +223,5 @@ end
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 1*
+*Verified against MATLAB R2025b*
 *See also: `coordinate-systems.md` for spatial transformations*

@@ -1,6 +1,6 @@
 # Cross-Toolbox Integration: MIT + IPT
 
-Brief integration patterns for MIT + IPT. For detailed IPT functions, see **matlab-image-processing-toolbox** skill.
+Brief integration patterns for MIT + IPT. For detailed IPT functions, use Image Processing Toolbox functions (`imgaussfilt`, `imbinarize`, `strel`, `regionprops`, `watershed`).
 
 **Rule:** MIT handles I/O, spatial referencing, registration, radiomics. IPT handles filtering, thresholding, morphology, region measurements.
 
@@ -99,4 +99,4 @@ write(V, 'out.nii');
 
 ---
 
-*See: matlab-image-processing-toolbox skill for detailed IPT documentation*
+*For detailed IPT documentation, use Image Processing Toolbox functions (`imgaussfilt`, `imbinarize`, `regionprops`, `strel`, `watershed`)*

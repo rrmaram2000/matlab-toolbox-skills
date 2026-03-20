@@ -259,4 +259,4 @@ img = (img - reshape(meanRGB, 1, 1, 3)) ./ reshape(stdRGB, 1, 1, 3);
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - Classification & Segmentation (R2025b)*
+*Verified against MATLAB R2025b*

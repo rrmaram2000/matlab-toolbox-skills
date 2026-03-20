@@ -364,5 +364,5 @@ end
 
 ---
 
-*Source: Medical Imaging Toolbox User's Guide, Chapter 5*
+*Verified against MATLAB R2025b*
 *See also: `segmentation-medsam.md` for AI-assisted labeling*

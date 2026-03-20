@@ -12,7 +12,7 @@
 %   - Medical Imaging Toolbox (optional, for medicalVolume I/O)
 %
 % Note: For deep learning cell segmentation, see template_medsam_segmentation.m
-% or train a U-Net using the matlab-deep-learning skill.
+% or train a U-Net using the Deep Learning Toolbox (`unet`, `trainnet`).
 
 %% TODO: Configure your data paths and parameters
 imageFile = '';   % TODO: Path to microscopy image (fluorescence, H&E, etc.)

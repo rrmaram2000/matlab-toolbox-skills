@@ -147,4 +147,4 @@ end
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - Custom Training (R2025b)*
+*Verified against MATLAB R2025b*

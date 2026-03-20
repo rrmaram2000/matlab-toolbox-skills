@@ -7,7 +7,7 @@ description: "MATLAB Deep Learning Toolbox (R2025b). Functions - trainnet, train
 
 Expert skill for deep learning in MATLAB, focused on medical image analysis workflows. All examples use the modern R2025b API (`trainnet`, `unet`, `unet3d`, `deeplabv3plus`).
 
-**Cross-Toolbox Note:** For image preprocessing (filtering, morphology), see **matlab-image-processing-toolbox**. For medical I/O (DICOM, NIfTI), see **matlab-medical-imaging-toolbox**. For wavelet features, see **matlab-wavelet-toolbox**.
+**Cross-Toolbox Note:** For image preprocessing (filtering, morphology), use Image Processing Toolbox functions (`imgaussfilt`, `imbinarize`, `strel`). For medical I/O (DICOM, NIfTI), use Medical Imaging Toolbox functions (`dicomread`, `niftiread`). For wavelet features, use Wavelet Toolbox functions (`wavedec2`, `wdenoise2`).
 
 ## When to Use This Skill
 
@@ -304,21 +304,21 @@ See `knowledge/INDEX.md` for full navigation.
 
 ## Cross-Toolbox Integration
 
-**For preprocessing -> matlab-image-processing-toolbox**
+**For preprocessing -> Image Processing Toolbox (`imgaussfilt`, `adapthisteq`, `imbinarize`)**
 ```matlab
 img = adapthisteq(img);         % CLAHE
 img = imgaussfilt(img, 1.5);    % Denoise
 img = im2single(img);           % Normalize
 ```
 
-**For wavelet features -> matlab-wavelet-toolbox**
+**For wavelet features -> Wavelet Toolbox (`wavedec2`, `wdenoise2`)**
 ```matlab
 [C, S] = wavedec2(img, 3, 'db4');
 features = cat(3, appcoef2(C,S,'db4'), ...
     detcoef2('h',C,S,1), detcoef2('v',C,S,1), detcoef2('d',C,S,1));
 ```
 
-**For medical I/O -> matlab-medical-imaging-toolbox**
+**For medical I/O -> Medical Imaging Toolbox (`medicalVolume`, `dicomread`, `niftiread`)**
 ```matlab
 V = medicalVolume('brain.nii');
 for k = 1:V.NumTransverseSlices
@@ -328,4 +328,4 @@ end
 ```
 
 ---
-*Source: MathWorks Deep Learning Toolbox Documentation (R2025b)*
+*Verified against MATLAB R2025b*

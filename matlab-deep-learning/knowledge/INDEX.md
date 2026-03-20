@@ -72,14 +72,14 @@ Ready-to-adapt MATLAB scripts using modern R2025b API.
 
 ---
 
-## Cross-References to Other Skills
+## Cross-Toolbox Functions
 
-| Need | Skill | Reason |
-|------|-------|--------|
-| Image preprocessing | **matlab-image-processing-toolbox** | Filtering, CLAHE, morphology before DL |
-| Medical file I/O | **matlab-medical-imaging-toolbox** | DICOM/NIfTI reading with spatial referencing |
-| Wavelet features | **matlab-wavelet-toolbox** | Multi-scale features for DL input |
-| Statistical evaluation | **matlab-stats-ml** | ROC curves, cross-validation metrics |
+| Need | Toolbox & Functions | Reason |
+|------|---------------------|--------|
+| Image preprocessing | Image Processing Toolbox (`imgaussfilt`, `adapthisteq`, `imbinarize`, `strel`) | Filtering, CLAHE, morphology before DL |
+| Medical file I/O | Medical Imaging Toolbox (`medicalVolume`, `dicomread`, `niftiread`) | DICOM/NIfTI reading with spatial referencing |
+| Wavelet features | Wavelet Toolbox (`wavedec2`, `wdenoise2`) | Multi-scale features for DL input |
+| Statistical evaluation | Statistics and Machine Learning Toolbox (`perfcurve`, `cvpartition`, `fitcsvm`) | ROC curves, cross-validation metrics |
 
 ---
 

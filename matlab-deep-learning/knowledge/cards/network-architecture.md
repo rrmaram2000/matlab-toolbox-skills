@@ -235,4 +235,4 @@ end
 
 ---
 
-*Source: Deep Learning Toolbox Documentation - Network Architecture (R2025b)*
+*Verified against MATLAB R2025b*

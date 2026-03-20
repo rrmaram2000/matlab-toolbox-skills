@@ -81,7 +81,7 @@ img = adapthisteq(img, 'NumTiles', [8 8], 'ClipLimit', 0.02);
 % Load
 us = im2double(imread('ultrasound.png'));
 
-% Speckle reduction (see matlab-wavelet-toolbox)
+% Speckle reduction (use Wavelet Toolbox `wdenoise2`)
 logUs = log(us + eps);
 denoised = wdenoise2(logUs, 'DenoisingMethod', 'Bayes');
 usClean = exp(denoised);
@@ -509,5 +509,5 @@ end
 
 ---
 
-*Source: Deep Learning Toolbox + Medical Imaging Toolbox Integration (R2025b)*
-*See also: matlab-medical-imaging-toolbox, matlab-image-processing-toolbox*
+*Verified against MATLAB R2025b*
+*See also: Medical Imaging Toolbox (`medicalVolume`, `dicomread`), Image Processing Toolbox (`imgaussfilt`, `imbinarize`)*
