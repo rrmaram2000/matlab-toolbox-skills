@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATLAB Toolbox Skills — Side-by-Side Examples</title>
+    <style>
+        :root {
+            --bg: #0f172a; --bg2: #1e293b; --bg3: #263348;
+            --text: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
+            --accent: #3b82f6; --accentL: #60a5fa;
+            --green: #22c55e; --greenBg: rgba(34,197,94,0.12);
+            --red: #ef4444; --redBg: rgba(239,68,68,0.12);
+            --yellow: #f59e0b; --yellowBg: rgba(245,158,11,0.12);
+            --border: #334155;
+            --font: 'Inter', -apple-system, system-ui, sans-serif;
+            --mono: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+            --radius: 12px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.7; }
+        [contenteditable]:hover { outline: 1px dashed var(--accent); outline-offset: 2px; border-radius: 4px; }
+        [contenteditable]:focus { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; background: rgba(59,130,246,0.05); }
+
+        /* Palette */
+        .pal-toggle { position:fixed; top:16px; right:16px; z-index:1000; width:42px; height:42px; border-radius:50%; background:var(--accent); border:none; cursor:pointer; color:#fff; font-size:18px; box-shadow:0 4px 16px rgba(59,130,246,0.4); transition:transform .2s; }
+        .pal-toggle:hover { transform:scale(1.1); }
+        .pal-panel { position:fixed; top:0; right:-350px; width:330px; height:100vh; background:var(--bg2); border-left:1px solid var(--border); z-index:999; padding:20px; overflow-y:auto; transition:right .3s ease; }
+        .pal-panel.open { right:0; }
+        .pal-panel h4 { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text3); margin:18px 0 8px; }
+        .pal-panel h4:first-child { margin-top:0; }
+        .pal-row { display:flex; align-items:center; justify-content:space-between; margin:6px 0; }
+        .pal-row label { color:var(--text2); font-size:12px; }
+        .pal-row input[type=color] { width:32px; height:24px; border:1px solid var(--border); border-radius:4px; cursor:pointer; background:transparent; }
+        .pal-row select { background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:4px; padding:3px 6px; font-size:12px; width:150px; }
+        .pal-row input[type=range] { width:120px; }
+        .presets { display:flex; gap:4px; flex-wrap:wrap; margin:8px 0; }
+        .preset { padding:4px 10px; border-radius:4px; border:1px solid var(--border); background:var(--bg); color:var(--text2); cursor:pointer; font-size:11px; }
+        .preset:hover { border-color:var(--accent); color:var(--accent); }
+        .preset.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+        .wrap { max-width:1200px; margin:0 auto; padding:32px 20px; }
+
+        /* Hero */
+        .hero { text-align:center; padding:48px 20px 32px; background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(139,92,246,0.06)); border-radius:var(--radius); border:1px solid var(--border); margin-bottom:32px; }
+        .hero h1 { font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--accentL),#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:6px; }
+        .hero p { color:var(--text2); max-width:700px; margin:0 auto; }
+
+        /* Example card */
+        .example { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:28px; overflow:hidden; }
+        .ex-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); }
+        .ex-header h2 { font-size:1.2rem; font-weight:700; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .ex-header .skill-tag { font-size:0.65rem; padding:3px 10px; border-radius:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+        .tag-dl { background:rgba(59,130,246,0.15); color:var(--accentL); }
+        .tag-wt { background:rgba(168,85,247,0.15); color:#c084fc; }
+        .tag-sm { background:rgba(34,197,94,0.15); color:var(--green); }
+        .tag-mi { background:rgba(245,158,11,0.15); color:var(--yellow); }
+        .tag-ip { background:rgba(236,72,153,0.15); color:#f472b6; }
+        .prompt-box { margin:12px 0 0; padding:14px 16px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text2); font-size:0.9rem; font-style:italic; }
+        .prompt-box::before { content:"Prompt: "; font-style:normal; font-weight:700; color:var(--text3); }
+
+        /* Side by side */
+        .side-by-side { display:grid; grid-template-columns:1fr 1fr; }
+        @media(max-width:800px) { .side-by-side { grid-template-columns:1fr; } }
+        .side { padding:20px; }
+        .side:first-child { border-right:1px solid var(--border); }
+        .side-label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+        .side-label .dot { width:8px; height:8px; border-radius:50%; }
+        .dot-with { background:var(--accent); }
+        .dot-without { background:#64748b; }
+
+        pre { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; overflow-x:auto; font-size:0.78rem; line-height:1.6; font-family:var(--mono); }
+        .hl { background:rgba(34,197,94,0.15); display:inline; border-radius:3px; padding:0 2px; }
+        .err { background:rgba(239,68,68,0.15); display:inline; border-radius:3px; padding:0 2px; text-decoration:line-through; }
+
+        .verdict { padding:16px 24px; border-top:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+        .verdict-badge { padding:4px 12px; border-radius:6px; font-weight:700; font-size:0.8rem; }
+        .vb-pass { background:var(--greenBg); color:var(--green); }
+        .vb-fail { background:var(--redBg); color:var(--red); }
+        .verdict-text { color:var(--text2); font-size:0.85rem; flex:1; }
+
+        /* Callout */
+        .callout { background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.25); border-radius:8px; padding:16px 20px; margin:16px 0; }
+        .callout h3 { font-size:0.9rem; color:var(--accentL); margin-bottom:4px; }
+        .callout p { color:var(--text2); font-size:0.85rem; }
+
+        /* Footer */
+        .footer { text-align:center; padding:32px; color:var(--text3); font-size:0.8rem; }
+    </style>
+</head>
+<body>
+
+<button class="pal-toggle" onclick="document.getElementById('pp').classList.toggle('open')" title="Customize appearance">&#127912;</button>
+
+<div class="pal-panel" id="pp">
+    <h4>Theme Presets</h4>
+    <div class="presets">
+        <button class="preset on" onclick="applyP('dark',this)">Dark</button>
+        <button class="preset" onclick="applyP('light',this)">Light</button>
+        <button class="preset" onclick="applyP('midnight',this)">Midnight</button>
+        <button class="preset" onclick="applyP('ocean',this)">Ocean</button>
+        <button class="preset" onclick="applyP('forest',this)">Forest</button>
+    </div>
+    <h4>Colors</h4>
+    <div class="pal-row"><label>Background</label><input type="color" value="#0f172a" oninput="sv('--bg',this.value)"></div>
+    <div class="pal-row"><label>Cards</label><input type="color" value="#1e293b" oninput="sv('--bg2',this.value)"></div>
+    <div class="pal-row"><label>Accent</label><input type="color" value="#3b82f6" oninput="sv('--accent',this.value); sv('--accentL',this.value)"></div>
+    <div class="pal-row"><label>Text</label><input type="color" value="#f1f5f9" oninput="sv('--text',this.value)"></div>
+    <div class="pal-row"><label>Muted Text</label><input type="color" value="#94a3b8" oninput="sv('--text2',this.value)"></div>
+    <div class="pal-row"><label>Borders</label><input type="color" value="#334155" oninput="sv('--border',this.value)"></div>
+    <h4>Typography</h4>
+    <div class="pal-row"><label>Font</label>
+        <select oninput="sv('--font',this.value+', sans-serif')">
+            <option>Inter</option><option>system-ui</option><option>Georgia</option><option>Helvetica Neue</option><option>Verdana</option><option>Roboto</option><option>Lato</option>
+        </select>
+    </div>
+    <div class="pal-row"><label>Code Font</label>
+        <select oninput="sv('--mono',this.value+', monospace')">
+            <option>JetBrains Mono</option><option>Fira Code</option><option>Menlo</option><option>Consolas</option><option>Source Code Pro</option>
+        </select>
+    </div>
+    <div class="pal-row"><label>Size</label><input type="range" min="13" max="20" value="16" oninput="document.body.style.fontSize=this.value+'px'"></div>
+    <div class="pal-row"><label>Radius</label><input type="range" min="0" max="24" value="12" oninput="sv('--radius',this.value+'px')"></div>
+    <h4 style="margin-top:24px; font-size:10px; color:var(--text3);">Click any text on the page to edit it directly.</h4>
+</div>
+
+<div class="wrap">
+
+<div class="hero">
+    <h1 contenteditable="true">Skill vs No-Skill: Side-by-Side Examples</h1>
+    <p contenteditable="true">Real outputs from the blind A/B evaluation. See how MATLAB toolbox skills improve code quality, prevent API errors, and add domain expertise. Click any text to edit.</p>
+</div>
+
+<!-- ═══════════════ EXAMPLE 0: MedSAM (FLAGSHIP) ═══════════════ -->
+<div class="example" style="border-color:var(--accent); border-width:2px;">
+    <div class="ex-header" style="background:linear-gradient(90deg, rgba(245,158,11,0.08), transparent);">
+        <h2 contenteditable="true"><span class="skill-tag tag-mi">Medical Imaging</span> <span style="color:var(--yellow);">FLAGSHIP EXAMPLE</span> &mdash; MedSAM Tumor Segmentation from CT</h2>
+        <div class="prompt-box" contenteditable="true">How do I use MedSAM to segment a tumor from a CT volume in MATLAB? I have a NIfTI file with the CT scan. I want to interactively mark a few points on the tumor in one slice, then propagate the segmentation to the full 3D volume.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill (366 lines)</span></div>
+            <pre><code>%% Load with spatial referencing (Critical Rule 2)
+<span class="hl">V = medicalVolume(niftiFile);</span>
+
+%% Load MedSAM — correct function name
+<span class="hl">model = medicalSegmentAnythingModel(</span>
+<span class="hl">    'ExecutionEnvironment', 'gpu');</span>
+
+%% Extract seed slice in patient coordinates
+seedImg = double(<span class="hl">extractSlice(V, seedSlice, 'transverse')</span>);
+
+%% Compute embeddings — correct method
+<span class="hl">embeddings = extractEmbeddings(model, seedImg);</span>
+
+%% Segment — imageSize is REQUIRED 3rd arg
+<span class="hl">mask = segmentObjectsFromEmbeddings(</span>
+<span class="hl">    model, embeddings, imageSize, ...</span>
+<span class="hl">    ForegroundPoints=fgPoints, ...</span>
+<span class="hl">    BackgroundPoints=bgPoints);</span>
+
+%% 3D propagation: seed-and-propagate
+for k = (seedSlice+1):V.NumTransverseSlices
+    % Derive centroid from previous mask
+    props = regionprops(prevMask, 'Centroid');
+    fg = props(1).Centroid;
+    emb = extractEmbeddings(model, sliceImg);
+    mask = segmentObjectsFromEmbeddings(model, ...
+        emb, imageSize, ForegroundPoints=fg);
+end
+
+%% Save with spatial geometry preserved
+<span class="hl">segVol = medicalVolume(uint8(mask), V.VolumeGeometry);</span>
+<span class="hl">segVol.Modality = 'SEG';</span>
+<span class="hl">write(segVol, 'tumor_seg.nii.gz');</span></code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Uses <code>medicalSegmentAnythingModel</code> (correct function name), <code>extractEmbeddings</code> (correct method), <code>imageSize</code> as required 3rd argument, <code>medicalVolume</code> for all I/O, <code>extractSlice</code> with proper orientation, and saves output with spatial geometry. 10-step clinical-grade pipeline.</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill (249 lines)</span></div>
+            <pre><code>%% Load — loses spatial referencing
+V = niftiread(niftiFile);
+info = niftiinfo(niftiFile);
+
+%% Normalize — HALLUCINATED function
+<span class="err">Vwin = mat2clim(V, [minHU maxHU]);</span>
+% mat2clim does NOT exist in MATLAB!
+% Should use: mat2gray or rescale
+
+%% Load MedSAM — WRONG function name
+<span class="err">medsam = medicalSAM;</span>
+% medicalSAM does NOT exist!
+% Correct: medicalSegmentAnythingModel
+
+%% Embeddings — WRONG function name
+seedRGB = repmat(seedImg, [1,1,3]); % unnecessary
+<span class="err">embeddings = imageEmbeddings(medsam, seedRGB);</span>
+% imageEmbeddings does NOT exist!
+% Correct: extractEmbeddings
+
+%% Segment — works if above didn't crash
+mask = segmentObjectsFromEmbeddings(medsam, ...
+    embeddings, size(seedRGB,[1 2]), ...
+    BoundingBox=bbox);
+
+%% Save — raw NIfTI, no spatial metadata
+niftiwrite(uint8(volumeMask), outputFile, ...
+    outInfo, "Compressed", true);</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;"><strong style="color:var(--red);">3 hallucinated functions</strong> that crash immediately: <code>medicalSAM</code> (should be <code>medicalSegmentAnythingModel</code>), <code>imageEmbeddings</code> (should be <code>extractEmbeddings</code>), <code>mat2clim</code> (should be <code>mat2gray</code>). None of these exist in MATLAB R2025b.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-fail" style="font-size:0.9rem; padding:6px 16px;">3 Hallucinated Functions</span>
+        <span class="verdict-text" contenteditable="true">This is the clearest demonstration of skill value. Without the skill, Claude <strong>invents plausible-sounding function names</strong> (<code>medicalSAM</code>, <code>imageEmbeddings</code>, <code>mat2clim</code>) that don't exist in MATLAB. The code cannot run at all. With the skill, every function is correct and verified: <code>medicalSegmentAnythingModel</code>, <code>extractEmbeddings</code>, <code>segmentObjectsFromEmbeddings(model, embeddings, imageSize, ...)</code>. Runtime verification in MATLAB R2025b confirmed <code>medicalSAM</code> → NOT FOUND, <code>medicalSegmentAnythingModel</code> → FOUND.</span>
+    </div>
+    <div style="padding:12px 24px; border-top:1px solid var(--border); background:rgba(59,130,246,0.04);">
+        <table style="font-size:0.82rem;">
+            <thead><tr><th>Aspect</th><th>Without Skill</th><th>With Skill</th></tr></thead>
+            <tbody>
+                <tr><td contenteditable="true">Model constructor</td><td contenteditable="true"><code style="color:var(--red);">medicalSAM</code> (NOT FOUND)</td><td contenteditable="true"><code style="color:var(--green);">medicalSegmentAnythingModel</code> (FOUND)</td></tr>
+                <tr><td contenteditable="true">Embeddings</td><td contenteditable="true"><code style="color:var(--red);">imageEmbeddings</code> (NOT FOUND)</td><td contenteditable="true"><code style="color:var(--green);">extractEmbeddings</code> (method of model)</td></tr>
+                <tr><td contenteditable="true">Normalization</td><td contenteditable="true"><code style="color:var(--red);">mat2clim</code> (NOT FOUND)</td><td contenteditable="true"><code style="color:var(--green);">mat2gray</code> (FOUND)</td></tr>
+                <tr><td contenteditable="true">Data loading</td><td contenteditable="true"><code>niftiread</code> (raw, no geometry)</td><td contenteditable="true"><code style="color:var(--green);">medicalVolume</code> (preserves spatial ref)</td></tr>
+                <tr><td contenteditable="true">Slice extraction</td><td contenteditable="true"><code>V(:,:,s)</code> (array index)</td><td contenteditable="true"><code style="color:var(--green);">extractSlice(V, s, 'transverse')</code></td></tr>
+                <tr><td contenteditable="true">Output saving</td><td contenteditable="true"><code>niftiwrite</code> (raw)</td><td contenteditable="true"><code style="color:var(--green);">medicalVolume + write</code> (preserves geometry)</td></tr>
+                <tr><td contenteditable="true">Lines of code</td><td contenteditable="true">249</td><td contenteditable="true">366 (more complete)</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ═══════════════ EXAMPLE 1: 3D U-Net ═══════════════ -->
+<div class="example">
+    <div class="ex-header">
+        <h2 contenteditable="true"><span class="skill-tag tag-dl">Deep Learning</span> 3D Volumetric U-Net for Lung Segmentation</h2>
+        <div class="prompt-box" contenteditable="true">I have 3D CT volumes (128x128x64 voxels, single channel) with corresponding 3D label masks for lung lobe segmentation (6 classes including background). Write MATLAB R2025b code to set up and train a 3D U-Net. Include patch-based training since the full volumes won't fit in GPU memory.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill</span></div>
+            <pre><code>%% Network Creation
+<span class="hl">net = unet3d(inputSize3D, numClasses, ...</span>
+<span class="hl">    EncoderDepth=3, ...</span>
+<span class="hl">    NumFirstEncoderFilters=32);</span>
+
+% Skill warns: default NumFirstEncoderFilters = 64
+% For 3D, reduce to 32 to fit GPU memory
+
+%% Patch-Based Training
+<span class="hl">patchDs = randomPatchExtractionDatastore(</span>
+<span class="hl">    volTrain, labelTrain, patchSize, ...</span>
+<span class="hl">    PatchesPerImage=32);</span>
+
+%% Training with Modern API
+<span class="hl">net = trainnet(dsTrain, net, ...</span>
+<span class="hl">    @weightedCELoss, options);</span></code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Uses <code>unet3d()</code> (correct 3D function), reduces filters to 32 for GPU memory (skill-guided), uses <code>randomPatchExtractionDatastore</code> for efficient patching, and modern <code>trainnet</code> API.</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill</span></div>
+            <pre><code>%% Network Creation
+<span class="err">net = unet(patchSize, numClasses, ...</span>
+<span class="err">    EncoderDepth=4);</span>
+
+% BUG: unet() creates a 2D network!
+% Interprets [64 64 32] as 64x64 with 32 channels
+% Should be unet3d() for volumetric data
+
+%% Patch-Based Training
+patchDs = fileDatastore(volDir, ...
+    'ReadFcn', @loadVolume);
+% Manual patch extraction with custom code...
+
+%% Training with Modern API
+net = trainnet(trainPatchDS, lgraph, ...
+    lossFcn, options);</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Uses <code>unet()</code> instead of <code>unet3d()</code> &mdash; this creates a 2D network that misinterprets the depth dimension as channels. A runtime-breaking error the model didn't catch without the skill.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-fail">Runtime Error</span>
+        <span class="verdict-text" contenteditable="true">Without the skill, the model used <code>unet()</code> for a 3D task. This would create a 2D network treating depth as channels &mdash; completely wrong architecture. The skill's knowledge card explicitly distinguishes <code>unet</code> (2D) from <code>unet3d</code> (3D) and recommends <code>NumFirstEncoderFilters=32</code> for GPU memory.</span>
+    </div>
+</div>
+
+<!-- ═══════════════ EXAMPLE 2: dldwt ═══════════════ -->
+<div class="example">
+    <div class="ex-header">
+        <h2 contenteditable="true"><span class="skill-tag tag-wt">Wavelet</span> Differentiable Wavelet Transform (dldwt) in Deep Learning</h2>
+        <div class="prompt-box" contenteditable="true">Write MATLAB R2025b code to use the differentiable discrete wavelet transform (dldwt) inside a deep learning pipeline. Show how to decompose an image using dldwt and reconstruct with dlidwt. Explain the output format.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill</span></div>
+            <pre><code>% dldwt returns exactly 2 outputs: [A, D]
+<span class="hl">imgDL = dlarray(img, 'SSCB');</span>
+<span class="hl">[A, D] = dldwt(imgDL, 'db4');</span>
+
+% D is a SINGLE 3D dlarray with subbands
+% concatenated along channel dimension:
+<span class="hl">%   D(:,:,1,:) = Horizontal details</span>
+<span class="hl">%   D(:,:,2,:) = Vertical details</span>
+<span class="hl">%   D(:,:,3,:) = Diagonal details</span>
+
+% Reconstruct
+imgRec = dlidwt(A, D, 'db4', ...
+    OutputSize=size(img,1:2));</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Correctly documents that <code>D</code> is a single dlarray with subbands stacked along the channel dimension. Uses <code>SSCB</code> format. Verified by runtime: <code>[A,D] = dldwt(x)</code> returns D as <code>[4x4x3]</code>.</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill</span></div>
+            <pre><code>% dldwt returns 2 outputs: [A, D]
+X = dlarray(img, "SSC");
+[A, D] = dldwt(X, "haar");
+
+<span class="err">% D is a struct with fields lh, hl, hh</span>
+<span class="err">fprintf("D.lh size: %s\n", mat2str(size(D.lh)));</span>
+<span class="err">fprintf("D.hl size: %s\n", mat2str(size(D.hl)));</span>
+<span class="err">fprintf("D.hh size: %s\n", mat2str(size(D.hh)));</span>
+
+% Reconstruct
+X_rec = dlidwt(A, D, "haar");</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Incorrectly describes <code>D</code> as a struct with <code>.lh/.hl/.hh</code> fields. In reality, <code>D</code> is a plain dlarray with subbands concatenated on dim 3. Accessing <code>D.lh</code> would error. Also uses <code>SSC</code> format instead of the required <code>SSCB</code>/<code>CBT</code>.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-fail">Wrong API Description</span>
+        <span class="verdict-text" contenteditable="true">The without-skill output describes <code>dldwt</code>'s detail output as a struct &mdash; this is wrong. Runtime verification proved <code>D</code> is a plain dlarray (<code>iscell(D)=false</code>, <code>isa(D,'dlarray')=true</code>, size <code>[4x4x3]</code>). The skill's knowledge card has the exact output format documented.</span>
+    </div>
+</div>
+
+<!-- ═══════════════ EXAMPLE 3: Survival Analysis ═══════════════ -->
+<div class="example">
+    <div class="ex-header">
+        <h2 contenteditable="true"><span class="skill-tag tag-sm">Stats-ML</span> Survival Analysis &mdash; Drug A vs Drug B</h2>
+        <div class="prompt-box" contenteditable="true">Write MATLAB R2025b code to compare survival between two treatment groups (Drug A vs Drug B). Plot Kaplan-Meier curves and test if the difference is statistically significant.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill</span></div>
+            <pre><code>% IMPORTANT: logrank() does NOT exist in MATLAB
+% Use coxphfit with group covariate instead
+
+<span class="hl">% Kaplan-Meier with confidence intervals</span>
+<span class="hl">[f, x, flo, fup] = ecdf(time, ...</span>
+<span class="hl">    'Function','survivor', ...</span>
+<span class="hl">    'Censoring', ~logical(event));</span>
+
+% Cox regression (log-rank equivalent)
+<span class="hl">[b, logl, H, stats] = coxphfit(</span>
+<span class="hl">    groupNumeric, T, ...</span>
+<span class="hl">    'Censoring', censoringVec);</span>
+
+% Hazard ratio with CI
+<span class="hl">HR = exp(b);</span>
+<span class="hl">HR_CI = exp(b ± 1.96*stats.se);</span>
+
+% Proportional hazards check
+% log-log plot: log(-log(S(t))) vs log(t)</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Knows <code>logrank()</code> doesn't exist. Uses <code>coxphfit</code> + Wald test as log-rank equivalent. Includes 95% CI bands, hazard ratio, proportional hazards check, and clinical significance thresholds (HR&gt;1.5).</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill</span></div>
+            <pre><code>% Note: MATLAB does not have logrank()
+% Use coxphfit() with group indicator
+
+% Kaplan-Meier with confidence intervals
+[fA, xA, floA, fupA] = ecdf(T.Time(idxA), ...
+    'Function','survivor', ...
+    'Censoring', ~logical(T.Event(idxA)));
+
+% Cox regression
+[b, logl, H, stats] = coxphfit(
+    GroupNumeric, T.Time, ...
+    'Censoring', ~logical(T.Event));
+
+% Report hazard ratio
+HR = exp(b);
+fprintf('HR = %.3f, p = %.4f\n', HR, stats.p);</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Also correctly avoids <code>logrank()</code> and uses <code>coxphfit</code>. Both outputs pass assertions here &mdash; but the with-skill version adds clinical context (HR interpretation, PH check, number-at-risk table) that makes it production-ready.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-pass">Both Correct</span>
+        <span class="verdict-text" contenteditable="true">Both outputs use the right API. Opus 4.6 already knows <code>logrank()</code> doesn't exist. The skill's advantage here is <strong>domain depth</strong>: proportional hazards checking, clinical significance thresholds, and number-at-risk tables that clinicians expect.</span>
+    </div>
+</div>
+
+<!-- ═══════════════ EXAMPLE 4: Filter Padding ═══════════════ -->
+<div class="example">
+    <div class="ex-header">
+        <h2 contenteditable="true"><span class="skill-tag tag-ip">Image Processing</span> Filter Padding Awareness for MRI</h2>
+        <div class="prompt-box" contenteditable="true">Write MATLAB R2025b code to apply Gaussian filtering to an MRI brain image without introducing dark borders. Show both the correct and incorrect approach.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill</span></div>
+            <pre><code>% Rician noise model (physically correct for MRI)
+<span class="hl">noise_real = sigma * randn(size(mri));</span>
+<span class="hl">noise_imag = sigma * randn(size(mri));</span>
+<span class="hl">mri = sqrt((clean+noise_real).^2+noise_imag.^2);</span>
+
+% INCORRECT: imfilter zero-pads by default
+<span class="err">bad = imfilter(mri, h);  % Dark borders!</span>
+
+% CORRECT: imgaussfilt uses 'replicate'
+<span class="hl">good = imgaussfilt(mri, 2);  % Safe default</span>
+
+% Also correct: explicit replicate
+good2 = imfilter(mri, h, 'replicate');
+
+% Quantitative impact measurement
+<span class="hl">border_drop = mean(bad(1:10,:)) - mean(good(1:10,:));</span></code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Uses Rician noise model (MRI-specific), quantifies the border intensity drop, and explains why dark borders are dangerous for downstream segmentation. Guided by the skill's knowledge card on modality-specific denoising.</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill</span></div>
+            <pre><code>% Load built-in MRI dataset
+load mri; img = double(D(:,:,1,15));
+
+% INCORRECT: imfilter zero-pads by default
+bad = imfilter(img, h);  % Dark borders
+
+% CORRECT: imgaussfilt defaults to replicate
+good = imgaussfilt(img, 2);  % Safe
+
+% Also correct: explicit replicate
+good2 = imfilter(img, h, 'replicate');
+
+% Visual comparison
+figure; montage({bad, good, good2});</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Also correctly identifies the padding difference &mdash; this is well-known IPT knowledge. But uses Gaussian noise instead of Rician (wrong MRI noise model) and doesn't quantify the border artifact impact.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-pass">Both Correct</span>
+        <span class="verdict-text" contenteditable="true">Both pass the padding assertions. The skill adds <strong>medical domain depth</strong>: Rician noise simulation (physically accurate for MRI magnitude images), quantitative border-error measurement, and clinical impact explanation. This is the pattern across well-known toolboxes &mdash; skills add domain expertise beyond API correctness.</span>
+    </div>
+</div>
+
+<!-- ═══════════════ EXAMPLE 5: Medical Volume Viz ═══════════════ -->
+<div class="example">
+    <div class="ex-header">
+        <h2 contenteditable="true"><span class="skill-tag tag-mi">Medical Imaging</span> 3D Volume Visualization with Segmentation Overlay</h2>
+        <div class="prompt-box" contenteditable="true">Load a brain MRI NIfTI volume and its tumor segmentation mask, then visualize with colored segmentation overlay and an interactive slice viewer.</div>
+    </div>
+    <div class="side-by-side">
+        <div class="side">
+            <div class="side-label"><span class="dot dot-with"></span> <span contenteditable="true">With Skill</span></div>
+            <pre><code>% Load with spatial referencing preserved
+<span class="hl">V_mri = medicalVolume(mriFile);</span>
+<span class="hl">V_mri.Modality = 'MR';</span>  % NIfTI lacks modality
+
+% 3D rendering with overlay
+<span class="hl">volshow(V_mri.Voxels, ...</span>
+<span class="hl">    OverlayData=V_mask.Voxels, ...</span>
+<span class="hl">    OverlayColormap=labelColors, ...</span>
+<span class="hl">    OverlayAlphamap=labelAlpha);</span>
+
+% Interactive slice browser
+<span class="hl">sliceViewer(V_mri);</span>
+
+% 6 visualization figures total:
+% 3D render, MIPs, isosurfaces,
+% contour overlays, slice browser,
+% best-slice with legend</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Uses <code>medicalVolume</code> (preserves spatial referencing, per skill Rule 2), <code>volshow</code> with <code>OverlayData</code> (correct R2025b API), produces 6 distinct visualization types. Would error if <code>labelvolshow</code> was used.</p>
+        </div>
+        <div class="side">
+            <div class="side-label"><span class="dot dot-without"></span> <span contenteditable="true">Without Skill</span></div>
+            <pre><code>% Load with niftiread + imref3d
+data = niftiread(mriFile);
+info = niftiinfo(mriFile);
+R = imref3d(info.ImageSize, ...
+    info.PixelDimensions);
+
+% 3D rendering with overlay
+volshow(data, ...
+    'OverlayData', mask, ...
+    'OverlayColormap', cmap, ...
+    'OverlayAlphamap', amap);
+
+% Interactive slice browser
+sliceViewer(data);
+
+% 3 visualization outputs:
+% 3D render, slice browser,
+% multi-panel 2D overlay</code></pre>
+            <p contenteditable="true" style="color:var(--text2); font-size:0.82rem; margin-top:8px;">Also correctly uses <code>volshow</code> with <code>OverlayData</code> (avoids removed <code>labelvolshow</code>). But uses raw <code>niftiread</code> instead of <code>medicalVolume</code>, losing spatial referencing metadata. Produces fewer visualization types.</p>
+        </div>
+    </div>
+    <div class="verdict">
+        <span class="verdict-badge vb-pass">Both Correct API</span>
+        <span class="verdict-text" contenteditable="true">Both correctly avoid <code>labelvolshow</code> (removed in R2025b) and use <code>volshow</code> with <code>OverlayData</code>. The skill-augmented version uses <code>medicalVolume</code> for proper spatial referencing, produces 6 visualization types vs 3, and includes clinical conventions (BraTS label colors).</span>
+    </div>
+</div>
+
+<!-- Summary callout -->
+<div class="callout">
+    <h3 contenteditable="true">What These Examples Show</h3>
+    <p contenteditable="true"><strong>API-breaking errors</strong> (Examples 1&ndash;2): The skill prevents using wrong functions (<code>unet</code> vs <code>unet3d</code>) and wrong output descriptions (<code>dldwt</code> struct vs dlarray). These cause runtime crashes.<br><br>
+    <strong>Domain depth</strong> (Examples 3&ndash;5): When the model already knows the API, the skill adds clinical best practices (Rician noise, hazard ratios, spatial referencing) and production-ready workflows that domain experts expect. Both types of value are invisible to simple assertion tests but clearly detected by blind quality comparison.</p>
+</div>
+
+<div class="footer">
+    <p contenteditable="true">MATLAB Toolbox Skills &mdash; Side-by-Side Walkthrough &mdash; March 2026</p>
+</div>
+
+</div>
+
+<script>
+function sv(n,v){document.documentElement.style.setProperty(n,v)}
+const P={
+    dark:{'--bg':'#0f172a','--bg2':'#1e293b','--text':'#f1f5f9','--text2':'#94a3b8','--text3':'#64748b','--accent':'#3b82f6','--accentL':'#60a5fa','--border':'#334155'},
+    light:{'--bg':'#f8fafc','--bg2':'#ffffff','--text':'#1e293b','--text2':'#475569','--text3':'#94a3b8','--accent':'#2563eb','--accentL':'#3b82f6','--border':'#e2e8f0'},
+    midnight:{'--bg':'#0a0a0f','--bg2':'#12121a','--text':'#e0e0ee','--text2':'#8888aa','--text3':'#555577','--accent':'#8b5cf6','--accentL':'#a78bfa','--border':'#222233'},
+    ocean:{'--bg':'#0c1929','--bg2':'#132f4c','--text':'#e3f2fd','--text2':'#90caf9','--text3':'#5c8db5','--accent':'#039be5','--accentL':'#4fc3f7','--border':'#1a4a6e'},
+    forest:{'--bg':'#0d1f12','--bg2':'#162b1b','--text':'#e8f5e9','--text2':'#a5d6a7','--text3':'#5a8a5e','--accent':'#43a047','--accentL':'#66bb6a','--border':'#1e4620'}
+};
+function applyP(n,el){Object.entries(P[n]).forEach(([k,v])=>sv(k,v));document.querySelectorAll('.preset').forEach(b=>b.classList.remove('on'));el.classList.add('on')}
+document.addEventListener('click',e=>{const p=document.getElementById('pp'),t=document.querySelector('.pal-toggle');if(p.classList.contains('open')&&!p.contains(e.target)&&!t.contains(e.target))p.classList.remove('open')});
+</script>
+</body>
+</html>
