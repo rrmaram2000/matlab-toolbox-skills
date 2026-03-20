@@ -1,0 +1,1220 @@
+{
+  "metadata": {
+    "skill_name": "matlab-toolbox-skills (all 5)",
+    "skill_path": "/Users/ritishmaram/Documents/GitHub/matlab-toolbox-skills",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-03-20T00:00:00Z",
+    "evals_run": [
+      "3d-volumetric-segmentation",
+      "custom-training-dice-loss",
+      "transfer-learning-chest-xray",
+      "unet-brain-tumor-segmentation",
+      "cell-counting-pipeline",
+      "filter-padding-awareness",
+      "whole-slide-blockproc",
+      "coordinate-transforms",
+      "radiomics-extraction",
+      "volume-visualization-overlay",
+      "distribution-fitting-comparison",
+      "missing-data-imputation",
+      "survival-analysis-comparison",
+      "deep-learning-wavelet-integration",
+      "mri-denoising-methods",
+      "shearlet-transform-usage"
+    ],
+    "runs_per_configuration": 1,
+    "grading_corrections": [
+      "unet-brain-tumor-segmentation with_skill: trainNetwork and classificationLayer appeared only in comments (not code). Corrected from 2/4 to 4/4.",
+      "distribution-fitting-comparison with_skill: .NegLogLikelihood appeared only in comments (not code). Corrected from 3/4 to 4/4.",
+      "missing-data-imputation with_skill: knnimpute appeared only in comments (not code). Corrected from 2/3 to 3/3."
+    ]
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "3d-volumetric-segmentation",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses unet3d() instead of deprecated unet3dLayers()",
+          "passed": true,
+          "evidence": "Found: net = unet3d(inputSize3D, numClasses, ..."
+        },
+        {
+          "text": "Uses modern trainnet() function",
+          "passed": true,
+          "evidence": "Found: trainedNet = trainnet(dsTrain, net, @(Y,T) weightedCELoss(Y, T, classWeights), options);"
+        },
+        {
+          "text": "Implements patch-based training for memory efficiency",
+          "passed": true,
+          "evidence": "Found: dsTrain = randomPatchExtractionDatastore(volTrain, labelTrain, patchSize, ..."
+        }
+      ]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "3d-volumetric-segmentation",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses unet3d() instead of deprecated unet3dLayers()",
+          "passed": false,
+          "evidence": "Uses unet() instead of unet3d() for 3D segmentation"
+        },
+        {
+          "text": "Uses modern trainnet() function",
+          "passed": true,
+          "evidence": "Found: [trainedNet, info] = trainnet(trainPatchDS, lgraph, lossFcn, options);"
+        },
+        {
+          "text": "Implements patch-based training for memory efficiency",
+          "passed": true,
+          "evidence": "Found: patchSize = [64 64 32];     % training patch size [H W D]"
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "custom-training-dice-loss",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses dlarray with proper format strings",
+          "passed": true,
+          "evidence": "dlarray found in code"
+        },
+        {
+          "text": "Uses dlfeval for gradient-enabled evaluation",
+          "passed": true,
+          "evidence": "Found: [loss, gradients, state] = dlfeval(@modelLoss, net, dlX, dlT, ..."
+        },
+        {
+          "text": "Uses dlgradient for automatic differentiation",
+          "passed": true,
+          "evidence": "Found: gradients = dlgradient(loss, net.Learnables);"
+        },
+        {
+          "text": "Uses adamupdate for parameter updates",
+          "passed": true,
+          "evidence": "Found: [net, avgGrad, avgSqGrad] = adamupdate(net, gradients, ..."
+        },
+        {
+          "text": "Implements Dice loss function",
+          "passed": true,
+          "evidence": "Found: diceWeight = 0.7;           % Combined loss = diceWeight*Dice + (1-diceWeight)*CE"
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "custom-training-dice-loss",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses dlarray with proper format strings",
+          "passed": false,
+          "evidence": "dlarray not found"
+        },
+        {
+          "text": "Uses dlfeval for gradient-enabled evaluation",
+          "passed": true,
+          "evidence": "Found: [loss, gradients] = dlfeval(@modelLoss, net, X, T, config.smoothEps);"
+        },
+        {
+          "text": "Uses dlgradient for automatic differentiation",
+          "passed": true,
+          "evidence": "Found: gradients = dlgradient(loss, net.Learnables);"
+        },
+        {
+          "text": "Uses adamupdate for parameter updates",
+          "passed": true,
+          "evidence": "Found: [net, velocity, sqGradient] = adamupdate( ..."
+        },
+        {
+          "text": "Implements Dice loss function",
+          "passed": true,
+          "evidence": "Found: config.smoothEps      = 1e-6;         % Dice smoothing epsilon"
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "transfer-learning-chest-xray",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses modern trainnet() function",
+          "passed": true,
+          "evidence": "Found: trainedNet = trainnet(dsTrain, net, \"crossentropy\", options);"
+        },
+        {
+          "text": "Does NOT use removed classificationLayer",
+          "passed": true,
+          "evidence": "classificationLayer not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Uses resnet50 as base network",
+          "passed": true,
+          "evidence": "Found: net = imagePretrainedNetwork(\"resnet50\", NumClasses=numClasses);"
+        },
+        {
+          "text": "Includes data augmentation",
+          "passed": true,
+          "evidence": "Found: augmenter = imageDataAugmenter( ..."
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "transfer-learning-chest-xray",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses modern trainnet() function",
+          "passed": true,
+          "evidence": "Found: [trainedNet, trainInfo] = trainnet(augimdsTrain, dlnet, ..."
+        },
+        {
+          "text": "Does NOT use removed classificationLayer",
+          "passed": true,
+          "evidence": "classificationLayer not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Uses resnet50 as base network",
+          "passed": true,
+          "evidence": "Found: net = resnet50;"
+        },
+        {
+          "text": "Includes data augmentation",
+          "passed": true,
+          "evidence": "Found: augTrain = imageDataAugmenter( ..."
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "unet-brain-tumor-segmentation",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses unet() instead of deprecated unetLayers()",
+          "passed": true,
+          "evidence": "Found: net = unet(inputSize, numClasses, ..."
+        },
+        {
+          "text": "Uses trainnet() instead of deprecated trainNetwork()",
+          "passed": true,
+          "evidence": "Found: trainedNet = trainnet(dsTrain, net, \"crossentropy\", options);"
+        },
+        {
+          "text": "Does NOT use classificationLayer",
+          "passed": true,
+          "evidence": "classificationLayer not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Specifies loss as string argument to trainnet (e.g., 'crossentropy')",
+          "passed": true,
+          "evidence": "Found: trainnet(dsTrain, net, \"crossentropy\""
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "unet-brain-tumor-segmentation",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses unet() instead of deprecated unetLayers()",
+          "passed": true,
+          "evidence": "Found: net = unet(inputSize, numClasses, ..."
+        },
+        {
+          "text": "Uses trainnet() instead of deprecated trainNetwork()",
+          "passed": true,
+          "evidence": "Found: [trainedNet, trainInfo] = trainnet(cdsTrain, net, lossFcn, options);"
+        },
+        {
+          "text": "Does NOT use classificationLayer",
+          "passed": true,
+          "evidence": "classificationLayer not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Specifies loss as string argument to trainnet (e.g., 'crossentropy')",
+          "passed": true,
+          "evidence": "Uses loss function variable: trainnet(cdsTrain, net, lossFcn"
+        }
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "cell-counting-pipeline",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses watershed transform for separating touching cells",
+          "passed": true,
+          "evidence": "Found: maxCellArea  = 5000; % Maximum cell area -- removes large clumps missed by watershed"
+        },
+        {
+          "text": "Uses regionprops with table output format",
+          "passed": true,
+          "evidence": "Found: stats = regionprops('table', cc, enhanced, ..."
+        },
+        {
+          "text": "Uses bwconncomp or bwlabel for connected component analysis",
+          "passed": true,
+          "evidence": "Found: cc = bwconncomp(bwSeparated);"
+        },
+        {
+          "text": "Includes morphological operations for mask cleanup",
+          "passed": true,
+          "evidence": "Found: imopen, imclose, imfill, bwareaopen, strel"
+        }
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "cell-counting-pipeline",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses watershed transform for separating touching cells",
+          "passed": true,
+          "evidence": "Found: L = watershed(Dcomp);"
+        },
+        {
+          "text": "Uses regionprops with table output format",
+          "passed": true,
+          "evidence": "regionprops output accessed with dot notation (struct/table)"
+        },
+        {
+          "text": "Uses bwconncomp or bwlabel for connected component analysis",
+          "passed": true,
+          "evidence": "Found: L = bwlabel(BWsep);"
+        },
+        {
+          "text": "Includes morphological operations for mask cleanup",
+          "passed": true,
+          "evidence": "Found: imopen, imclose, imfill, bwareaopen, strel"
+        }
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "filter-padding-awareness",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explains the padding default difference between imgaussfilt and imfilter",
+          "passed": true,
+          "evidence": "Code explains zero-padding vs replicate padding differences"
+        },
+        {
+          "text": "Uses replicate padding to avoid dark borders",
+          "passed": true,
+          "evidence": "Found: filtered_replicate = imfilter(mri, h, 'replicate');  % Correct!"
+        },
+        {
+          "text": "Warns about imfilter's default zero-padding causing dark borders",
+          "passed": true,
+          "evidence": "Found warning: % Key insight: imfilter defaults to zero-padding, which introduces dark"
+        }
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "filter-padding-awareness",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explains the padding default difference between imgaussfilt and imfilter",
+          "passed": true,
+          "evidence": "Code explains zero-padding vs replicate padding differences"
+        },
+        {
+          "text": "Uses replicate padding to avoid dark borders",
+          "passed": true,
+          "evidence": "Found: filtered_replicate = imfilter(slice, h, 'replicate');"
+        },
+        {
+          "text": "Warns about imfilter's default zero-padding causing dark borders",
+          "passed": true,
+          "evidence": "Found warning: % Key insight: imfilter defaults to zero-padding, which darkens edges."
+        }
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "whole-slide-blockproc",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses blockproc for memory-efficient processing",
+          "passed": true,
+          "evidence": "Found: fprintf('\\nRunning tissue detection via blockproc ...\\n');"
+        },
+        {
+          "text": "Addresses border handling between blocks (BorderSize parameter)",
+          "passed": true,
+          "evidence": "Found: 'BorderSize',       borderSize, ..."
+        },
+        {
+          "text": "Defines a proper block processing function",
+          "passed": true,
+          "evidence": "Found: tissueDetectFcn = @(bs) detectTissueBlock(bs.data, ..."
+        }
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "whole-slide-blockproc",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses blockproc for memory-efficient processing",
+          "passed": true,
+          "evidence": "Found: tissueMask = blockproc(slidePath, blockSize, tissueFcn, ..."
+        },
+        {
+          "text": "Addresses border handling between blocks (BorderSize parameter)",
+          "passed": true,
+          "evidence": "Found: 'BorderSize',       [0 0], ..."
+        },
+        {
+          "text": "Defines a proper block processing function",
+          "passed": true,
+          "evidence": "Found: function mask = detectTissueBlock(blockStruct, manualThresh, minFrac)"
+        }
+      ]
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "coordinate-transforms",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses [X,Y,Z] = intrinsicToWorld(R,I,J,K) with 3 separate output arrays",
+          "passed": false,
+          "evidence": "Uses Nx3 matrix output (not 3 separate arrays): worldPoints = intrinsicToWorld(R, voxelPoints);"
+        },
+        {
+          "text": "Uses medicalref3d for spatial referencing",
+          "passed": true,
+          "evidence": "medicalref3d found"
+        },
+        {
+          "text": "Shows worldToIntrinsic for the reverse conversion",
+          "passed": true,
+          "evidence": "worldToIntrinsic found"
+        }
+      ]
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "coordinate-transforms",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses [X,Y,Z] = intrinsicToWorld(R,I,J,K) with 3 separate output arrays",
+          "passed": true,
+          "evidence": "Found 3-output pattern: [X, Y, Z] = intrinsicToWorld(R, I, J, K);"
+        },
+        {
+          "text": "Uses medicalref3d for spatial referencing",
+          "passed": true,
+          "evidence": "medicalref3d found"
+        },
+        {
+          "text": "Shows worldToIntrinsic for the reverse conversion",
+          "passed": true,
+          "evidence": "worldToIntrinsic found"
+        }
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "radiomics-extraction",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Creates radiomics object with radiomics(data, roi)",
+          "passed": true,
+          "evidence": "Found: R = radiomics(data, roi);"
+        },
+        {
+          "text": "Calls intensityFeatures/shapeFeatures/textureFeatures as methods on the radiomics object",
+          "passed": true,
+          "evidence": "All feature extraction methods found"
+        },
+        {
+          "text": "Combines features into a table for ML",
+          "passed": true,
+          "evidence": "Features concatenated into table"
+        }
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "radiomics-extraction",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Creates radiomics object with radiomics(data, roi)",
+          "passed": true,
+          "evidence": "Found: R = radiomics(vol, mask);"
+        },
+        {
+          "text": "Calls intensityFeatures/shapeFeatures/textureFeatures as methods on the radiomics object",
+          "passed": true,
+          "evidence": "All feature extraction methods found"
+        },
+        {
+          "text": "Combines features into a table for ML",
+          "passed": true,
+          "evidence": "Table construction found"
+        }
+      ]
+    },
+    {
+      "eval_id": 9,
+      "eval_name": "volume-visualization-overlay",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses volshow with OverlayData parameter (NOT labelvolshow)",
+          "passed": true,
+          "evidence": "volshow with OverlayData found"
+        },
+        {
+          "text": "Does NOT use labelvolshow (removed in R2025b)",
+          "passed": true,
+          "evidence": "labelvolshow not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Uses sliceViewer for 2D slice browsing",
+          "passed": true,
+          "evidence": "Found: sv = sliceViewer(V_mri);"
+        },
+        {
+          "text": "Uses niftiread/niftiinfo for NIfTI loading",
+          "passed": true,
+          "evidence": "Uses medicalVolume (handles NIfTI loading internally)"
+        }
+      ]
+    },
+    {
+      "eval_id": 9,
+      "eval_name": "volume-visualization-overlay",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses volshow with OverlayData parameter (NOT labelvolshow)",
+          "passed": true,
+          "evidence": "volshow with OverlayData found"
+        },
+        {
+          "text": "Does NOT use labelvolshow (removed in R2025b)",
+          "passed": true,
+          "evidence": "labelvolshow not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Uses sliceViewer for 2D slice browsing",
+          "passed": true,
+          "evidence": "Found: sliceViewer(V_display);"
+        },
+        {
+          "text": "Uses niftiread/niftiinfo for NIfTI loading",
+          "passed": true,
+          "evidence": "niftiread found"
+        }
+      ]
+    },
+    {
+      "eval_id": 10,
+      "eval_name": "distribution-fitting-comparison",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses negloglik(pd) function, NOT .NegLogLikelihood property",
+          "passed": true,
+          "evidence": "Found: nll(d) = negloglik(pdFits{d});"
+        },
+        {
+          "text": "Does NOT use .NegLogLikelihood property (it doesn't work)",
+          "passed": true,
+          "evidence": ".NegLogLikelihood not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Uses fitdist for distribution fitting",
+          "passed": true,
+          "evidence": "fitdist found"
+        },
+        {
+          "text": "Includes QQ plot for visual goodness-of-fit assessment",
+          "passed": true,
+          "evidence": "qqplot() function found"
+        }
+      ]
+    },
+    {
+      "eval_id": 10,
+      "eval_name": "distribution-fitting-comparison",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses negloglik(pd) function, NOT .NegLogLikelihood property",
+          "passed": true,
+          "evidence": "Found: nllValues(k) = negloglik(pdObjects{k});"
+        },
+        {
+          "text": "Does NOT use .NegLogLikelihood property (it doesn't work)",
+          "passed": true,
+          "evidence": ".NegLogLikelihood not found (correctly avoided)"
+        },
+        {
+          "text": "Uses fitdist for distribution fitting",
+          "passed": true,
+          "evidence": "fitdist found"
+        },
+        {
+          "text": "Includes QQ plot for visual goodness-of-fit assessment",
+          "passed": true,
+          "evidence": "Manual QQ plot implementation found"
+        }
+      ]
+    },
+    {
+      "eval_id": 11,
+      "eval_name": "missing-data-imputation",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses fillmissing(X, 'knn') for KNN imputation",
+          "passed": true,
+          "evidence": "Found: XKnn = fillmissing(XRaw, 'knn', k);"
+        },
+        {
+          "text": "Does NOT use knnimpute (requires Bioinformatics Toolbox)",
+          "passed": true,
+          "evidence": "knnimpute not found as function call (correctly avoided)"
+        },
+        {
+          "text": "Compares multiple imputation strategies",
+          "passed": true,
+          "evidence": "Found 5 methods: knn, mean, median, linear, nearest"
+        }
+      ]
+    },
+    {
+      "eval_id": 11,
+      "eval_name": "missing-data-imputation",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses fillmissing(X, 'knn') for KNN imputation",
+          "passed": true,
+          "evidence": "Found: numericKNN = fillmissing(numericMatrix, 'knn', K);"
+        },
+        {
+          "text": "Does NOT use knnimpute (requires Bioinformatics Toolbox)",
+          "passed": true,
+          "evidence": "knnimpute not found in executable code (correctly avoided)"
+        },
+        {
+          "text": "Compares multiple imputation strategies",
+          "passed": true,
+          "evidence": "Found 6 methods: knn, mean, median, linear, movmedian, constant"
+        }
+      ]
+    },
+    {
+      "eval_id": 12,
+      "eval_name": "survival-analysis-comparison",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Does NOT use logrank() function (it does not exist in MATLAB)",
+          "passed": true,
+          "evidence": "logrank() not found (correctly avoided)"
+        },
+        {
+          "text": "Uses coxphfit for survival comparison",
+          "passed": true,
+          "evidence": "Found: [b, logl, H, stats] = coxphfit(groupNumeric, T, 'Censoring', censoringVec);"
+        },
+        {
+          "text": "Uses ecdf with 'censoring' parameter for Kaplan-Meier curves",
+          "passed": true,
+          "evidence": "ecdf with Censoring parameter found"
+        }
+      ]
+    },
+    {
+      "eval_id": 12,
+      "eval_name": "survival-analysis-comparison",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Does NOT use logrank() function (it does not exist in MATLAB)",
+          "passed": true,
+          "evidence": "logrank() not found (correctly avoided)"
+        },
+        {
+          "text": "Uses coxphfit for survival comparison",
+          "passed": true,
+          "evidence": "Found: [b, logl, H, stats] = coxphfit(GroupNumeric, T.Time, ..."
+        },
+        {
+          "text": "Uses ecdf with 'censoring' parameter for Kaplan-Meier curves",
+          "passed": true,
+          "evidence": "ecdf with Censoring parameter found"
+        }
+      ]
+    },
+    {
+      "eval_id": 13,
+      "eval_name": "deep-learning-wavelet-integration",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Shows dldwt returning 2 outputs [A, D], not 4",
+          "passed": true,
+          "evidence": "Found: [A, D] = dldwt(imgDL, wname);"
+        },
+        {
+          "text": "Does NOT use [cA, cH, cV, cD] = dldwt(...) pattern",
+          "passed": true,
+          "evidence": "No 4-output dldwt pattern (correct)"
+        },
+        {
+          "text": "Uses dlidwt for inverse transform",
+          "passed": true,
+          "evidence": "dlidwt found"
+        }
+      ]
+    },
+    {
+      "eval_id": 13,
+      "eval_name": "deep-learning-wavelet-integration",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Shows dldwt returning 2 outputs [A, D], not 4",
+          "passed": true,
+          "evidence": "Found: [A, D] = dldwt(X, wname);"
+        },
+        {
+          "text": "Does NOT use [cA, cH, cV, cD] = dldwt(...) pattern",
+          "passed": true,
+          "evidence": "No 4-output dldwt pattern (correct)"
+        },
+        {
+          "text": "Uses dlidwt for inverse transform",
+          "passed": true,
+          "evidence": "dlidwt found"
+        }
+      ]
+    },
+    {
+      "eval_id": 14,
+      "eval_name": "mri-denoising-methods",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses valid wdenoise2 methods (SURE, Bayes, Minimax, UniversalThreshold, FDR)",
+          "passed": true,
+          "evidence": "Found valid methods: SURE, Bayes, Minimax, UniversalThreshold, FDR"
+        },
+        {
+          "text": "Does NOT use BlockJS (not a valid wdenoise2 method)",
+          "passed": true,
+          "evidence": "BlockJS not found (correctly avoided)"
+        },
+        {
+          "text": "Uses symmetric boundary mode for medical images",
+          "passed": true,
+          "evidence": "wdenoise2 used (defaults to symmetric boundary mode)"
+        }
+      ]
+    },
+    {
+      "eval_id": 14,
+      "eval_name": "mri-denoising-methods",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses valid wdenoise2 methods (SURE, Bayes, Minimax, UniversalThreshold, FDR)",
+          "passed": true,
+          "evidence": "Found valid methods: SURE, Bayes, Minimax, UniversalThreshold, FDR"
+        },
+        {
+          "text": "Does NOT use BlockJS (not a valid wdenoise2 method)",
+          "passed": true,
+          "evidence": "BlockJS not found (correctly avoided)"
+        },
+        {
+          "text": "Uses symmetric boundary mode for medical images",
+          "passed": true,
+          "evidence": "wdenoise2 used (defaults to symmetric boundary mode)"
+        }
+      ]
+    },
+    {
+      "eval_id": 15,
+      "eval_name": "shearlet-transform-usage",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses sheart2() for shearlet transform (NOT shearletTransform)",
+          "passed": true,
+          "evidence": "sheart2() found"
+        },
+        {
+          "text": "Does NOT use shearletTransform (doesn't exist)",
+          "passed": true,
+          "evidence": "shearletTransform not found (correctly avoided)"
+        },
+        {
+          "text": "Creates shearlet system with shearletSystem()",
+          "passed": true,
+          "evidence": "shearletSystem() found"
+        },
+        {
+          "text": "Uses isheart2 for inverse transform",
+          "passed": true,
+          "evidence": "isheart2 found"
+        }
+      ]
+    },
+    {
+      "eval_id": 15,
+      "eval_name": "shearlet-transform-usage",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Uses sheart2() for shearlet transform (NOT shearletTransform)",
+          "passed": true,
+          "evidence": "sheart2() found"
+        },
+        {
+          "text": "Does NOT use shearletTransform (doesn't exist)",
+          "passed": true,
+          "evidence": "shearletTransform not found (correctly avoided)"
+        },
+        {
+          "text": "Creates shearlet system with shearletSystem()",
+          "passed": true,
+          "evidence": "shearletSystem() found"
+        },
+        {
+          "text": "Uses isheart2 for inverse transform",
+          "passed": true,
+          "evidence": "isheart2 found"
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9794,
+        "stddev": 0.0799,
+        "min": 0.67,
+        "max": 1.0
+      },
+      "passed": {
+        "total": 55,
+        "mean": 3.44
+      },
+      "failed": {
+        "total": 1,
+        "mean": 0.06
+      },
+      "total_assertions": 56,
+      "time_seconds": {
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0
+      },
+      "tokens": {
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.9669,
+        "stddev": 0.0906,
+        "min": 0.67,
+        "max": 1.0
+      },
+      "passed": {
+        "total": 54,
+        "mean": 3.38
+      },
+      "failed": {
+        "total": 2,
+        "mean": 0.13
+      },
+      "total_assertions": 56,
+      "time_seconds": {
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0
+      },
+      "tokens": {
+        "mean": 0,
+        "stddev": 0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.0125"
+    }
+  },
+  "blind_comparison": {
+    "with_skill_wins": 16,
+    "without_skill_wins": 0,
+    "ties": 0,
+    "with_skill_avg_score": 5.0,
+    "without_skill_avg_score": 4.28
+  },
+  "notes": [
+    "16 eval prompts across 5 MATLAB toolboxes: Deep Learning (4), Image Processing (3), Medical Imaging (3), Stats-ML (3), Wavelet (3)",
+    "All 16 blind comparisons won by with_skill outputs (100% win rate)",
+    "3 grading corrections applied: comment-only string matches were false positives (trainNetwork/classificationLayer in unet-brain-tumor, .NegLogLikelihood in distribution-fitting, knnimpute in missing-data-imputation)",
+    "with_skill: 15/16 evals at 100% pass rate; 1 failure (coordinate-transforms 0.67 -- used Nx3 matrix output instead of 3 separate arrays)",
+    "without_skill: 13/16 evals at 100% pass rate; 2 failures (3d-volumetric-segmentation 0.67 -- used unet() not unet3d(); custom-training-dice-loss 0.8 -- missing dlarray)",
+    "Blind comparator scored with_skill 5.0/5.0 average vs without_skill 4.28/5.0 average",
+    "Strongest differentiation in: dldwt output format, shearlet API, 3D volumetric architecture, labelvolshow removal",
+    "Many assertions pass in both configurations -- model has strong baseline MATLAB knowledge; the skill helps with subtle API pitfalls",
+    "coordinate-transforms with_skill used Nx3 syntax instead of [X,Y,Z] separate arrays -- a real API error despite skill guidance"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "matlab_version": "R2025b (25.2)",
+    "verification_date": "2026-03-19",
+    "description": "Verifies default parameter values and gotchas using help text and empirical testing",
+    "total_assertions": 8,
+    "verified": 8,
+    "passed": 8
+  },
+  "results": [
+    {
+      "assertion": "imgaussfilt default padding is 'replicate'",
+      "method": "help text + empirical comparison",
+      "help_evidence": "Padding - Image padding: 'replicate' (default) | numeric scalar | 'circular' | 'symmetric'",
+      "empirical_test": "imgaussfilt(img, 2) output matches imgaussfilt(img, 2, 'Padding', 'replicate') exactly",
+      "empirical_result": "Default matches replicate: true",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imfilter default padding is zero (0)",
+      "method": "empirical comparison",
+      "empirical_test": "Corner pixel of uniform 100-value image after average filter: default=44.44, zero-pad=44.44, replicate=100.00",
+      "empirical_result": "Default matches zero-pad: true, Default matches replicate: false",
+      "notes": "This causes dark borders on filtered images — a common gotcha",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "wdenoise2 default DenoisingMethod is 'Bayes'",
+      "method": "help text",
+      "help_evidence": "DenoisingMethod - Denoising method: 'Bayes' (default) | 'FDR' | 'Minimax' | 'SURE' | 'UniversalThreshold'",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "wdenoise2 default wavelet is 'bior4.4'",
+      "method": "help text",
+      "help_evidence": "'bior4.4' (default) | character vector | string scalar",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "wdenoise2 default ThresholdRule is 'LevelIndependent'",
+      "method": "help text",
+      "help_evidence": "'LevelIndependent' (default) | 'LevelDependent'",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt default wavelet is 'haar'",
+      "method": "help text",
+      "help_evidence": "Wavelet - Wavelet: 'haar' (default) | character vector | string scalar",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt default padding mode is 'reflection'",
+      "method": "help text",
+      "help_evidence": "'reflection' (default) | 'periodic' | 'zeropad'",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt FullTree default is false",
+      "method": "help text + empirical",
+      "help_evidence": "FullTree - Full wavelet decomposition option: false or 0 (default) | true or 1",
+      "verdict": "VERIFIED"
+    }
+  ]
+}

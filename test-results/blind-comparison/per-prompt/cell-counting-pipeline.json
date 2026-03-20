@@ -1,0 +1,33 @@
+{
+  "eval_name": "cell-counting-pipeline",
+  "toolbox": "matlab-image-processing",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses watershed transform for separating touching cells", "passed": true, "evidence": "Found: maxCellArea  = 5000; % Maximum cell area -- removes large clumps missed by watershed"},
+      {"text": "Uses regionprops with table output format", "passed": true, "evidence": "Found: stats = regionprops('table', cc, enhanced, ..."},
+      {"text": "Uses bwconncomp or bwlabel for connected component analysis", "passed": true, "evidence": "Found: cc = bwconncomp(bwSeparated);"},
+      {"text": "Includes morphological operations for mask cleanup", "passed": true, "evidence": "Found: imopen, imclose, imfill, bwareaopen, strel"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses watershed transform for separating touching cells", "passed": true, "evidence": "Found: L = watershed(Dcomp);"},
+      {"text": "Uses regionprops with table output format", "passed": true, "evidence": "regionprops output accessed with dot notation (struct/table)"},
+      {"text": "Uses bwconncomp or bwlabel for connected component analysis", "passed": true, "evidence": "Found: L = bwlabel(BWsep);"},
+      {"text": "Includes morphological operations for mask cleanup", "passed": true, "evidence": "Found: imopen, imclose, imfill, bwareaopen, strel"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both configurations passed all assertions with strong image processing pipelines"
+  }
+}

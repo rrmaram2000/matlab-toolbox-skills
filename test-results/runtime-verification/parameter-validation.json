@@ -1,0 +1,177 @@
+{
+  "metadata": {
+    "matlab_version": "R2025b (25.2)",
+    "verification_date": "2026-03-19",
+    "description": "Verifies correct vs incorrect API signatures and parameters by running actual MATLAB commands",
+    "total_assertions": 25,
+    "verified": 25,
+    "passed": 25
+  },
+  "results": [
+    {
+      "assertion": "wdenoise2 valid methods: SURE, Bayes, Minimax, UniversalThreshold, FDR",
+      "correct_command": "wdenoise2(rand(64), 'DenoisingMethod', 'FDR')",
+      "correct_result": "success — returns 64x64 denoised image",
+      "all_valid_methods_tested": ["SURE", "Bayes", "Minimax", "UniversalThreshold", "FDR"],
+      "all_valid_methods_passed": true,
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "BlockJS is NOT a valid DenoisingMethod for wdenoise2",
+      "incorrect_command": "wdenoise2(rand(64), 'DenoisingMethod', 'BlockJS')",
+      "incorrect_result": "ERROR: Expected DENOISINGMETHOD to match one of these values: 'UniversalThreshold', 'Minimax', 'SURE', 'Bayes', 'FDR'. The input, 'BlockJS', did not match any of the valid values.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt returns exactly 2 outputs [A, D], not 4",
+      "correct_command": "[A, D] = dldwt(dlarray(rand(8,8,1,1,'single'), 'SSCB'))",
+      "correct_result": "success — A is dlarray [4x4], D is dlarray [4x4x3] (H/V/D subbands stacked)",
+      "incorrect_command": "[A, H, V, D] = dldwt(dlarray(rand(8,8,1,1,'single'), 'SSCB'))",
+      "incorrect_result": "ERROR: Too many output arguments.",
+      "notes": "D is a single 3D dlarray with subbands stacked in 3rd dimension, NOT a cell array",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt D output is a dlarray, not a cell array",
+      "command": "[A, D] = dldwt(dlarray(rand(8,8,1,1,'single'), 'SSCB')); class(D)",
+      "result": "D class = dlarray, iscell(D) = false, size = [4 4 3]",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt requires SSCB or CBT format dlarray (not SS)",
+      "correct_command": "dldwt(dlarray(rand(8,8,1,1,'single'), 'SSCB'))",
+      "correct_result": "success",
+      "incorrect_command": "dldwt(dlarray(rand(8,8,'single'), 'SS'))",
+      "incorrect_result": "ERROR: Input must be a 'CBT' or 'SSCB' dlarray.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "detcoef2 accepts ('h'|'v'|'d', C, S, level) syntax",
+      "correct_command": "detcoef2('h', C, S, 1) after [C,S]=wavedec2(rand(64), 2, 'haar')",
+      "correct_result": "success — returns 32x32 detail coefficients",
+      "all_types_tested": ["h", "v", "d"],
+      "all_types_passed": true,
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "detcoef2 does NOT accept compact write-back with extra arguments",
+      "incorrect_command": "detcoef2('compact', C, S, 1, h, v, d)",
+      "incorrect_result": "ERROR: Too many input arguments.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "negloglik is a function (not a property) of fitted distributions",
+      "correct_command": "negloglik(fitdist(randn(100,1)+5, 'Normal'))",
+      "correct_result": "success — returns scalar double (e.g., 137.0936)",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": ".NegLogLikelihood property does NOT exist on fitted distributions",
+      "incorrect_command": "pd = fitdist(randn(100,1), 'Normal'); pd.NegLogLikelihood",
+      "incorrect_result": "ERROR: Unrecognized method, property, or field 'NegLogLikelihood' for class 'prob.NormalDistribution'.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet returns dlnetwork (not LayerGraph)",
+      "command": "class(unet([256 256 1], 2))",
+      "result": "dlnetwork",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet3d returns dlnetwork",
+      "command": "class(unet3d([64 64 64 1], 2))",
+      "result": "dlnetwork",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unetLayers returns LayerGraph (old deprecated API)",
+      "command": "class(unetLayers([256 256 1], 2))",
+      "result": "nnet.cnn.LayerGraph",
+      "notes": "Warning: unetLayers will be removed in a future release. Use the unet function instead.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imagePretrainedNetwork returns dlnetwork",
+      "command": "class(imagePretrainedNetwork('resnet18', Weights='none'))",
+      "result": "dlnetwork",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "deeplabv3plus exists and takes (inputSize, numClasses, backbone) syntax",
+      "command": "which('deeplabv3plus')",
+      "result": "FOUND at /Applications/MATLAB_R2025b.app/toolbox/vision/vision/deeplabv3plus.m",
+      "notes": "Requires ResNet18 support package for pretrained weights; works with imagePretrainedNetwork(...,Weights='none')",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "volshow supports OverlayData parameter for label overlays",
+      "command": "volshow(rand(10,10,10), OverlayData=randi(3,10,10,10))",
+      "result": "success — returns images.ui.graphics.Volume object",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "labelvolshow has been REMOVED and errors on invocation",
+      "command": "labelvolshow(randi(3, 10, 10, 10))",
+      "result": "ERROR: labelvolshow has been removed. With appropriate code changes, use 'volshow' instead.",
+      "notes": "which() still locates the .m file but the function body throws a removal error",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "radiomics object API: create then call feature methods",
+      "command": "R = radiomics(rand(10), ones(10)); intensityFeatures(R); shapeFeatures(R)",
+      "result": "success — radiomics object created, intensityFeatures returns table [1x50], shapeFeatures returns table [1x24]",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "shearletSystem + sheart2 + isheart2 workflow",
+      "command": "sls = shearletSystem('ImageSize',[64 64]); coeffs = sheart2(sls, rand(64)); xr = isheart2(sls, coeffs)",
+      "result": "success — sheart2 returns [64 64 27] coefficients, isheart2 reconstructs [64 64] with error ~9.5e-15",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "shearletTransform function does NOT exist",
+      "command": "which('shearletTransform')",
+      "result": "NOT FOUND",
+      "notes": "Must use shearletSystem + sheart2/isheart2 instead",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "intrinsicToWorld returns 3 separate arrays [X, Y, Z]",
+      "command": "[X,Y,Z] = intrinsicToWorld(imref3d([10 10 10],[0 1],[0 1],[0 1]), [1 2 3], [4 5 6], [7 8 9])",
+      "result": "success — X=[0.05 0.15 0.25], Y=[0.35 0.45 0.55], Z=[0.65 0.75 0.85], all separate 1x3 arrays",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "fillmissing supports 'knn' method in base MATLAB",
+      "command": "fillmissing([1 2 NaN 4 5; NaN 2 3 4 5; 1 NaN 3 NaN 5], 'knn')",
+      "result": "success — returns filled matrix",
+      "notes": "No additional toolbox required (base MATLAB datafun)",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "coxphfit works for Cox proportional hazards regression",
+      "command": "coxphfit(randn(50,2), exprnd(10,50,1), 'Censoring', rand(50,1)>0.7)",
+      "result": "success — returns [b, logl, H, stats] with fields: covb, beta, se, z, p, csres, devres, martres, schres, sschres, scores, sscores, LikelihoodRatioTestP",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet default NumFirstEncoderFilters = 64",
+      "command": "net = unet([256 256 1], 2); net.Layers(first conv).NumFilters",
+      "result": "First conv layer (Encoder-Stage-1-Conv-1) has NumFilters = 64",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet accepts explicit NumFirstEncoderFilters parameter",
+      "command": "unet([256 256 1], 2, 'NumFirstEncoderFilters', 32)",
+      "result": "success — first conv layer has NumFilters = 32",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "segmentObjectsFromEmbeddings requires imageSize parameter",
+      "command": "help segmentObjectsFromEmbeddings",
+      "result": "Syntax: masks = segmentObjectsFromEmbeddings(sam, embeddings, imageSize, ForegroundPoints=pointPrompt)",
+      "notes": "imageSize is the 3rd required positional argument",
+      "verdict": "VERIFIED"
+    }
+  ]
+}

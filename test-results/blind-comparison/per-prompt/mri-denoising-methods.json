@@ -1,0 +1,31 @@
+{
+  "eval_name": "mri-denoising-methods",
+  "toolbox": "matlab-wavelet",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses valid wdenoise2 methods (SURE, Bayes, Minimax, UniversalThreshold, FDR)", "passed": true, "evidence": "Found valid methods: SURE, Bayes, Minimax, UniversalThreshold, FDR"},
+      {"text": "Does NOT use BlockJS (not a valid wdenoise2 method)", "passed": true, "evidence": "BlockJS not found (correctly avoided)"},
+      {"text": "Uses symmetric boundary mode for medical images", "passed": true, "evidence": "wdenoise2 used (defaults to symmetric boundary mode)"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses valid wdenoise2 methods (SURE, Bayes, Minimax, UniversalThreshold, FDR)", "passed": true, "evidence": "Found valid methods: SURE, Bayes, Minimax, UniversalThreshold, FDR"},
+      {"text": "Does NOT use BlockJS (not a valid wdenoise2 method)", "passed": true, "evidence": "BlockJS not found (correctly avoided)"},
+      {"text": "Uses symmetric boundary mode for medical images", "passed": true, "evidence": "wdenoise2 used (defaults to symmetric boundary mode)"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly used valid wdenoise2 methods and avoided BlockJS"
+  }
+}

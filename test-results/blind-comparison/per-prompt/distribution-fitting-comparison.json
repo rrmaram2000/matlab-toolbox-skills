@@ -1,0 +1,34 @@
+{
+  "eval_name": "distribution-fitting-comparison",
+  "toolbox": "matlab-stats-ml",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses negloglik(pd) function, NOT .NegLogLikelihood property", "passed": true, "evidence": "Found: nll(d) = negloglik(pdFits{d});"},
+      {"text": "Does NOT use .NegLogLikelihood property (it doesn't work)", "passed": true, "evidence": ".NegLogLikelihood not found in executable code (correctly avoided)"},
+      {"text": "Uses fitdist for distribution fitting", "passed": true, "evidence": "fitdist found"},
+      {"text": "Includes QQ plot for visual goodness-of-fit assessment", "passed": true, "evidence": "qqplot() function found"}
+    ],
+    "grading_correction": ".NegLogLikelihood appeared only in comments (lines 11, 54), not in executable code. Originally graded as FAIL, corrected to PASS."
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses negloglik(pd) function, NOT .NegLogLikelihood property", "passed": true, "evidence": "Found: nllValues(k) = negloglik(pdObjects{k});"},
+      {"text": "Does NOT use .NegLogLikelihood property (it doesn't work)", "passed": true, "evidence": ".NegLogLikelihood not found (correctly avoided)"},
+      {"text": "Uses fitdist for distribution fitting", "passed": true, "evidence": "fitdist found"},
+      {"text": "Includes QQ plot for visual goodness-of-fit assessment", "passed": true, "evidence": "Manual QQ plot implementation found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly used negloglik(pd) function and avoided .NegLogLikelihood property"
+  }
+}

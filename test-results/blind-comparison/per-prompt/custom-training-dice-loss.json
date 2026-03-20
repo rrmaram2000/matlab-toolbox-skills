@@ -1,0 +1,35 @@
+{
+  "eval_name": "custom-training-dice-loss",
+  "toolbox": "matlab-deep-learning",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "expectations": [
+      {"text": "Uses dlarray with proper format strings", "passed": true, "evidence": "dlarray found in code"},
+      {"text": "Uses dlfeval for gradient-enabled evaluation", "passed": true, "evidence": "Found: [loss, gradients, state] = dlfeval(@modelLoss, net, dlX, dlT, ..."},
+      {"text": "Uses dlgradient for automatic differentiation", "passed": true, "evidence": "Found: gradients = dlgradient(loss, net.Learnables);"},
+      {"text": "Uses adamupdate for parameter updates", "passed": true, "evidence": "Found: [net, avgGrad, avgSqGrad] = adamupdate(net, gradients, ..."},
+      {"text": "Implements Dice loss function", "passed": true, "evidence": "Found: diceWeight = 0.7;           % Combined loss = diceWeight*Dice + (1-diceWeight)*CE"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 0.8,
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "expectations": [
+      {"text": "Uses dlarray with proper format strings", "passed": false, "evidence": "dlarray not found"},
+      {"text": "Uses dlfeval for gradient-enabled evaluation", "passed": true, "evidence": "Found: [loss, gradients] = dlfeval(@modelLoss, net, X, T, config.smoothEps);"},
+      {"text": "Uses dlgradient for automatic differentiation", "passed": true, "evidence": "Found: gradients = dlgradient(loss, net.Learnables);"},
+      {"text": "Uses adamupdate for parameter updates", "passed": true, "evidence": "Found: [net, velocity, sqGradient] = adamupdate( ..."},
+      {"text": "Implements Dice loss function", "passed": true, "evidence": "Found: config.smoothEps      = 1e-6;         % Dice smoothing epsilon"}
+    ]
+  },
+  "comparison": {
+    "winner": "with_skill",
+    "delta": "+0.20",
+    "key_difference": "with_skill explicitly used dlarray with format strings; without_skill omitted dlarray usage"
+  }
+}

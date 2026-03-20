@@ -1,0 +1,31 @@
+{
+  "eval_name": "3d-volumetric-segmentation",
+  "toolbox": "matlab-deep-learning",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses unet3d() instead of deprecated unet3dLayers()", "passed": true, "evidence": "Found: net = unet3d(inputSize3D, numClasses, ..."},
+      {"text": "Uses modern trainnet() function", "passed": true, "evidence": "Found: trainedNet = trainnet(dsTrain, net, @(Y,T) weightedCELoss(Y, T, classWeights), options);"},
+      {"text": "Implements patch-based training for memory efficiency", "passed": true, "evidence": "Found: dsTrain = randomPatchExtractionDatastore(volTrain, labelTrain, patchSize, ..."}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 0.67,
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses unet3d() instead of deprecated unet3dLayers()", "passed": false, "evidence": "Uses unet() instead of unet3d() for 3D segmentation"},
+      {"text": "Uses modern trainnet() function", "passed": true, "evidence": "Found: [trainedNet, info] = trainnet(trainPatchDS, lgraph, lossFcn, options);"},
+      {"text": "Implements patch-based training for memory efficiency", "passed": true, "evidence": "Found: patchSize = [64 64 32];     % training patch size [H W D]"}
+    ]
+  },
+  "comparison": {
+    "winner": "with_skill",
+    "delta": "+0.33",
+    "key_difference": "with_skill correctly used unet3d() for 3D segmentation; without_skill used unet() which is for 2D"
+  }
+}

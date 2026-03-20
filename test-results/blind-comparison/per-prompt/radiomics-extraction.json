@@ -1,0 +1,31 @@
+{
+  "eval_name": "radiomics-extraction",
+  "toolbox": "matlab-medical-imaging",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Creates radiomics object with radiomics(data, roi)", "passed": true, "evidence": "Found: R = radiomics(data, roi);"},
+      {"text": "Calls intensityFeatures/shapeFeatures/textureFeatures as methods on the radiomics object", "passed": true, "evidence": "All feature extraction methods found"},
+      {"text": "Combines features into a table for ML", "passed": true, "evidence": "Features concatenated into table"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Creates radiomics object with radiomics(data, roi)", "passed": true, "evidence": "Found: R = radiomics(vol, mask);"},
+      {"text": "Calls intensityFeatures/shapeFeatures/textureFeatures as methods on the radiomics object", "passed": true, "evidence": "All feature extraction methods found"},
+      {"text": "Combines features into a table for ML", "passed": true, "evidence": "Table construction found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both configurations correctly used the radiomics object-oriented API"
+  }
+}

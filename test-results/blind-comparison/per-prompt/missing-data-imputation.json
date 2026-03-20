@@ -1,0 +1,32 @@
+{
+  "eval_name": "missing-data-imputation",
+  "toolbox": "matlab-stats-ml",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses fillmissing(X, 'knn') for KNN imputation", "passed": true, "evidence": "Found: XKnn = fillmissing(XRaw, 'knn', k);"},
+      {"text": "Does NOT use knnimpute (requires Bioinformatics Toolbox)", "passed": true, "evidence": "knnimpute not found as function call (correctly avoided)"},
+      {"text": "Compares multiple imputation strategies", "passed": true, "evidence": "Found 5 methods: knn, mean, median, linear, nearest"}
+    ],
+    "grading_correction": "knnimpute appeared only in comments, not as an executable function call. Originally graded as FAIL, corrected to PASS."
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses fillmissing(X, 'knn') for KNN imputation", "passed": true, "evidence": "Found: numericKNN = fillmissing(numericMatrix, 'knn', K);"},
+      {"text": "Does NOT use knnimpute (requires Bioinformatics Toolbox)", "passed": true, "evidence": "knnimpute not found in executable code (correctly avoided)"},
+      {"text": "Compares multiple imputation strategies", "passed": true, "evidence": "Found 6 methods: knn, mean, median, linear, movmedian, constant"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly used fillmissing with knn and avoided knnimpute"
+  }
+}

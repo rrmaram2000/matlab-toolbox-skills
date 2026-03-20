@@ -1,0 +1,34 @@
+{
+  "eval_name": "unet-brain-tumor-segmentation",
+  "toolbox": "matlab-deep-learning",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses unet() instead of deprecated unetLayers()", "passed": true, "evidence": "Found: net = unet(inputSize, numClasses, ..."},
+      {"text": "Uses trainnet() instead of deprecated trainNetwork()", "passed": true, "evidence": "Found: trainedNet = trainnet(dsTrain, net, \"crossentropy\", options);"},
+      {"text": "Does NOT use classificationLayer", "passed": true, "evidence": "classificationLayer not found in executable code (correctly avoided)"},
+      {"text": "Specifies loss as string argument to trainnet (e.g., 'crossentropy')", "passed": true, "evidence": "Found: trainnet(dsTrain, net, \"crossentropy\""}
+    ],
+    "grading_correction": "trainNetwork and classificationLayer appeared only in comments (lines 13-14), not in executable code. Originally graded as FAIL, corrected to PASS."
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses unet() instead of deprecated unetLayers()", "passed": true, "evidence": "Found: net = unet(inputSize, numClasses, ..."},
+      {"text": "Uses trainnet() instead of deprecated trainNetwork()", "passed": true, "evidence": "Found: [trainedNet, trainInfo] = trainnet(cdsTrain, net, lossFcn, options);"},
+      {"text": "Does NOT use classificationLayer", "passed": true, "evidence": "classificationLayer not found in executable code (correctly avoided)"},
+      {"text": "Specifies loss as string argument to trainnet (e.g., 'crossentropy')", "passed": true, "evidence": "Uses loss function variable: trainnet(cdsTrain, net, lossFcn"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both configurations passed all assertions. Both correctly use unet() and trainnet()"
+  }
+}

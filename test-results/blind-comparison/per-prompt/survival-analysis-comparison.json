@@ -1,0 +1,31 @@
+{
+  "eval_name": "survival-analysis-comparison",
+  "toolbox": "matlab-stats-ml",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Does NOT use logrank() function (it does not exist in MATLAB)", "passed": true, "evidence": "logrank() not found (correctly avoided)"},
+      {"text": "Uses coxphfit for survival comparison", "passed": true, "evidence": "Found: [b, logl, H, stats] = coxphfit(groupNumeric, T, 'Censoring', censoringVec);"},
+      {"text": "Uses ecdf with 'censoring' parameter for Kaplan-Meier curves", "passed": true, "evidence": "ecdf with Censoring parameter found"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Does NOT use logrank() function (it does not exist in MATLAB)", "passed": true, "evidence": "logrank() not found (correctly avoided)"},
+      {"text": "Uses coxphfit for survival comparison", "passed": true, "evidence": "Found: [b, logl, H, stats] = coxphfit(GroupNumeric, T.Time, ..."},
+      {"text": "Uses ecdf with 'censoring' parameter for Kaplan-Meier curves", "passed": true, "evidence": "ecdf with Censoring parameter found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly avoided the non-existent logrank() and used coxphfit + ecdf"
+  }
+}

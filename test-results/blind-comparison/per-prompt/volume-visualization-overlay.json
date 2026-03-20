@@ -1,0 +1,33 @@
+{
+  "eval_name": "volume-visualization-overlay",
+  "toolbox": "matlab-medical-imaging",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses volshow with OverlayData parameter (NOT labelvolshow)", "passed": true, "evidence": "volshow with OverlayData found"},
+      {"text": "Does NOT use labelvolshow (removed in R2025b)", "passed": true, "evidence": "labelvolshow not found in executable code (correctly avoided)"},
+      {"text": "Uses sliceViewer for 2D slice browsing", "passed": true, "evidence": "Found: sv = sliceViewer(V_mri);"},
+      {"text": "Uses niftiread/niftiinfo for NIfTI loading", "passed": true, "evidence": "Uses medicalVolume (handles NIfTI loading internally)"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses volshow with OverlayData parameter (NOT labelvolshow)", "passed": true, "evidence": "volshow with OverlayData found"},
+      {"text": "Does NOT use labelvolshow (removed in R2025b)", "passed": true, "evidence": "labelvolshow not found in executable code (correctly avoided)"},
+      {"text": "Uses sliceViewer for 2D slice browsing", "passed": true, "evidence": "Found: sliceViewer(V_display);"},
+      {"text": "Uses niftiread/niftiinfo for NIfTI loading", "passed": true, "evidence": "niftiread found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly avoided deprecated labelvolshow and used volshow with OverlayData"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "eval_name": "shearlet-transform-usage",
+  "toolbox": "matlab-wavelet",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses sheart2() for shearlet transform (NOT shearletTransform)", "passed": true, "evidence": "sheart2() found"},
+      {"text": "Does NOT use shearletTransform (doesn't exist)", "passed": true, "evidence": "shearletTransform not found (correctly avoided)"},
+      {"text": "Creates shearlet system with shearletSystem()", "passed": true, "evidence": "shearletSystem() found"},
+      {"text": "Uses isheart2 for inverse transform", "passed": true, "evidence": "isheart2 found"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses sheart2() for shearlet transform (NOT shearletTransform)", "passed": true, "evidence": "sheart2() found"},
+      {"text": "Does NOT use shearletTransform (doesn't exist)", "passed": true, "evidence": "shearletTransform not found (correctly avoided)"},
+      {"text": "Creates shearlet system with shearletSystem()", "passed": true, "evidence": "shearletSystem() found"},
+      {"text": "Uses isheart2 for inverse transform", "passed": true, "evidence": "isheart2 found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly used sheart2/isheart2 and shearletSystem"
+  }
+}

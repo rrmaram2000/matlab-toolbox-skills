@@ -1,0 +1,31 @@
+{
+  "eval_name": "filter-padding-awareness",
+  "toolbox": "matlab-image-processing",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Explains the padding default difference between imgaussfilt and imfilter", "passed": true, "evidence": "Code explains zero-padding vs replicate padding differences"},
+      {"text": "Uses replicate padding to avoid dark borders", "passed": true, "evidence": "Found: filtered_replicate = imfilter(mri, h, 'replicate');  % Correct!"},
+      {"text": "Warns about imfilter's default zero-padding causing dark borders", "passed": true, "evidence": "Found warning: % Key insight: imfilter defaults to zero-padding, which introduces dark"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Explains the padding default difference between imgaussfilt and imfilter", "passed": true, "evidence": "Code explains zero-padding vs replicate padding differences"},
+      {"text": "Uses replicate padding to avoid dark borders", "passed": true, "evidence": "Found: filtered_replicate = imfilter(slice, h, 'replicate');"},
+      {"text": "Warns about imfilter's default zero-padding causing dark borders", "passed": true, "evidence": "Found warning: % Key insight: imfilter defaults to zero-padding, which darkens edges."}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both configurations correctly identified and explained the padding difference"
+  }
+}

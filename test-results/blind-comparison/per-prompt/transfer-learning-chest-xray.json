@@ -1,0 +1,33 @@
+{
+  "eval_name": "transfer-learning-chest-xray",
+  "toolbox": "matlab-deep-learning",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses modern trainnet() function", "passed": true, "evidence": "Found: trainedNet = trainnet(dsTrain, net, \"crossentropy\", options);"},
+      {"text": "Does NOT use removed classificationLayer", "passed": true, "evidence": "classificationLayer not found in executable code (correctly avoided)"},
+      {"text": "Uses resnet50 as base network", "passed": true, "evidence": "Found: net = imagePretrainedNetwork(\"resnet50\", NumClasses=numClasses);"},
+      {"text": "Includes data augmentation", "passed": true, "evidence": "Found: augmenter = imageDataAugmenter( ..."}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "expectations": [
+      {"text": "Uses modern trainnet() function", "passed": true, "evidence": "Found: [trainedNet, trainInfo] = trainnet(augimdsTrain, dlnet, ..."},
+      {"text": "Does NOT use removed classificationLayer", "passed": true, "evidence": "classificationLayer not found in executable code (correctly avoided)"},
+      {"text": "Uses resnet50 as base network", "passed": true, "evidence": "Found: net = resnet50;"},
+      {"text": "Includes data augmentation", "passed": true, "evidence": "Found: augTrain = imageDataAugmenter( ..."}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both configurations passed all assertions. with_skill used imagePretrainedNetwork (newer API); without_skill used resnet50 directly"
+  }
+}

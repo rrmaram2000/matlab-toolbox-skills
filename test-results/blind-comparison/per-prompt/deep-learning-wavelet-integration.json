@@ -1,0 +1,31 @@
+{
+  "eval_name": "deep-learning-wavelet-integration",
+  "toolbox": "matlab-wavelet",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Shows dldwt returning 2 outputs [A, D], not 4", "passed": true, "evidence": "Found: [A, D] = dldwt(imgDL, wname);"},
+      {"text": "Does NOT use [cA, cH, cV, cD] = dldwt(...) pattern", "passed": true, "evidence": "No 4-output dldwt pattern (correct)"},
+      {"text": "Uses dlidwt for inverse transform", "passed": true, "evidence": "dlidwt found"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Shows dldwt returning 2 outputs [A, D], not 4", "passed": true, "evidence": "Found: [A, D] = dldwt(X, wname);"},
+      {"text": "Does NOT use [cA, cH, cV, cD] = dldwt(...) pattern", "passed": true, "evidence": "No 4-output dldwt pattern (correct)"},
+      {"text": "Uses dlidwt for inverse transform", "passed": true, "evidence": "dlidwt found"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both correctly used [A, D] = dldwt(...) with 2 outputs and dlidwt for inverse"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "eval_name": "whole-slide-blockproc",
+  "toolbox": "matlab-image-processing",
+  "with_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses blockproc for memory-efficient processing", "passed": true, "evidence": "Found: fprintf('\\nRunning tissue detection via blockproc ...\\n');"},
+      {"text": "Addresses border handling between blocks (BorderSize parameter)", "passed": true, "evidence": "Found: 'BorderSize',       borderSize, ..."},
+      {"text": "Defines a proper block processing function", "passed": true, "evidence": "Found: tissueDetectFcn = @(bs) detectTissueBlock(bs.data, ..."}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses blockproc for memory-efficient processing", "passed": true, "evidence": "Found: tissueMask = blockproc(slidePath, blockSize, tissueFcn, ..."},
+      {"text": "Addresses border handling between blocks (BorderSize parameter)", "passed": true, "evidence": "Found: 'BorderSize',       [0 0], ..."},
+      {"text": "Defines a proper block processing function", "passed": true, "evidence": "Found: function mask = detectTissueBlock(blockStruct, manualThresh, minFrac)"}
+    ]
+  },
+  "comparison": {
+    "winner": "tie",
+    "delta": "0.00",
+    "key_difference": "Both passed all assertions. with_skill used non-zero BorderSize for overlap; without_skill used [0 0]"
+  }
+}

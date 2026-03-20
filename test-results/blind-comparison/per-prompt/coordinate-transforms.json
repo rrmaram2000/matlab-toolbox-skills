@@ -1,0 +1,31 @@
+{
+  "eval_name": "coordinate-transforms",
+  "toolbox": "matlab-medical-imaging",
+  "with_skill": {
+    "pass_rate": 0.67,
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses [X,Y,Z] = intrinsicToWorld(R,I,J,K) with 3 separate output arrays", "passed": false, "evidence": "Uses Nx3 matrix output (not 3 separate arrays): worldPoints = intrinsicToWorld(R, voxelPoints);"},
+      {"text": "Uses medicalref3d for spatial referencing", "passed": true, "evidence": "medicalref3d found"},
+      {"text": "Shows worldToIntrinsic for the reverse conversion", "passed": true, "evidence": "worldToIntrinsic found"}
+    ]
+  },
+  "without_skill": {
+    "pass_rate": 1.0,
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "expectations": [
+      {"text": "Uses [X,Y,Z] = intrinsicToWorld(R,I,J,K) with 3 separate output arrays", "passed": true, "evidence": "Found 3-output pattern: [X, Y, Z] = intrinsicToWorld(R, I, J, K);"},
+      {"text": "Uses medicalref3d for spatial referencing", "passed": true, "evidence": "medicalref3d found"},
+      {"text": "Shows worldToIntrinsic for the reverse conversion", "passed": true, "evidence": "worldToIntrinsic found"}
+    ]
+  },
+  "comparison": {
+    "winner": "without_skill",
+    "delta": "-0.33",
+    "key_difference": "without_skill correctly used [X,Y,Z] = intrinsicToWorld(R,I,J,K) with separate output arrays; with_skill incorrectly used Nx3 matrix output syntax"
+  }
+}

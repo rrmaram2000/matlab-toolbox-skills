@@ -1,0 +1,282 @@
+{
+  "metadata": {
+    "matlab_version": "R2025b (25.2)",
+    "verification_date": "2026-03-19",
+    "description": "Verifies function existence using which() in MATLAB R2025b",
+    "total_assertions": 30,
+    "verified": 30,
+    "passed": 30
+  },
+  "results": [
+    {
+      "assertion": "trainnet exists in R2025b (modern training API)",
+      "function": "trainnet",
+      "command": "which('trainnet')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/nnet/deeptrain/trainnet.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "trainNetwork still exists but is deprecated (not recommended)",
+      "function": "trainNetwork",
+      "command": "which('trainNetwork')",
+      "expected": "exists (deprecated)",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/nnet/cnn/trainNetwork.m",
+      "notes": "Help text says: 'trainNetwork' is not recommended. Use trainnet instead.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet exists (modern API, returns dlnetwork)",
+      "function": "unet",
+      "command": "which('unet')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/unet.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unetLayers still exists but is deprecated",
+      "function": "unetLayers",
+      "command": "which('unetLayers')",
+      "expected": "exists (deprecated)",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/unetLayers.m",
+      "notes": "Warning: unetLayers will be removed in a future release. Use the unet function instead.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet3d exists (modern 3D segmentation API)",
+      "function": "unet3d",
+      "command": "which('unet3d')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/unet3d.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "unet3dLayers still exists but deprecated",
+      "function": "unet3dLayers",
+      "command": "which('unet3dLayers')",
+      "expected": "exists (deprecated)",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/unet3dLayers.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "deeplabv3plus exists (modern semantic segmentation API)",
+      "function": "deeplabv3plus",
+      "command": "which('deeplabv3plus')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/deeplabv3plus.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "deeplabv3plusLayers still exists but deprecated",
+      "function": "deeplabv3plusLayers",
+      "command": "which('deeplabv3plusLayers')",
+      "expected": "exists (deprecated)",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/deeplabv3plusLayers.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imagePretrainedNetwork exists (modern pretrained network loader)",
+      "function": "imagePretrainedNetwork",
+      "command": "which('imagePretrainedNetwork')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/nnet/cnn/imagePretrainedNetwork.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "maskrcnn exists (modern instance segmentation)",
+      "function": "maskrcnn",
+      "command": "which('maskrcnn')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/vision/vision/@maskrcnn/maskrcnn.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "trainMaskRCNNObjectDetector does NOT exist in R2025b",
+      "function": "trainMaskRCNNObjectDetector",
+      "command": "which('trainMaskRCNNObjectDetector')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "classificationLayer still exists but deprecated",
+      "function": "classificationLayer",
+      "command": "which('classificationLayer')",
+      "expected": "exists (deprecated)",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/nnet/cnn/classificationLayer.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "sheart2 exists as method of shearletSystem",
+      "function": "sheart2",
+      "command": "which('sheart2')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/wavelet/core/wavelet/@shearletSystem/shearletSystem.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "isheart2 exists as method of shearletSystem",
+      "function": "isheart2",
+      "command": "which('isheart2')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/wavelet/core/wavelet/@shearletSystem/shearletSystem.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "shearletTransform does NOT exist in R2025b",
+      "function": "shearletTransform",
+      "command": "which('shearletTransform')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "dldwt exists (deep learning wavelet transform, R2025a+)",
+      "function": "dldwt",
+      "command": "which('dldwt')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/wavelet/deep/dldwt.m",
+      "notes": "Introduced in Wavelet Toolbox R2025a",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "modwt exists (1D maximal overlap DWT)",
+      "function": "modwt",
+      "command": "which('modwt')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/wavelet/core/wavelet/modwt.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "modwt2 does NOT exist (MODWT is 1D only)",
+      "function": "modwt2",
+      "command": "which('modwt2')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imodwt2 does NOT exist (MODWT inverse is 1D only)",
+      "function": "imodwt2",
+      "command": "which('imodwt2')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "wdenoise2 exists (2D wavelet denoising)",
+      "function": "wdenoise2",
+      "command": "which('wdenoise2')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/wavelet/core/wavelet/wdenoise2.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "coxphfit exists (Cox proportional hazards)",
+      "function": "coxphfit",
+      "command": "which('coxphfit')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/stats/stats/coxphfit.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "logrank does NOT exist in MATLAB R2025b",
+      "function": "logrank",
+      "command": "which('logrank')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "notes": "Use coxphfit for survival comparison instead",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "fillmissing exists (base MATLAB, no extra toolbox needed)",
+      "function": "fillmissing",
+      "command": "which('fillmissing')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/matlab/datafun/fillmissing.m",
+      "notes": "Part of base MATLAB, supports 'knn' method",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "knnimpute does NOT exist (requires Bioinformatics Toolbox)",
+      "function": "knnimpute",
+      "command": "which('knnimpute')",
+      "expected": "not found",
+      "result": "NOT FOUND",
+      "notes": "Bioinformatics Toolbox not installed; use fillmissing(X,'knn') instead",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "radiomics exists (Medical Imaging Toolbox)",
+      "function": "radiomics",
+      "command": "which('radiomics')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/medical/medical/radiomics.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "medicalSegmentAnythingModel exists",
+      "function": "medicalSegmentAnythingModel",
+      "command": "which('medicalSegmentAnythingModel')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/medical/medical/medicalSegmentAnythingModel.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "labelvolshow has been REMOVED in R2025b",
+      "function": "labelvolshow",
+      "command": "labelvolshow(randi(3,10,10,10))",
+      "expected": "error (removed)",
+      "result": "ERROR: labelvolshow has been removed. With appropriate code changes, use 'volshow' instead.",
+      "notes": "which() still finds the file but calling it throws removal error. This is MATLAB's standard removal pattern.",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "volshow exists with OverlayData support",
+      "function": "volshow",
+      "command": "which('volshow')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/images/ui/core/volshow.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imgaussfilt exists (Image Processing Toolbox)",
+      "function": "imgaussfilt",
+      "command": "which('imgaussfilt')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/images/images/imgaussfilt.m",
+      "verdict": "VERIFIED"
+    },
+    {
+      "assertion": "imfilter exists (Image Processing Toolbox)",
+      "function": "imfilter",
+      "command": "which('imfilter')",
+      "expected": "exists",
+      "result": "FOUND",
+      "path": "/Applications/MATLAB_R2025b.app/toolbox/images/images/imfilter.m",
+      "verdict": "VERIFIED"
+    }
+  ]
+}
