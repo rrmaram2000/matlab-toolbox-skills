@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by.svg"><source media="(prefers-color-scheme: light)" srcset="https://licensebuttons.net/l/by/4.0/88x31.png"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0"></picture></a>
-  <a href="https://www.mathworks.com/products/new_products/release2025b.html"><img src="https://img.shields.io/badge/MATLAB-R2025b-D35400.svg" alt="MATLAB R2025b"></a>
+  <img src="https://img.shields.io/badge/MATLAB-R2025b-D35400.svg" alt="MATLAB R2025b">
 </p>
 
 <p align="center">
