@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "matlab-toolbox-skills",
-      "source": "..",
+      "source": "./",
       "description": "Toolbox-specific knowledge and template scripts for accurate MATLAB R2025b code generation. Covers Medical Imaging, Deep Learning, Image Processing, Stats-ML, and Wavelet toolboxes.",
       "version": "2.1.0",
       "author": {
