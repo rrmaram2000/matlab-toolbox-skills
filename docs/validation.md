@@ -36,7 +36,7 @@ Results are stored in `test-results/runtime-verification/`:
 
 ### Hallucinations Caught
 
-8 hallucinated functions across the 5 flagship examples — all confirmed non-existent in R2025b:
+8 hallucinated functions across the 5 tested examples — all confirmed non-existent in R2025b:
 
 | Hallucinated API | Correct API | Toolbox |
 |:-----------------|:------------|:--------|
@@ -64,4 +64,4 @@ Raw evaluation data is available in `test-results/`:
 - `blind-comparison/` — benchmark results and per-prompt JSON grades
 - `runtime-verification/` — MATLAB R2025b API verification proofs
 - `methodology.md` — detailed evaluation protocol
-- 5 flagship example directories with full with-skill and without-skill scripts
+- 5 tested example directories with full with-skill and without-skill scripts

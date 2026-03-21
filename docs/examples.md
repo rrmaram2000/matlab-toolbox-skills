@@ -1,6 +1,6 @@
-# Flagship Examples — Skill vs No Skill
+# Examples — Skill vs No Skill
 
-Five side-by-side comparisons showing how skills prevent hallucinations and add domain expertise. Each example was tested against MATLAB R2025b runtime.
+Five side-by-side comparisons showing how skills prevent hallucinations and add domain expertise. Each example was verified against MATLAB R2025b documentation.
 
 ---
 
