@@ -1,0 +1,28 @@
+{
+  "name": "matlab-toolbox-skills",
+  "owner": {
+    "name": "Ritish Maram",
+    "email": "rrmaram2000@github.com"
+  },
+  "metadata": {
+    "description": "MATLAB R2025b toolbox skills for AI coding agents. 5 skills with knowledge cards and template scripts.",
+    "version": "2.1.0"
+  },
+  "plugins": [
+    {
+      "name": "matlab-toolbox-skills",
+      "source": "..",
+      "description": "Toolbox-specific knowledge and template scripts for accurate MATLAB R2025b code generation. Covers Medical Imaging, Deep Learning, Image Processing, Stats-ML, and Wavelet toolboxes.",
+      "version": "2.1.0",
+      "author": {
+        "name": "Ritish Maram"
+      },
+      "homepage": "https://github.com/rrmaram2000/matlab-toolbox-skills",
+      "repository": "https://github.com/rrmaram2000/matlab-toolbox-skills",
+      "license": "CC-BY-4.0",
+      "keywords": ["matlab", "r2025b", "medical-imaging", "deep-learning", "image-processing", "statistics", "wavelet", "toolbox"],
+      "category": "development",
+      "tags": ["matlab", "scientific-computing", "biomedical", "engineering"]
+    }
+  ]
+}
