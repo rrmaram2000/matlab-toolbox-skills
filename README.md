@@ -1,26 +1,76 @@
-# MATLAB Toolbox Skills for Claude
+<p align="center">
+  <img src="assets/hero.svg" alt="MATLAB Toolbox Skills for Claude" width="100%">
+</p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0"></a>
-  <img src="https://img.shields.io/badge/MATLAB-R2025b-orange.svg" alt="MATLAB R2025b">
-  <img src="https://img.shields.io/badge/version-2.0-blue.svg" alt="v2.0">
+  <img src="https://img.shields.io/badge/MATLAB-R2025b-D35400.svg" alt="MATLAB R2025b">
+  <img src="https://img.shields.io/badge/version-2.0-8B6CF6.svg" alt="v2.0">
+  <img src="https://img.shields.io/badge/skills-5-22c55e.svg" alt="5 Skills">
+  <img src="https://img.shields.io/badge/templates-54-3b82f6.svg" alt="54 Templates">
 </p>
 
-As a biomedical engineering PhD student, I use MATLAB daily for medical image analysis. These skills give Claude specialized knowledge for MATLAB's medical imaging toolboxes — including **54 runnable template scripts** for common biomedical workflows, edge-case API knowledge the model doesn't have on its own, and medical-specific best practices.
+<p align="center">
+  Specialized knowledge that prevents API hallucinations and adds domain expertise<br>for 5 MATLAB toolboxes — with 54 runnable template scripts, all verified against R2025b.
+</p>
 
-> **New to Claude Skills?** Skills are knowledge packages that extend Claude's capabilities. [Learn more →](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+---
 
-### What's New in v2.0
+## The Problem
 
-- **54 biomedical template scripts** (`.m` files) — runnable code for workflows like U-Net segmentation, radiomics extraction, survival analysis, and MRI denoising
-- **Right-sized knowledge cards** — trimmed based on Skill Creator 2.0 evals (removed content the model already knows, strengthened edge cases it gets wrong)
-- **Modern API only** — all code uses R2025b functions (`trainnet`, `unet`, `unet3d`), no legacy examples
+LLMs confidently generate MATLAB function names that don't exist. These look plausible, pass code review, and crash at runtime:
 
-<br>
+```diff
+- medsam = medicalSAM;
++ model = medicalSegmentAnythingModel('ExecutionEnvironment', 'gpu');
+```
+```diff
+- trainedDetector = trainMaskRCNNObjectDetector(trainData, backbone, options);
++ detector = maskrcnn("resnet50-coco", classNames, InputSize=inputSize);
++ [trainedDetector, info] = trainMaskRCNN(trainData, detector, options);
+```
+```diff
+- knnimpute(X)                        % requires Bioinformatics Toolbox
++ fillmissing(X, 'knn')              % works in Stats-ML Toolbox
+
+- [h, p] = logrank(timeA, eventA, timeB, eventB);
++ [b, ~, ~, stats] = coxphfit(group, time, 'Censoring', cens);
+
+- nll = pd.NegLogLikelihood;          % property does not exist
++ nll = negloglik(pd);               % use the function instead
+```
+
+These skills give Claude the edge-case API knowledge it needs to get MATLAB right. Every function reference has been runtime-verified against MATLAB R2025b.
+
+> [See all 5 flagship examples with full code comparisons →](docs/examples.md)
+
+---
+
+## What's New in v2.0
+
+- **54 template scripts** — runnable `.m` files for workflows like U-Net segmentation, radiomics extraction, survival analysis, and image denoising
+- **Eval-driven knowledge cards** — trimmed content the model already knows, strengthened edge cases it gets wrong (based on blind A/B testing)
+- **Reliable skill triggering** — improved descriptions so skills activate when they should
+- **Modern R2025b APIs only** — all code uses current functions (`trainnet`, `unet`, `unet3d`), no legacy patterns
+- **Runtime-verified** — every API claim tested against a live MATLAB R2025b installation
+
+---
+
+## Available Skills
+
+| Skill | What It Covers | Templates |
+|:------|:---------------|:---------:|
+| `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms | 12 |
+| `matlab-deep-learning` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export | 10 |
+| `matlab-image-processing-toolbox` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence | 10 |
+| `matlab-stats-ml` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP | 12 |
+| `matlab-wavelet-toolbox` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets | 10 |
+
+---
 
 ## See the Difference
 
-I tested each skill by asking Claude the same question with and without the skill loaded.
+Each skill was tested in a blind A/B comparison — the same prompt given to Claude with and without the skill.
 
 <br>
 
@@ -37,11 +87,12 @@ I tested each skill by asking Claude the same question with and without the skil
 <th width="37%">Without Skill</th>
 <th width="38%">With Skill</th>
 </tr>
-<tr><td>Approach</td><td>Python bridge required</td><td><strong>Native MATLAB</strong></td></tr>
-<tr><td>Code complexity</td><td>100+ lines across two languages</td><td><strong>~40 lines pure MATLAB</strong></td></tr>
-<tr><td>Key function</td><td>Doesn't know it exists</td><td><code>medicalSegmentAnythingModel</code></td></tr>
-<tr><td>Workflow</td><td>Temp files, subprocess calls</td><td><code>extractEmbeddings</code> → <code>segmentObjectsFromEmbeddings</code></td></tr>
-<tr><td>3D handling</td><td>"Loop over slices" (vague)</td><td><strong>Seed-and-propagate workflow for 3D</strong></td></tr>
+<tr><td>Model constructor</td><td><code>medicalSAM</code> — does not exist</td><td><code>medicalSegmentAnythingModel</code></td></tr>
+<tr><td>Embeddings</td><td><code>imageEmbeddings</code> — does not exist</td><td><code>extractEmbeddings</code></td></tr>
+<tr><td>Normalization</td><td><code>mat2clim</code> — does not exist</td><td><code>mat2gray</code></td></tr>
+<tr><td>Data loading</td><td><code>niftiread</code> (raw, no geometry)</td><td><code>medicalVolume</code> (preserves spatial ref)</td></tr>
+<tr><td>3D propagation</td><td>"Loop over slices" (vague)</td><td>Seed-and-propagate with centroid tracking</td></tr>
+<tr><td>Output saving</td><td><code>niftiwrite</code> (raw)</td><td><code>medicalVolume</code> + <code>write</code> (preserves geometry)</td></tr>
 </table>
 
 <br>
@@ -50,7 +101,7 @@ I tested each skill by asking Claude the same question with and without the skil
 <tr>
 <td colspan="3">
 
-**How do I visualize a 3D medical volume with a segmentation overlay?**
+**Implement Macenko stain normalization for H&E histology images.**
 
 </td>
 </tr>
@@ -59,30 +110,33 @@ I tested each skill by asking Claude the same question with and without the skil
 <th width="37%">Without Skill</th>
 <th width="38%">With Skill</th>
 </tr>
-<tr><td>Approach</td><td>Workarounds (isosurface, loops)</td><td><strong><code>OverlayData</code> parameter</strong></td></tr>
-<tr><td>Code</td><td>30+ lines</td><td><strong>3 lines</strong></td></tr>
-<tr><td>Key syntax</td><td>Doesn't know it</td><td><code>volshow(V, OverlayData=L.Voxels)</code></td></tr>
+<tr><td>Algorithm</td><td>Histogram matching (<code>imhistmatch</code>)</td><td><strong>Full Macenko method</strong></td></tr>
+<tr><td>OD-space conversion</td><td>Not implemented</td><td><code>-log10(I/255 + eps)</code></td></tr>
+<tr><td>Background masking</td><td>Not implemented</td><td>OD threshold on tissue pixels</td></tr>
+<tr><td>Stain vector estimation</td><td>Not implemented</td><td>PCA + percentile angle extraction</td></tr>
+<tr><td>Stain separation</td><td>Not implemented</td><td>Matrix deconvolution into H and E channels</td></tr>
+<tr><td>Result</td><td>Global color shift (no deconvolution)</td><td>True stain normalization with separated channels</td></tr>
 </table>
 
 <br>
+
+> [See all 5 flagship examples →](docs/examples.md) · [Evaluation methodology →](docs/validation.md)
 
 ---
 
 ## Installation
 
+Pre-built zip packages are available in the [`zips/`](zips/) folder.
+
 #### Claude Desktop
 
 1. Download or clone this repository
-2. Zip the skill folder you want:
-   ```
-   zip -r matlab-medical-imaging-toolbox.zip matlab-medical-imaging-toolbox
-   ```
-3. Go to **Settings → Capabilities → Skills → Customize** and upload the zip
-4. Toggle the skill on and start a new conversation
+2. Go to **Settings → Capabilities → Skills → Customize** and upload a zip from `zips/`
+3. Toggle the skill on and start a new conversation
 
 #### Claude.ai (Web)
 
-Go to **Settings → Capabilities → Skills → Customize** and upload the zip file.
+Go to **Settings → Capabilities → Skills → Customize** and upload a zip from `zips/`.
 
 #### Claude Code
 
@@ -107,96 +161,15 @@ These skills work great alongside the official [MATLAB MCP Core Server](https://
 |   | What It Provides |
 |:--|:-----------------|
 | **MCP Server** | Code execution, syntax checking, toolbox detection |
-| **These Skills** | Toolbox-specific knowledge for accurate suggestions |
+| **These Skills** | Toolbox-specific knowledge for accurate code generation |
 
 See [MathWorks AI resources](https://github.com/matlab) for more tools.
 
 ---
 
-## Available Skills
-
-| Skill | What It Covers | Templates |
-|:------|:---------------|:---------:|
-| `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms | 12 |
-| `matlab-image-processing-toolbox` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence | 10 |
-| `matlab-deep-learning` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export | 10 |
-| `matlab-stats-ml` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP | 12 |
-| `matlab-wavelet-toolbox` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets | 10 |
-
----
-
-<details>
-<summary><h2>More Examples</h2></summary>
-
-<br>
-
-<table>
-<tr>
-<td colspan="3">
-
-**How do I segment overlapping cells in a microscopy image?**
-
-</td>
-</tr>
-<tr>
-<th width="25%">Aspect</th>
-<th width="37%">Without Skill</th>
-<th width="38%">With Skill</th>
-</tr>
-<tr><td>Approach</td><td>Basic watershed</td><td><strong>Production-ready watershed</strong></td></tr>
-<tr><td>Preprocessing</td><td>Simple threshold</td><td><code>imtophat</code> for background correction</td></tr>
-<tr><td>Edge handling</td><td>Not addressed</td><td><code>imclearborder</code> for edge cases</td></tr>
-<tr><td>Parameters</td><td>Generic values</td><td>Specific values with explanations</td></tr>
-</table>
-
-<br>
-
-<table>
-<tr>
-<td colspan="3">
-
-**How do I set up 3D volumetric segmentation for CT lung scans?**
-
-</td>
-</tr>
-<tr>
-<th width="25%">Aspect</th>
-<th width="37%">Without Skill</th>
-<th width="38%">With Skill</th>
-</tr>
-<tr><td>3D U-Net</td><td>Manually builds layerGraph (doesn't know <code>unet3d</code>)</td><td><strong><code>unet3d(inputSize, numClasses)</code></strong></td></tr>
-<tr><td>Code</td><td>80+ lines of manual architecture</td><td><strong>1 line + training options</strong></td></tr>
-<tr><td>Template</td><td>None</td><td><strong>Runnable <code>template_3d_volumetric_segmentation.m</code></strong></td></tr>
-</table>
-
-<br>
-
-<table>
-<tr>
-<td colspan="3">
-
-**How do I use shearlets for directional texture analysis?**
-
-</td>
-</tr>
-<tr>
-<th width="25%">Aspect</th>
-<th width="37%">Without Skill</th>
-<th width="38%">With Skill</th>
-</tr>
-<tr><td>Approach</td><td>Third-party toolbox (ShearLab 3D)</td><td><strong>Native MATLAB Wavelet Toolbox</strong></td></tr>
-<tr><td>Setup required</td><td>Download from shearlab.org</td><td><strong>None — built-in</strong></td></tr>
-<tr><td>Forward transform</td><td><code>SLsheardec2D</code></td><td><code>sheart2</code></td></tr>
-<tr><td>External dependencies</td><td>Yes</td><td><strong>No</strong></td></tr>
-</table>
-
-</details>
-
----
-
 ## Template Scripts
 
-Each skill includes 8-12 biomedical-focused `.m` template scripts that are ready to run after filling in TODO sections with your data paths. Templates follow R2025b APIs exactly.
+Each skill includes 8–12 ready-to-run `.m` template scripts — fill in the TODO sections with your data paths and go. All templates follow R2025b APIs exactly.
 
 <details>
 <summary><strong>Deep Learning (10 templates)</strong></summary>

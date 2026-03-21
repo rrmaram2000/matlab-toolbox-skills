@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="900" y2="280">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="wave1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D35400" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#E67E22" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="wave2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6B4CE6" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#8B6CF6" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="handshake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D35400"/>
+      <stop offset="100%" stop-color="#8B6CF6"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F0A050"/>
+      <stop offset="100%" stop-color="#B090F0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="280" rx="16" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04" stroke="#ffffff" stroke-width="0.5">
+    <line x1="0" y1="70" x2="900" y2="70"/>
+    <line x1="0" y1="140" x2="900" y2="140"/>
+    <line x1="0" y1="210" x2="900" y2="210"/>
+    <line x1="150" y1="0" x2="150" y2="280"/>
+    <line x1="300" y1="0" x2="300" y2="280"/>
+    <line x1="450" y1="0" x2="450" y2="280"/>
+    <line x1="600" y1="0" x2="600" y2="280"/>
+    <line x1="750" y1="0" x2="750" y2="280"/>
+  </g>
+
+  <!-- Left waveform (MATLAB orange) — sinusoidal signal -->
+  <path d="M 30 140 Q 60 80, 90 140 Q 120 200, 150 140 Q 180 80, 210 140 Q 240 200, 270 140 Q 300 80, 330 140 Q 360 200, 390 140"
+        stroke="url(#wave1)" stroke-width="2.5" fill="none" opacity="0.7"/>
+  <path d="M 30 140 Q 60 100, 90 140 Q 120 180, 150 140 Q 180 100, 210 140 Q 240 180, 270 140 Q 300 100, 330 140 Q 360 180, 390 140"
+        stroke="#D35400" stroke-width="1.2" fill="none" opacity="0.3"/>
+
+  <!-- Right waveform (Claude purple) — complementary signal -->
+  <path d="M 510 140 Q 540 80, 570 140 Q 600 200, 630 140 Q 660 80, 690 140 Q 720 200, 750 140 Q 780 80, 810 140 Q 840 200, 870 140"
+        stroke="url(#wave2)" stroke-width="2.5" fill="none" opacity="0.7"/>
+  <path d="M 510 140 Q 540 100, 570 140 Q 600 180, 630 140 Q 660 100, 690 140 Q 720 180, 750 140 Q 780 100, 810 140 Q 840 180, 870 140"
+        stroke="#8B6CF6" stroke-width="1.2" fill="none" opacity="0.3"/>
+
+  <!-- Center: Handshake icon -->
+  <g transform="translate(420, 95)">
+    <!-- Left hand (MATLAB orange) -->
+    <path d="M 0 45 C 5 30, 15 20, 25 25 L 35 32 C 38 28, 42 26, 45 28 L 30 18 C 26 14, 28 8, 33 10 L 50 25"
+          stroke="#E67E22" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Right hand (Claude purple) -->
+    <path d="M 60 45 C 55 30, 45 20, 35 25 L 25 32 C 22 28, 18 26, 15 28 L 30 18 C 34 14, 32 8, 27 10 L 10 25"
+          stroke="#8B6CF6" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Clasp -->
+    <ellipse cx="30" cy="32" rx="8" ry="5" fill="none" stroke="url(#handshake)" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- Decorative dots — left side (orange) -->
+  <circle cx="80" cy="50" r="2" fill="#D35400" opacity="0.4"/>
+  <circle cx="140" cy="35" r="1.5" fill="#D35400" opacity="0.3"/>
+  <circle cx="200" cy="55" r="2.5" fill="#E67E22" opacity="0.25"/>
+  <circle cx="320" cy="40" r="1.5" fill="#D35400" opacity="0.35"/>
+
+  <!-- Decorative dots — right side (purple) -->
+  <circle cx="820" cy="50" r="2" fill="#8B6CF6" opacity="0.4"/>
+  <circle cx="760" cy="35" r="1.5" fill="#8B6CF6" opacity="0.3"/>
+  <circle cx="700" cy="55" r="2.5" fill="#A78BFA" opacity="0.25"/>
+  <circle cx="580" cy="40" r="1.5" fill="#8B6CF6" opacity="0.35"/>
+
+  <!-- Title -->
+  <text x="450" y="185" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700" fill="url(#titleGrad)">MATLAB Toolbox Skills for Claude</text>
+
+  <!-- Subtitle -->
+  <text x="450" y="215" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#94a3b8" letter-spacing="1">5 skills  ·  54 templates  ·  R2025b  ·  runtime-verified</text>
+
+  <!-- Bottom accent line -->
+  <rect x="350" y="238" width="200" height="2" rx="1" fill="url(#handshake)" opacity="0.5"/>
+
+  <!-- Toolbox pills -->
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="600">
+    <rect x="195" y="248" width="100" height="20" rx="10" fill="#D35400" opacity="0.15"/>
+    <text x="245" y="262" text-anchor="middle" fill="#E67E22" opacity="0.8">Deep Learning</text>
+
+    <rect x="305" y="248" width="68" height="20" rx="10" fill="#8B6CF6" opacity="0.15"/>
+    <text x="339" y="262" text-anchor="middle" fill="#A78BFA" opacity="0.8">Wavelet</text>
+
+    <rect x="383" y="248" width="72" height="20" rx="10" fill="#22c55e" opacity="0.15"/>
+    <text x="419" y="262" text-anchor="middle" fill="#4ade80" opacity="0.8">Stats-ML</text>
+
+    <rect x="465" y="248" width="120" height="20" rx="10" fill="#f59e0b" opacity="0.15"/>
+    <text x="525" y="262" text-anchor="middle" fill="#fbbf24" opacity="0.8">Medical Imaging</text>
+
+    <rect x="595" y="248" width="120" height="20" rx="10" fill="#ec4899" opacity="0.15"/>
+    <text x="655" y="262" text-anchor="middle" fill="#f472b6" opacity="0.8">Image Processing</text>
+  </g>
+</svg>

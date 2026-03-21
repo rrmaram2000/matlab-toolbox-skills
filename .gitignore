@@ -5,6 +5,7 @@
 
 # Zip files (generated for skill installation)
 *.zip
+!zips/*.zip
 
 # Editor files
 *.swp
