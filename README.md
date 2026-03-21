@@ -8,59 +8,49 @@
   <img src="https://img.shields.io/badge/templates-54-3b82f6.svg" alt="54 Templates">
 </p>
 
-I built these because Claude keeps inventing MATLAB functions that don't exist. These skills teach it the actual R2025b APIs, including the ones it consistently gets wrong, along with 54 template scripts you can run directly.
+Claude writes confident MATLAB code, but it sometimes makes up function names that don't exist in R2025b. These skills fix that. They give Claude a quick-reference of tricky APIs, deprecated functions, and common pitfalls across 5 toolboxes, along with 54 template scripts that help it write code you can actually use.
 
 ---
 
-## The problem
+## How it works
 
-Ask Claude to use MedSAM in MATLAB and it'll write `medicalSAM` with total confidence. That function doesn't exist. The real one is `medicalSegmentAnythingModel`. Same story across toolboxes:
+```mermaid
+graph LR
+    A[User Prompt] --> B{Claude}
+    B --> C[SKILL.md<br>Critical rules<br>quick-reference]
+    B --> D[Knowledge Cards<br>Domain patterns<br>by topic]
+    B --> E[Template Scripts<br>54 .m files with<br>%TODO placeholders]
+    C --> F[Accurate<br>MATLAB Code]
+    D --> F
+    E --> F
 
-```diff
-- medsam = medicalSAM;
-+ model = medicalSegmentAnythingModel('ExecutionEnvironment', 'gpu');
-```
-```diff
-- trainedDetector = trainMaskRCNNObjectDetector(trainData, backbone, options);
-+ detector = maskrcnn("resnet50-coco", classNames, InputSize=inputSize);
-+ [trainedDetector, info] = trainMaskRCNN(trainData, detector, options);
-```
-```diff
-- knnimpute(X)                        % requires Bioinformatics Toolbox
-+ fillmissing(X, 'knn')              % works in Stats-ML Toolbox
-
-- [h, p] = logrank(timeA, eventA, timeB, eventB);
-+ [b, ~, ~, stats] = coxphfit(group, time, 'Censoring', cens);
-
-- nll = pd.NegLogLikelihood;          % property does not exist
-+ nll = negloglik(pd);               % use the function instead
+    style A fill:#f8fafc,stroke:#334155,color:#1e293b
+    style B fill:#8B6CF6,stroke:#6B4CE6,color:#fff
+    style C fill:#D35400,stroke:#A04000,color:#fff
+    style D fill:#D35400,stroke:#A04000,color:#fff
+    style E fill:#D35400,stroke:#A04000,color:#fff
+    style F fill:#22c55e,stroke:#16a34a,color:#fff
 ```
 
-I went through the R2025b documentation and built skill files that correct these gaps. Every function reference has been checked against the docs.
+Each skill folder has three parts:
 
-> [All 5 examples with full code comparisons →](docs/examples.md)
-
----
-
-## What changed in v2.0
-
-- 54 template scripts you can actually run (`.m` files for U-Net, radiomics, survival analysis, denoising, etc.)
-- Knowledge cards rewritten based on blind A/B testing. Cut what Claude already knows, added what it gets wrong.
-- Better skill descriptions so they trigger when they should
-- All code targets R2025b (`trainnet`, `unet`, `unet3d`). No legacy APIs.
-- Every API claim checked against R2025b documentation
+| Part | What it does |
+|:-----|:-------------|
+| **SKILL.md** | Quick-reference of critical rules: the tricky APIs, deprecated functions, and R2025b changes that LLMs miss |
+| **Knowledge cards** | Domain patterns organized by topic (survival analysis, MedSAM, wavelet transforms, etc.) |
+| **Template scripts** | `.m` files with `%TODO` placeholders. Claude uses these as a starting point and fills in the project-specific details like file paths, parameters, and class names |
 
 ---
 
 ## Available skills
 
-| Skill | What it covers | Templates |
-|:------|:---------------|:---------:|
-| `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms | 12 |
-| `matlab-deep-learning` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export | 10 |
-| `matlab-image-processing-toolbox` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence | 10 |
-| `matlab-stats-ml` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP | 12 |
-| `matlab-wavelet-toolbox` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets | 10 |
+| Skill | What it covers |
+|:------|:---------------|
+| `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms |
+| `matlab-deep-learning` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export |
+| `matlab-image-processing-toolbox` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence |
+| `matlab-stats-ml` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP |
+| `matlab-wavelet-toolbox` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets |
 
 ---
 
@@ -77,7 +67,7 @@ I tested each skill by giving Claude the same prompt with and without the skill 
 </td>
 </tr>
 <tr>
-<th width="30%">What</th>
+<th width="30%"></th>
 <th width="35%">Without skill</th>
 <th width="35%">With skill</th>
 </tr>
@@ -104,12 +94,12 @@ I tested each skill by giving Claude the same prompt with and without the skill 
 <tr>
   <td>3D propagation</td>
   <td>"Loop over slices" (vague)</td>
-  <td>Seed-and-propagate with centroid tracking, area-ratio stopping</td>
+  <td>Seed-and-propagate with centroid tracking</td>
 </tr>
 <tr>
   <td>Outcome</td>
   <td>Script crashes on line 1</td>
-  <td>Complete 10-step pipeline</td>
+  <td>Complete working pipeline</td>
 </tr>
 </table>
 
@@ -117,33 +107,11 @@ I tested each skill by giving Claude the same prompt with and without the skill 
 
 ---
 
-## How it works
+## Highlights (v2.0)
 
-```mermaid
-graph LR
-    A[User Prompt] --> B{Claude}
-    B --> C[SKILL.md<br>Critical rules & API traps]
-    B --> D[Knowledge Cards<br>Domain-specific patterns]
-    B --> E[Template Scripts<br>54 runnable .m files]
-    C --> F[Accurate<br>MATLAB Code]
-    D --> F
-    E --> F
-
-    style A fill:#f8fafc,stroke:#334155,color:#1e293b
-    style B fill:#8B6CF6,stroke:#6B4CE6,color:#fff
-    style C fill:#D35400,stroke:#A04000,color:#fff
-    style D fill:#D35400,stroke:#A04000,color:#fff
-    style E fill:#D35400,stroke:#A04000,color:#fff
-    style F fill:#22c55e,stroke:#16a34a,color:#fff
-```
-
-Each skill folder has three parts:
-
-| Layer | What it does | Example |
-|:------|:-------------|:--------|
-| SKILL.md | Lists the rules Claude gets wrong without help | "`logrank()` does not exist, use `coxphfit`" |
-| Knowledge cards | Domain patterns, organized by topic | Survival analysis, MedSAM workflow, wavelet transforms |
-| Template scripts | `.m` files with TODO placeholders, ready to run | `template_maskrcnn_instance_seg.m` |
+- 54 template scripts (`.m` files) that Claude uses as a starting point for your specific task, filling in paths, parameters, and data details
+- Knowledge cards rewritten based on blind A/B testing. Cut what Claude already knows, added what it gets wrong.
+- Better skill descriptions so they trigger when they should
 
 ---
 
@@ -171,7 +139,6 @@ graph TD
 
 - 17 prompts tested per skill, blind A/B
 - Caught 8 hallucinated functions across 5 toolboxes
-- Checked every API against R2025b documentation
 - Raw data in [`test-results/`](test-results/)
 
 > [Full methodology →](docs/validation.md)
