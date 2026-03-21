@@ -11,6 +11,7 @@
 
 Claude writes confident MATLAB code, but it sometimes makes up function names that don't exist in R2025b. These skills fix that. They give Claude a quick-reference of tricky APIs, deprecated functions, and common pitfalls across 5 toolboxes, along with 54 template scripts that help it write code you can actually use.
 
+> [!TIP]
 > **Works beyond Claude** — Agent skills are becoming an open standard for AI coding tools. These skills were built for Claude, but the format is adopted by [OpenAI Codex](https://github.com/openai/codex), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and others. See the [agent skills community on GitHub](https://github.com/topics/agent-skills) to learn more.
 
 ---
