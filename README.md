@@ -200,8 +200,6 @@ These skills pair well with the official [MATLAB MCP Core Server](https://github
 | MCP Server | Code execution, syntax checking, toolbox detection |
 | These skills | Toolbox-specific knowledge for accurate code generation |
 
-See [MathWorks AI resources](https://github.com/matlab) for more.
-
 ---
 
 ## Contributing
