@@ -2,10 +2,13 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC BY 4.0"></a>
-  <img src="https://img.shields.io/badge/MATLAB-R2025b-D35400.svg" alt="MATLAB R2025b">
-  <img src="https://img.shields.io/badge/version-2.0-8B6CF6.svg" alt="v2.0">
-  <img src="https://img.shields.io/badge/skills-5-22c55e.svg" alt="5 Skills">
-  <img src="https://img.shields.io/badge/templates-54-3b82f6.svg" alt="54 Templates">
+  <a href="https://www.mathworks.com/products/new_products/release2025b.html"><img src="https://img.shields.io/badge/MATLAB-R2025b-D35400.svg" alt="MATLAB R2025b"></a>
+</p>
+
+<p align="center">
+  <a href="https://claude.ai/new?q=Hi%21%20I%20found%20the%20MATLAB%20Toolbox%20Skills%20repo%20on%20GitHub%3A%0Ahttps%3A%2F%2Fgithub.com%2Frrmaram2000%2Fmatlab-toolbox-skills%0A%0AIt%20has%205%20skills%20for%20MATLAB%20R2025b%3A%0A-%20Medical%20Imaging%20%28DICOM%2C%20NIfTI%2C%20MedSAM%2C%20radiomics%29%0A-%20Deep%20Learning%20%28U-Net%2C%20Mask%20R-CNN%2C%20YOLO%2C%20custom%20training%29%0A-%20Image%20Processing%20%28cell%20counting%2C%20histology%2C%20watershed%29%0A-%20Stats-ML%20%28survival%20analysis%2C%20SVM%2C%20random%20forest%2C%20PCA%29%0A-%20Wavelet%20%28MRI%20denoising%2C%20shearlets%2C%20image%20fusion%29%0A%0AEach%20skill%20comes%20with%20knowledge%20cards%20and%20template%20scripts%20that%20help%20you%20write%20accurate%20MATLAB%20code.%0A%0ACould%20you%3A%0A1.%20Give%20me%20a%20visual%20overview%20of%20how%20these%20skills%20work%20%28use%20diagrams%20or%20tables%20where%20possible%29%0A2.%20Help%20me%20pick%20the%20right%20skill%28s%29%20for%20my%20use%20case%0A3.%20Walk%20me%20through%20installation%20for%20my%20setup%0A%0APlease%20use%20visuals%20%28tables%2C%20diagrams%2C%20flowcharts%29%20to%20explain%20things%20wherever%20possible."><img src="https://img.shields.io/badge/Try_with-Claude-8B6CF6?logo=anthropic" alt="Try with Claude"></a>
+  <a href="https://chatgpt.com/?q=Hi%21%20I%20found%20the%20MATLAB%20Toolbox%20Skills%20repo%20on%20GitHub%3A%0Ahttps%3A%2F%2Fgithub.com%2Frrmaram2000%2Fmatlab-toolbox-skills%0A%0AIt%20has%205%20skills%20for%20MATLAB%20R2025b%3A%0A-%20Medical%20Imaging%20%28DICOM%2C%20NIfTI%2C%20MedSAM%2C%20radiomics%29%0A-%20Deep%20Learning%20%28U-Net%2C%20Mask%20R-CNN%2C%20YOLO%2C%20custom%20training%29%0A-%20Image%20Processing%20%28cell%20counting%2C%20histology%2C%20watershed%29%0A-%20Stats-ML%20%28survival%20analysis%2C%20SVM%2C%20random%20forest%2C%20PCA%29%0A-%20Wavelet%20%28MRI%20denoising%2C%20shearlets%2C%20image%20fusion%29%0A%0AEach%20skill%20comes%20with%20knowledge%20cards%20and%20template%20scripts%20that%20help%20you%20write%20accurate%20MATLAB%20code.%0A%0ACould%20you%3A%0A1.%20Give%20me%20a%20visual%20overview%20of%20how%20these%20skills%20work%20%28use%20diagrams%20or%20tables%20where%20possible%29%0A2.%20Help%20me%20pick%20the%20right%20skill%28s%29%20for%20my%20use%20case%0A3.%20Walk%20me%20through%20installation%20for%20my%20setup%0A%0APlease%20use%20visuals%20%28tables%2C%20diagrams%2C%20flowcharts%29%20to%20explain%20things%20wherever%20possible."><img src="https://img.shields.io/badge/Try_with-ChatGPT-74aa9c?logo=openai" alt="Try with ChatGPT"></a>
+  <a href="https://gemini.google.com/app?q=Hi%21%20I%20found%20the%20MATLAB%20Toolbox%20Skills%20repo%20on%20GitHub%3A%0Ahttps%3A%2F%2Fgithub.com%2Frrmaram2000%2Fmatlab-toolbox-skills%0A%0AIt%20has%205%20skills%20for%20MATLAB%20R2025b%3A%0A-%20Medical%20Imaging%20%28DICOM%2C%20NIfTI%2C%20MedSAM%2C%20radiomics%29%0A-%20Deep%20Learning%20%28U-Net%2C%20Mask%20R-CNN%2C%20YOLO%2C%20custom%20training%29%0A-%20Image%20Processing%20%28cell%20counting%2C%20histology%2C%20watershed%29%0A-%20Stats-ML%20%28survival%20analysis%2C%20SVM%2C%20random%20forest%2C%20PCA%29%0A-%20Wavelet%20%28MRI%20denoising%2C%20shearlets%2C%20image%20fusion%29%0A%0AEach%20skill%20comes%20with%20knowledge%20cards%20and%20template%20scripts%20that%20help%20you%20write%20accurate%20MATLAB%20code.%0A%0ACould%20you%3A%0A1.%20Give%20me%20a%20visual%20overview%20of%20how%20these%20skills%20work%20%28use%20diagrams%20or%20tables%20where%20possible%29%0A2.%20Help%20me%20pick%20the%20right%20skill%28s%29%20for%20my%20use%20case%0A3.%20Walk%20me%20through%20installation%20for%20my%20setup%0A%0APlease%20use%20visuals%20%28tables%2C%20diagrams%2C%20flowcharts%29%20to%20explain%20things%20wherever%20possible."><img src="https://img.shields.io/badge/Try_with-Gemini-4285F4?logo=google" alt="Try with Gemini"></a>
 </p>
 
 Claude writes confident MATLAB code, but it sometimes makes up function names that don't exist in R2025b. These skills fix that. They give Claude a quick-reference of tricky APIs, deprecated functions, and common pitfalls across 5 toolboxes, along with 54 template scripts that help it write code you can actually use.
@@ -103,7 +106,7 @@ I tested each skill by giving Claude the same prompt with and without the skill 
 </tr>
 </table>
 
-> [All 5 examples →](docs/examples.md) · [How I tested →](docs/validation.md)
+> [All 5 examples →](docs/examples.md) · [How I tested →](#how-i-tested)
 
 ---
 
