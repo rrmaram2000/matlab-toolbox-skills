@@ -5,9 +5,9 @@
 
 ## Skill Consultation
 The agent consulted:
-- `matlab-deep-learning/SKILL.md` — Critical Rules section
-- `matlab-deep-learning/knowledge/cards/detection-instance-seg.md` — Mask R-CNN API
-- `matlab-deep-learning/scripts/template_maskrcnn_instance_seg.m` — Reference template
+- `matlab-deep-learning-v2/SKILL.md` — Critical Rules section
+- `matlab-deep-learning-v2/knowledge/cards/detection-instance-seg.md` — Mask R-CNN API
+- `matlab-deep-learning-v2/scripts/template_maskrcnn_instance_seg.m` — Reference template
 
 ## Key API Decisions (Guided by Skill)
 1. **Model creation**: `maskrcnn("resnet50-coco", classNames, InputSize=inputSize)` — the correct R2025b constructor

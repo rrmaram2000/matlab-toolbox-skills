@@ -1,5 +1,5 @@
 ---
-name: matlab-medical-imaging-toolbox
+name: matlab-medical-imaging-toolbox-v2
 description: "MATLAB Medical Imaging Toolbox. Functions - medicalVolume, dicomread, dicominfo, dicomCollection, niftiread, niftiinfo, nrrdread, medicalref3d, intrinsicToWorld, worldToIntrinsic, volshow, sliceViewer, imregmoment, imregdeform, imregtform, radiomics, intensityFeatures, shapeFeatures, textureFeatures, medicalSegmentAnythingModel, extractEmbeddings, segmentObjectsFromEmbeddings, dicomConnection, dicomquery, dicomget. Tasks - load medical scans, read DICOM series, open NIfTI or NRRD files, convert patient and voxel coordinates, visualize 3D volumes, overlay segmentation, align MRI or CT scans, register pre and post treatment images, extract radiomics features, segment with MedSAM, segment cells in microscopy, connect to PACS server, label ground truth, resample to isotropic spacing. Domains - DICOM, NIfTI, NRRD, MRI, CT, PET, PET/CT fusion, ultrasound, X-ray, brain imaging, liver segmentation, cardiac imaging, lung nodules, tumor analysis, clinical workflows, PACS integration, microscopy, cell counting."
 ---
 

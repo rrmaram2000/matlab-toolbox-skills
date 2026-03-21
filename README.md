@@ -49,11 +49,11 @@ Each skill folder has three parts:
 
 | Skill | What it covers |
 |:------|:---------------|
-| `matlab-medical-imaging-toolbox` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms |
-| `matlab-deep-learning` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export |
-| `matlab-image-processing-toolbox` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence |
-| `matlab-stats-ml` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP |
-| `matlab-wavelet-toolbox` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets |
+| `matlab-medical-imaging-toolbox-v2` | DICOM/NIfTI I/O, MedSAM, Cellpose, radiomics, 3D visualization, coordinate transforms |
+| `matlab-deep-learning-v2` | U-Net, 3D U-Net, DeepLabv3+, Mask R-CNN, YOLO, custom training, ONNX export |
+| `matlab-image-processing-toolbox-v2` | MRI preprocessing, CT windowing, cell counting, histology, watershed, fluorescence |
+| `matlab-stats-ml-v2` | SVM, random forest, Cox survival, PCA, k-means, Bayesian optimization, SHAP |
+| `matlab-wavelet-toolbox-v2` | MRI denoising, CT denoising, speckle reduction, shearlets, dual-tree, deep learning wavelets |
 
 ---
 
@@ -148,31 +148,46 @@ graph TD
 
 ## Installation
 
-Pre-built zip packages are in the [`zips/`](zips/) folder.
+#### Claude Code — plugin install (recommended)
 
-#### Claude Desktop
-
-1. Download or clone this repository
-2. Go to **Settings → Capabilities → Skills → Customize** and upload a zip from `zips/`
-3. Toggle the skill on and start a new conversation
-
-#### Claude.ai (Web)
-
-Go to **Settings → Capabilities → Skills → Customize** and upload a zip from `zips/`.
-
-#### Claude Code
-
-Copy the skill folder to your skills directory:
+Install all 5 skills as a plugin with one command:
 
 ```bash
-# For all your projects (personal)
-cp -r matlab-medical-imaging-toolbox ~/.claude/skills/
+claude plugin add rrmaram2000/matlab-toolbox-skills
+```
 
-# Or for a specific project only
-cp -r matlab-medical-imaging-toolbox .claude/skills/
+Skills load automatically when relevant. You can also invoke any skill directly:
+
+```bash
+/matlab-toolbox-skills:matlab-medical-imaging-toolbox-v2
+```
+
+#### Claude Code — manual install
+
+If you prefer to install individual skills without the plugin:
+
+```bash
+# Clone the repo
+git clone https://github.com/rrmaram2000/matlab-toolbox-skills.git
+
+# Copy the skill(s) you need — personal (all projects)
+cp -r matlab-toolbox-skills/skills/matlab-medical-imaging-toolbox-v2 ~/.claude/skills/
+
+# Or project-only
+cp -r matlab-toolbox-skills/skills/matlab-medical-imaging-toolbox-v2 .claude/skills/
 ```
 
 See the [Claude Code skills documentation](https://code.claude.com/docs/en/skills) for details.
+
+#### Claude.ai (Web) / Claude Desktop
+
+1. [Download this repo as a ZIP](../../archive/refs/heads/main.zip) and unzip it
+2. Inside the unzipped folder, go to `skills/` and find the skill you want (e.g., `matlab-medical-imaging-toolbox-v2`)
+3. Right-click that skill folder and compress it into a `.zip` file
+4. In Claude, go to **Settings → Profile → Skills → Add custom skill** and upload the `.zip`
+5. Toggle the skill on and start a new conversation
+
+Repeat steps 3–4 for each skill you want to add.
 
 ---
 

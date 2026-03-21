@@ -5,8 +5,8 @@
 
 ## Skill Consultation
 The agent consulted:
-- `matlab-stats-ml/SKILL.md` — Critical Rules section
-- `matlab-stats-ml/knowledge/cards/survival-analysis.md` — Full survival analysis card
+- `matlab-stats-ml-v2/SKILL.md` — Critical Rules section
+- `matlab-stats-ml-v2/knowledge/cards/survival-analysis.md` — Full survival analysis card
 
 ## Key API Decisions (Guided by Skill)
 1. **`fillmissing(X, 'knn')`** instead of `knnimpute` — the latter requires Bioinformatics Toolbox

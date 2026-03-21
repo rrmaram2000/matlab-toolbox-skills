@@ -3,9 +3,8 @@
 .AppleDouble
 .LSOverride
 
-# Zip files (generated for skill installation)
+# Zip files
 *.zip
-!zips/*.zip
 
 # Editor files
 *.swp

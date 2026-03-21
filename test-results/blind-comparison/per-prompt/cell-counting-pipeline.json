@@ -1,6 +1,6 @@
 {
   "eval_name": "cell-counting-pipeline",
-  "toolbox": "matlab-image-processing",
+  "toolbox": "matlab-image-processing-v2",
   "with_skill": {
     "pass_rate": 1.0,
     "passed": 4,

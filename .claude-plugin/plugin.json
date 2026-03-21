@@ -1,0 +1,10 @@
+{
+  "name": "matlab-toolbox-skills",
+  "description": "Toolbox-specific knowledge and template scripts for accurate MATLAB R2025b code generation. Covers Medical Imaging, Deep Learning, Image Processing, Stats-ML, and Wavelet toolboxes.",
+  "version": "2.0.0",
+  "author": {
+    "name": "Ritish Maram"
+  },
+  "repository": "https://github.com/rrmaram2000/matlab-toolbox-skills",
+  "license": "CC-BY-4.0"
+}

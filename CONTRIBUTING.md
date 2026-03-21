@@ -26,12 +26,15 @@ For straightforward fixes such as typos or syntax corrections:
 ## Skill Structure
 
 ```
-matlab-<toolbox>/
-├── SKILL.md              # Overview of the skill's scope
-└── knowledge/
-    ├── INDEX.md          # Points to the detailed cards
-    └── cards/
-        └── *.md          # Detailed content (300-800 lines each)
+skills/
+└── matlab-<toolbox>-v2/
+    ├── SKILL.md              # Overview of the skill's scope
+    ├── knowledge/
+    │   ├── INDEX.md          # Points to the detailed cards
+    │   └── cards/
+    │       └── *.md          # Detailed content (300-800 lines each)
+    └── scripts/
+        └── template_*.m     # Template scripts with %TODO placeholders
 ```
 
 ## Guidelines

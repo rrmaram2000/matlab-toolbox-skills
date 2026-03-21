@@ -1,6 +1,6 @@
 {
   "eval_name": "shearlet-transform-usage",
-  "toolbox": "matlab-wavelet",
+  "toolbox": "matlab-wavelet-v2",
   "with_skill": {
     "pass_rate": 1.0,
     "passed": 4,

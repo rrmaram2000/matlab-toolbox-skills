@@ -1,6 +1,6 @@
 {
   "eval_name": "radiomics-extraction",
-  "toolbox": "matlab-medical-imaging",
+  "toolbox": "matlab-medical-imaging-v2",
   "with_skill": {
     "pass_rate": 1.0,
     "passed": 3,

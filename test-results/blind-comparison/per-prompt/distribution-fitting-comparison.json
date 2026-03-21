@@ -1,6 +1,6 @@
 {
   "eval_name": "distribution-fitting-comparison",
-  "toolbox": "matlab-stats-ml",
+  "toolbox": "matlab-stats-ml-v2",
   "with_skill": {
     "pass_rate": 1.0,
     "passed": 4,

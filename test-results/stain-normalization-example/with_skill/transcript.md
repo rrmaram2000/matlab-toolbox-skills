@@ -5,8 +5,8 @@
 
 ## Skill Consultation
 The agent consulted:
-- `matlab-image-processing-toolbox/SKILL.md` — Critical Rules (im2double vs double)
-- `matlab-image-processing-toolbox/scripts/template_histology_stain_normalization.m` — Reference template
+- `matlab-image-processing-toolbox-v2/SKILL.md` — Critical Rules (im2double vs double)
+- `matlab-image-processing-toolbox-v2/scripts/template_histology_stain_normalization.m` — Reference template
 
 ## Key Decisions (Guided by Skill)
 1. **OD-space conversion**: `-log10(I/255 + eps)` — physically correct Beer-Lambert law

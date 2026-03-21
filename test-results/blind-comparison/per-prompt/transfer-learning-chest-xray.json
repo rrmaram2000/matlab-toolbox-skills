@@ -1,6 +1,6 @@
 {
   "eval_name": "transfer-learning-chest-xray",
-  "toolbox": "matlab-deep-learning",
+  "toolbox": "matlab-deep-learning-v2",
   "with_skill": {
     "pass_rate": 1.0,
     "passed": 4,

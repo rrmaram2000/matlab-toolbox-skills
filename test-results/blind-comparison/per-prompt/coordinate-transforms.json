@@ -1,6 +1,6 @@
 {
   "eval_name": "coordinate-transforms",
-  "toolbox": "matlab-medical-imaging",
+  "toolbox": "matlab-medical-imaging-v2",
   "with_skill": {
     "pass_rate": 0.67,
     "passed": 2,

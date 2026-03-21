@@ -5,9 +5,9 @@
 
 ## Skill Consultation
 The agent consulted:
-- `matlab-wavelet-toolbox/SKILL.md` — Transform selection decision tree
-- `matlab-wavelet-toolbox/knowledge/cards/image-fusion.md` — Fusion rules
-- `matlab-wavelet-toolbox/scripts/template_image_fusion.m` — Reference template
+- `matlab-wavelet-toolbox-v2/SKILL.md` — Transform selection decision tree
+- `matlab-wavelet-toolbox-v2/knowledge/cards/image-fusion.md` — Fusion rules
+- `matlab-wavelet-toolbox-v2/scripts/template_image_fusion.m` — Reference template
 
 ## Key API Decisions (Guided by Skill)
 1. **`wmaxlev`** — checks maximum decomposition level before decomposing (prevents empty coefficients)
